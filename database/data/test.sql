@@ -1,3 +1,3 @@
-insert into categorie ( nom ) values ('Camion');
-insert into categorie ( nom ) values ('Plaisir');
-insert into categorie ( nom ) values ('Taxi');
+insert into categorie ( nom_categorie ) values ('Camion');
+insert into categorie ( nom_categorie ) values ('Plaisir');
+insert into categorie ( nom_categorie ) values ('Taxi');
