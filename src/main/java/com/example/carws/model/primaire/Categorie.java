@@ -6,11 +6,22 @@ import jakarta.persistence.*;
 @Table( name = "categorie" )
 public class Categorie{
 	@Id
-	@Column( name = "id_categorie" )
+	@Column( name = "id_categorie", columnDefinition = "serial" )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
 	// @Column
 	@Column( name = "nom_categorie" )
 	String nom;
+	@Column( name = "deleted" )
+	boolean deleted;
+
+	public boolean getDeleted(){
+		return this.deleted;
+	}
+
+	public void setDeleted( boolean bool ){
+		this.deleted = bool;
+	}
 
 	public void setId( Integer id ){
 		this.id = id;
@@ -39,6 +50,11 @@ public class Categorie{
 		return this.nom;
 	}
 
+	/*
+	 * 
+	 * Get static data for category
+	 * 
+	 */
 	public Categorie[] test() throws Exception{
 		Categorie[] categories = new Categorie[3];
 		categories[0] = new Categorie("Camion");
