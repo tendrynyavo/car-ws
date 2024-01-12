@@ -26,7 +26,6 @@ public class MarqueService{
 		return c;
 	}
 
-
 	public void saveMarque( Marque marque ) throws Exception{
 		repository.save( marque );
 	}
@@ -39,11 +38,11 @@ public class MarqueService{
 			m.setId(marque.getId());
 			m = repository.save(m);
 		}catch(CategorieException e){
-			marque = repository.save( marque );
+			m = repository.save( marque );
 		}catch (Exception e) {
 			throw e;
 		}
-		return marque;
+		return m;
 	}
 
 	public void deleteMarque( Integer id ) throws Exception{
