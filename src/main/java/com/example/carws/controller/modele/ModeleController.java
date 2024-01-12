@@ -1,4 +1,4 @@
-package com.example.carws.controller.categorie;
+package com.example.carws.controller.modele;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;

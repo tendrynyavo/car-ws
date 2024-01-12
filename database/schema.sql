@@ -34,7 +34,8 @@ create table users(
 	prenom varchar(50) ,
 	mail varchar(60) not null,
 	contact varchar(50),
-	password varchar(100)
+	password varchar(100),
+	date_naissance date
 );
 
 create table annonce(
