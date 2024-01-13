@@ -5,10 +5,11 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-// import com.example.carws.model.token.Token;
+import com.example.carws.model.token.Token;
 import com.example.carws.model.users.Users;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
+import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api/users")
@@ -50,14 +51,29 @@ public class UsersController {
     public ResponseEntity<Response> login(@RequestBody Users users) throws Exception {
         try {
             users = usersService.login(users.getId());
-            // String token = new Token().generateJwt(users);
+            String token = new Token().generateJwt(users);
             Response response = new Response();
-            // response.addData("token", token);
-            response.addData("token", users);
+            response.addData("token", token);
+            // response.addData("token", users);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/token/{token}")
+    public ResponseEntity<Response> checkTokenValid(@PathVariable("token") String token) throws Exception {
+        try {
+            Claims claims = new Token().verify(token);
+            Response response = new Response();
+            response.addData("user", claims);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception) {
+            System.out.println("Erreur: " + exception.getMessage());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", exception.getMessage()));
         }
     }
 }
