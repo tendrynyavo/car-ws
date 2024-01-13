@@ -8,6 +8,10 @@ public class Response{
 	HashMap<String, Object> data;
 	HashMap<String, Object> message;
 
+	// Mila miova kely daholo nareo
+	// Ahoana no anaovana izany
+	// Ataovy mitovy daholo ny retours rehetra
+
 	public Response setErrors(HashMap<String, Object> es){
 		this.errors = es;
 		return this;
