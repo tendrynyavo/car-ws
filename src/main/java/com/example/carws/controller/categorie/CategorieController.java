@@ -33,7 +33,7 @@ public class CategorieController{
 		try{
 			Categorie categorie = categorieService.getCategory(id);
 			Response response = new Response();
-			response.addData( "categorie" , categorie );
+			response.addData( "items" , categorie );
 			return ResponseEntity.status(HttpStatus.OK).body( response );
 		}catch(Exception e){
 			e.printStackTrace();
