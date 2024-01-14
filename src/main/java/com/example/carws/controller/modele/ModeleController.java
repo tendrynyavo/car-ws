@@ -33,7 +33,7 @@ public class ModeleController{
 		try{
 			Modele modele = modeleService.getModele(id);
 			Response response = new Response();
-			response.addData( "modele" , modele );
+			response.addData( "items" , modele );
 			return ResponseEntity.status(HttpStatus.OK).body( response );
 		}catch(Exception e){
 			e.printStackTrace();

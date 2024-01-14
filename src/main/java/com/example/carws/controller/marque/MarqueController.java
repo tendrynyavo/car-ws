@@ -18,7 +18,7 @@ public class MarqueController {
 	MarqueService marqueService;
 
 	@GetMapping
-	public ResponseEntity<?> getCategories() throws Exception {
+	public ResponseEntity<?> getMarques() throws Exception {
 		try {
 			Marque[] categories = null;
 			categories = marqueService.getAllMarques().toArray(new Marque[0]);
@@ -30,11 +30,11 @@ public class MarqueController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getCategory(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Response> getMarque(@PathVariable("id") Integer id) throws Exception {
 		try {
 			Marque marque = marqueService.getMarque(id);
 			Response response = new Response();
-			response.addData("marque", marque);
+			response.addData("items", marque);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class MarqueController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Response> addCategorie(@RequestBody Marque marque) throws Exception {
+	public ResponseEntity<Response> addMarque(@RequestBody Marque marque) throws Exception {
 		Response response = new Response();
 		try {
 			marqueService.saveMarque(marque);
@@ -57,7 +57,7 @@ public class MarqueController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateCategorie(@RequestBody Marque marque, @PathVariable("id") Integer id) {
+	public ResponseEntity<Response> updateMarque(@RequestBody Marque marque, @PathVariable("id") Integer id) {
 		Response response = new Response();
 		try {
 			marque.setId(id);
@@ -70,7 +70,7 @@ public class MarqueController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteCategorie(@PathVariable("id") Integer id) {
+	public ResponseEntity<Response> deleteMarque(@PathVariable("id") Integer id) {
 		Response response = new Response();
 		try {
 			marqueService.deleteMarque(id);

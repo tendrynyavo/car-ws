@@ -34,7 +34,7 @@ public class TransmissionController {
 		try {
 			Transmission transmission = transmissionService.getTransmission(id);
 			Response response = new Response();
-			response.addData("transmission", transmission);
+			response.addData("items", transmission);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();

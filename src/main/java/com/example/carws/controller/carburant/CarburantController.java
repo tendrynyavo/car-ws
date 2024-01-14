@@ -33,7 +33,7 @@ public class CarburantController{
 		try{
 			Carburant carburant = carburantService.getCarburant(id);
 			Response response = new Response();
-			response.addData( "carburant" , carburant );
+			response.addData( "items" , carburant );
 			return ResponseEntity.status(HttpStatus.OK).body( response );
 		}catch(Exception e){
 			e.printStackTrace();
