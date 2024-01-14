@@ -122,3 +122,51 @@ create table message(
 	message text,
 	foreign key( id_discussion ) REFERENCES discussion(id_discussion)
 );
+
+create table mois(
+	id varchar(4) not null primary key,
+	nom varchar(50) unique not null,
+	reference integer not null
+);
+
+drop view if exists one_annonce_to_month;
+create or replace view one_annonce_to_month
+	as		
+		select
+			*
+		from mois as m , annonce as a;
+
+drop view if exists v_stats cascade;
+create or replace view v_stats
+	as
+
+		select
+			o_a_m.nom,
+			o_a_m.reference,
+			count( distinct(a.id_annonce) ) as nbr_annonce,
+			extract( YEAR from a.date_heure_publication ) as year
+		from one_annonce_to_month as o_a_m
+		left join annonce as a
+		on extract ( month from a.date_heure_publication ) = o_a_m.reference
+		group by o_a_m.nom, o_a_m.reference, extract( YEAR from a.date_heure_publication )
+		order by o_a_m.reference;
+
+drop view if exists v_stats_month;
+create or replace view v_stats_month
+	as
+		select
+			v_s.nom, SUM(v_s.nbr_annonce) as total
+		from v_stats as v_s
+		group by v_s.nom, v_s.reference
+		order by v_s.reference
+;
+
+select id_annonce from v_stats_month group by id_annonce ;
+
+
+-- Donc mila miketrika kely fotsiny
+-- Ny affichage farany zany tokony hoe
+-- Janvier : count
+-- Fevrier : count
+-- Ahoana no anaovana izany
+-- Andao ketrehana kely
