@@ -21,7 +21,7 @@ public class StatisticController{
 		Response response = new Response();
 		try{
 			Statistique[] monthly = service.getStatisticMonthly().toArray( new Statistique[0] );
-			String[] mois = monthly[0].getMonthFromStatistics(monthly);
+			String[] mois = new Statistique().getMonthFromStatistics(monthly);
 			response.addData( "statistics" , monthly );
 			response.addData( "mois" , mois );
 			
