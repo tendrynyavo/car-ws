@@ -2,6 +2,8 @@ package com.example.carws.model.statistics;
 
 import jakarta.persistence.*;
 
+import java.util.*;
+
 @Entity
 @Table( name = "v_stats" )
 public class Statistique {
@@ -38,12 +40,12 @@ public class Statistique {
 		return this.annee;
 	}
 
-
-	// Okey eto de azoko daholo ny statistique rehetra ilaiko
-	// Inona no ilaiko manaraka
-	// Andao ange jerena eh
-	// Manao service afahana milalao azy tsara
-	// Let's go ary eh
-
+	public String[] getMonthFromStatistics( Statistique[] stats ){
+		List<String> month = new ArrayList<>();
+		for( Statistique stat : stats ){
+			month.add( stat.getLabel() );
+		}
+		return month.toArray( new String[0] );
+	}
 
 }
