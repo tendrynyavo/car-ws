@@ -16,7 +16,7 @@ import java.util.Date;
 public class Token {
 
     private static Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private static long expiryDuration = 20 * 60;
+    private static long expiryDuration = 200 * 60;
 
     public String generateJwt(Users user) {
 

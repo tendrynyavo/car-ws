@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.carws.model.token.Token;
+import com.example.carws.model.users.Messagerie;
 import com.example.carws.model.users.Users;
+import com.example.carws.service.MessagerieService;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
 import io.jsonwebtoken.Claims;
@@ -17,6 +19,8 @@ public class UsersController {
 
     @Autowired
     UsersService usersService;
+    @Autowired
+    MessagerieService messagerieService;
 
     @GetMapping("/inscription_valide/{date}")
     public ResponseEntity<Response> isInscriptionValid(@PathVariable("date") String date) throws Exception {
@@ -76,4 +80,23 @@ public class UsersController {
                     .body(new Response().addError("exception", exception.getMessage()));
         }
     }
+
+    @PostMapping("messagerie")
+    public ResponseEntity<Response> nouveauMessage(@RequestBody Messagerie messagerie) {
+        try {
+            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
+            String idEnvoyeur = claims.get("id", String.class);
+            messagerie.setIdEnvoyeur(idEnvoyeur);
+            messagerieService.nouveauMessage(messagerie);
+            Response response = new Response();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception) {
+            System.out.println("Erreur: " + exception.getMessage());
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", exception.getMessage()));
+        }
+    }
+
+    
 }

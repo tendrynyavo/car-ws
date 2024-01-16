@@ -123,6 +123,16 @@ create table message(
 	foreign key( id_discussion ) REFERENCES discussion(id_discussion)
 );
 
+create table discussions (
+	id serial primary key,
+	id_envoyeur text not null,
+	id_receveur text not null,
+	date_heure_envoie timestamp DEFAULT current_timestamp,
+	message text,
+	foreign key(id_envoyeur) REFERENCES users( id_user ),
+	foreign key(id_receveur) REFERENCES users( id_user )
+);
+
 create table mois(
 	id varchar(4) not null primary key,
 	nom varchar(50) unique not null,
@@ -170,3 +180,5 @@ select id_annonce from v_stats_month group by id_annonce ;
 -- Fevrier : count
 -- Ahoana no anaovana izany
 -- Andao ketrehana kely
+
+
