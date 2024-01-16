@@ -4,6 +4,10 @@ import java.sql.Date;
 
 import jakarta.persistence.*;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+
+import com.example.carws.model.annonce.AnnonceFavories;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +27,9 @@ public class Users {
     String mail;
     @Column
     String password;
+
+    @OneToMany(mappedBy="user")
+	Set<AnnonceFavories> favories;
 
     public Users() {
     }
@@ -107,6 +114,14 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setFavories(Set<AnnonceFavories> listes){
+        this.favories = listes;
+    }
+
+    public Set<AnnonceFavories> getFavories(){
+        return this.favories;
     }
 
 }

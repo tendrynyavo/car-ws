@@ -43,7 +43,9 @@ create table annonce(
 	date_heure_publication timestamp,
 	id_user text not null,
 	prix double precision,
-	foreign key(id_user) REFERENCES users( id_user )
+	id_etat int,
+	foreign key(id_user) REFERENCES users( id_user ),
+	foreign key(id_etat) REFERENCES etats( id )
 );
 
 create table validate_annonce(
@@ -61,11 +63,15 @@ create table voiture_annonce(
 	id_carburant integer not null,
 	id_categorie integer not null,
 	id_transmission integer not null,
+	kilometrage double precision,
+	annee int,
+	id_detail_annonce integer not null,
 	foreign key( id_marque ) REFERENCES marque(id_marque),
 	foreign key( id_modele ) REFERENCES modele(id_modele),
 	foreign key( id_carburant ) REFERENCES carburant(id_carburant),
 	foreign key( id_categorie ) REFERENCES categorie(id_categorie),
-	foreign key( id_transmission ) REFERENCES transmission(id_transmission)
+	foreign key( id_transmission ) REFERENCES transmission(id_transmission),
+	foreign key( id_detail_annonce ) REFERENCES detail_annonce(id_detail_annonce)
 );
 
 create table detail_annonce(
@@ -73,11 +79,6 @@ create table detail_annonce(
 	id_detail_annonce serial primary key,
 	id_annonce integer not null,
 	description text,
-	marque integer not null,
-	modele integer not null,
-	id_voiture_annonce integer not null,
-	kilometrage double precision,
-	foreign key(id_voiture_annonce) REFERENCES voiture_annonce(id_voiture_annonce),
 	foreign key(id_annonce) REFERENCES annonce(id_annonce)
 );
 
@@ -182,3 +183,12 @@ select id_annonce from v_stats_month group by id_annonce ;
 -- Andao ketrehana kely
 
 
+
+
+create table etats(
+	id int primary key,
+	nom VARCHAR(255)
+);
+
+alter table users add column date_naissance date;
+alter table voiture_annonce add column annee integer not null;
