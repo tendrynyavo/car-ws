@@ -96,6 +96,17 @@ public class AnnonceController{
 		}
 	}
 
+	@GetMapping("/nonValider")
+	public ResponseEntity<?> getAnnoncesNonValider() throws Exception{
+		try{
+			Annonce[] annonces = annonceService.findAllAnnoncesEnAttente().toArray( new Annonce[0] );
+			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
+		}catch( Exception exception ){
+			exception.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( exception.getMessage() );
+		}
+	}
+
 	@PutMapping("/validate/{id}")
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") Integer id) {
 		Response response = new Response();
