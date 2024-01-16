@@ -2,21 +2,16 @@ package com.example.carws.model.users;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "discussions")
+@Document(collection = "discussions")
 public class Messagerie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    @Column(name = "id_envoyeur")
+    String id;
     String idEnvoyeur;
-    @Column(name = "id_receveur")
     String idReceveur;
-    @Column(name = "date_heure_envoie")
     Timestamp dateHeureEnvoie;
-    @Column
     String message;
 
     public Messagerie() {
@@ -38,11 +33,11 @@ public class Messagerie {
         this.setMessage(message);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

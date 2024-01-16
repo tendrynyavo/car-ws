@@ -4,9 +4,7 @@ import com.example.carws.repository.UsersRepository;
 
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
-import java.util.*;
 
-import com.example.carws.exception.*;
 import com.example.carws.model.users.Users;
 
 @Service

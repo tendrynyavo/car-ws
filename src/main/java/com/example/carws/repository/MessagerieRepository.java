@@ -1,9 +1,9 @@
 package com.example.carws.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.example.carws.model.users.Messagerie;
 
-public interface MessagerieRepository extends JpaRepository<Messagerie, Integer> {
+public interface MessagerieRepository extends MongoRepository<Messagerie, Integer> {
     
 }

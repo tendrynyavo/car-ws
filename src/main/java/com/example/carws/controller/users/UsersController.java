@@ -89,6 +89,7 @@ public class UsersController {
             messagerie.setIdEnvoyeur(idEnvoyeur);
             messagerieService.nouveauMessage(messagerie);
             Response response = new Response();
+            response.addData("valide", "Message envoye");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
@@ -98,5 +99,4 @@ public class UsersController {
         }
     }
 
-    
 }
