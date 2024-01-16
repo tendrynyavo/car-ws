@@ -1,9 +1,16 @@
 package com.example.carws.model.annonce;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table( name = "annonce_photo" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 public class AnnoncePhoto{
 	@Id
 	@Column( name = "id_photo", columnDefinition = "serial" )

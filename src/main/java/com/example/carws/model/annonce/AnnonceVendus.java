@@ -2,10 +2,16 @@ package com.example.carws.model.annonce;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table( name = "annonce_vendus" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 public class AnnonceVendus{
 	@Id
 	@Column( name = "id_annonce_vendus", columnDefinition = "serial" )

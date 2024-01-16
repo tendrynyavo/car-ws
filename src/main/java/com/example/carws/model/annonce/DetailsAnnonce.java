@@ -24,7 +24,7 @@ public class DetailsAnnonce{
 
     @OneToOne
     @JoinColumn(name = "id_annonce")
-    @JsonBackReference
+    @JsonBackReference("annonce-details")
     Annonce annonce;
 
     @OneToOne(mappedBy = "detailsAnnonce")

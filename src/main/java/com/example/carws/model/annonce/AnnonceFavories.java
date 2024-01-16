@@ -23,7 +23,7 @@ public class AnnonceFavories{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_annonce")
-    @JsonManagedReference
+    @JsonManagedReference("annonce-favoris")
     Annonce annonce;
 
     @ManyToOne

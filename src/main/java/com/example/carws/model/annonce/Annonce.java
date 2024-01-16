@@ -44,7 +44,7 @@ public class Annonce{
 	ValidateAnnonce validate;
 
 	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonBackReference("annonce-favoris")
 	AnnonceFavories favoris;
 
 	@OneToMany(mappedBy="annonce")
