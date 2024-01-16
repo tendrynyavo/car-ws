@@ -1,6 +1,9 @@
 package com.example.carws.controller.users;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,6 +93,23 @@ public class UsersController {
             messagerieService.nouveauMessage(messagerie);
             Response response = new Response();
             response.addData("valide", "Message envoye");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception) {
+            System.out.println("Erreur: " + exception.getMessage());
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", exception.getMessage()));
+        }
+    }
+
+    @PostMapping("discussions")
+    public ResponseEntity<Response> discussions(@RequestBody Messagerie messagerie) {
+        try {
+            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
+            String idEnvoyeur = claims.get("id", String.class);
+            List<Messagerie> discussions = messagerieService.getDiscussions(idEnvoyeur, messagerie.getIdReceveur());
+            Response response = new Response();
+            response.addData("discussions", discussions);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());

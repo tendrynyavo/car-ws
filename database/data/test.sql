@@ -70,3 +70,6 @@ insert into annonce values
 insert into annonce values
 	( default, '2023-07-10 10:00:00' , '************************************Test*************************', 2500000 );
 
+db.discussions.find({$or:[{ idEnvoyeur: "eTLPHjKBKTUyMQ2UCJ0UYSQBx5g1", idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },{ idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3", idReceveur: "eTLPHjKBKTUyMQ2UCJ0UYSQBx5g1" }]}).sort({ dateHeureEnvoie: 1 })
+
+
