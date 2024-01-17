@@ -7,6 +7,15 @@ import com.example.carws.repository.DetailsAnnonceRepository;
 import com.example.carws.repository.UsersRepository;
 import com.example.carws.repository.ValidateAnnonceRepository;
 import com.example.carws.repository.VoitureRepository;
+import com.example.carws.request.SearchedElements;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +53,9 @@ public class AnnonceService{
 
 	@Autowired
 	UsersRepository userRepository;
+
+	@Autowired
+	EntityManager entityManager;
 
 	public List<Annonce> getAllAnnonces() throws Exception{
 		return repository.findAll();
@@ -158,8 +170,8 @@ public class AnnonceService{
 
 		if (optionalAnnonce.isPresent()) {
 			Annonce annonce = optionalAnnonce.get();
-			annonce.setEtat(40);
-			annonce = this.updateAnnonce(annonce);
+			// annonce.setEtat(40);
+			// annonce = this.updateAnnonce(annonce);
 
 			Users users = optionalUser.get();
 
@@ -171,5 +183,52 @@ public class AnnonceService{
 			throw new Exception("Annonce not found with id " + id + " in saveAnnonceFavories()");
 		}	  
 	}
+
+	@Transactional
+	public List<Annonce> getAnnoncesMatch(SearchedElements elements){
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Annonce> criteriaQuery = criteriaBuilder.createQuery(Annonce.class);
+		Root<Annonce> root = criteriaQuery.from(Annonce.class);
+
+		Predicate predicate = criteriaBuilder.equal(root.get("etat"), 30);
+
+		HashMap<String, Object> conditions = elements.allConditions();
+
+		for (Map.Entry<String, Object> condition : conditions.entrySet()) {
+			if(condition.getValue() != null){
+				predicate = addConditionIfNotNull(criteriaBuilder, root, predicate, condition.getKey(), condition.getValue());
+			}
+		}
+
+		if (elements.getDescription() != null) {
+			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(detailsJoin.get("description"), "%" + elements.getDescription() + "%"));
+		}
+
+		if (elements.getKilometrage() > 0) {
+			predicate = addConditionIfNotNull(criteriaBuilder, root, predicate, "kilometrage", elements.getKilometrage());
+		}
+
+		if (elements.getMinIntervalle() != -1 && elements.getMaxIntervalle() > 0) {
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.between(root.get("prix"), elements.getMinIntervalle(), elements.getMaxIntervalle()));
+		}
+
+		criteriaQuery.where(predicate);
+
+		TypedQuery<Annonce> query = entityManager.createQuery(criteriaQuery);
+		List<Annonce> results = query.getResultList();
+
+		return results;
+	}
+
+	Predicate addConditionIfNotNull(CriteriaBuilder criteriaBuilder, Root<Annonce> root, Predicate predicate, String attributeName, Object value) {
+		if (value != null) {
+			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
+			Join<DetailsAnnonce, Voiture> voitureJoin = detailsJoin.join("voiture");
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(attributeName), value));
+		}
+		return predicate;
+	}
+
 
 }

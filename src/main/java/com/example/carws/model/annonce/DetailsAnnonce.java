@@ -28,7 +28,7 @@ public class DetailsAnnonce{
     Annonce annonce;
 
     @OneToOne(mappedBy = "detailsAnnonce")
-	@JsonManagedReference
+    @JsonManagedReference("annonce-voiture")
     Voiture voiture;
 
 	public void setId( Integer id ){

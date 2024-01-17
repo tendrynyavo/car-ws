@@ -2,6 +2,7 @@ package com.example.carws.model.annonce;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -20,6 +21,7 @@ public class ValidateAnnonce{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_annonce")
+    @JsonBackReference("annonce-validate")
     Annonce annonce;
 
     @Column( name = "date_time_validation" )

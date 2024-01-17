@@ -1,6 +1,7 @@
 package com.example.carws.model.annonce;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,8 +32,9 @@ public class Annonce{
 	double prix;
 
     @OneToOne(mappedBy = "annonce")
-	@JsonBackReference
-    DetailsAnnonce details;
+	@JsonManagedReference("annonce-details")
+	DetailsAnnonce details;
+
 
     @Column( name = "id_etat")
     Integer etat;
@@ -41,6 +43,7 @@ public class Annonce{
 	AnnonceVendus vendu;
 
 	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
+	@JsonManagedReference("annonce-validate")
 	ValidateAnnonce validate;
 
 	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
@@ -140,10 +143,11 @@ public class Annonce{
 
 	}
 
-	public Annonce( Timestamp dateheure, String user, double prix ) throws Exception{
+	public Annonce( Timestamp dateheure, String user, double prix , int etat) throws Exception{
 		this.setDateheure(dateheure);
         this.setUser(user);
         this.setPrix(prix);
+		this.setEtat(etat);
 	}
 
 }

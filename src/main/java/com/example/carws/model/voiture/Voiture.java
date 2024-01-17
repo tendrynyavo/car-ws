@@ -41,7 +41,7 @@ public class Voiture{
 
     @OneToOne
     @JoinColumn(name = "id_detail_annonce")
-    @JsonBackReference
+    @JsonBackReference("annonce-voiture")
     DetailsAnnonce detailsAnnonce;
 
     public DetailsAnnonce getDetails(){

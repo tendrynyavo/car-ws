@@ -1,6 +1,9 @@
 package com.example.carws.controller.annonce;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import com.example.carws.model.annonce.ValidateAnnonce;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.request.AnnonceRequest;
+import com.example.carws.request.SearchedElements;
 import com.example.carws.service.AnnonceService;
 import com.example.carws.service.VoitureService;
 import com.example.carws.response.*;
@@ -177,5 +181,17 @@ public class AnnonceController{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
+
+	@PostMapping("/search")
+	public ResponseEntity<?> advancedSearch(@RequestBody SearchedElements elements) {
+		try{
+			Annonce[] annonces = annonceService.getAnnoncesMatch(elements).toArray( new Annonce[0] );
+			return ResponseEntity.status(HttpStatus.OK).body(annonces);
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+		}
+	}
+
 
 }
