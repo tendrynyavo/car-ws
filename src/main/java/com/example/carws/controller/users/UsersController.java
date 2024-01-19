@@ -61,7 +61,6 @@ public class UsersController {
             String token = new Token().generateJwt(users);
             Response response = new Response();
             response.addData("token", token);
-            // response.addData("token", users);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,6 +109,23 @@ public class UsersController {
             List<Messagerie> discussions = messagerieService.getDiscussions(idEnvoyeur, messagerie.getIdReceveur());
             Response response = new Response();
             response.addData("discussions", discussions);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception) {
+            System.out.println("Erreur: " + exception.getMessage());
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", exception.getMessage()));
+        }
+    }
+
+    @PostMapping("StatusVu")
+    public ResponseEntity<Response> setStatusVu(@RequestBody Messagerie messagerie) {
+        try {
+            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
+            String idEnvoyeur = claims.get("id", String.class);
+            messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
+            Response response = new Response();
+            response.addData("status", "Modification effectue");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
