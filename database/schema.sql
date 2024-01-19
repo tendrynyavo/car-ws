@@ -150,17 +150,18 @@ create or replace view one_annonce_to_month
 drop view if exists v_stats cascade;
 create or replace view v_stats
 	as
+	select
+		o_a_m.nom,
+		o_a_m.reference,
+		count( distinct(a.id_annonce) ) as nbr_annonce,
+		extract( YEAR from a.date_heure_publication ) as year,
+		a.id_etat as annonce_etat
+	from one_annonce_to_month as o_a_m
+	left join annonce as a
+	on extract ( month from a.date_heure_publication ) = o_a_m.reference
+	group by o_a_m.nom, o_a_m.reference, extract(YEAR from a.date_heure_publication ), a.id_etat
+	order by o_a_m.reference;
 
-		select
-			o_a_m.nom,
-			o_a_m.reference,
-			count( distinct(a.id_annonce) ) as nbr_annonce,
-			extract( YEAR from a.date_heure_publication ) as year
-		from one_annonce_to_month as o_a_m
-		left join annonce as a
-		on extract ( month from a.date_heure_publication ) = o_a_m.reference
-		group by o_a_m.nom, o_a_m.reference, extract( YEAR from a.date_heure_publication )
-		order by o_a_m.reference;
 
 drop view if exists v_stats_month;
 create or replace view v_stats_month
@@ -182,9 +183,6 @@ select id_annonce from v_stats_month group by id_annonce ;
 -- Ahoana no anaovana izany
 -- Andao ketrehana kely
 
-
-
-
 create table etats(
 	id int primary key,
 	nom VARCHAR(255)
@@ -192,3 +190,53 @@ create table etats(
 
 alter table users add column date_naissance date;
 alter table voiture_annonce add column annee integer not null;
+
+
+-- VALIDATE
+	--VIEW
+	DROP VIEW IF EXISTS v_statistics_validate_month;
+	CREATE OR REPLACE VIEW v_statistics_validate_month
+		AS
+			SELECT 
+				EXTRACT(YEAR FROM va.date_time_validation) AS annee,
+				m.nom AS mois, 
+				COALESCE(COUNT(va.id_annonce), 0) AS nbr_annonce_valide
+			FROM 
+				mois m 
+			LEFT JOIN 
+				validate_annonce va ON EXTRACT(MONTH FROM va.date_time_validation) = m.reference
+			LEFT JOIN 
+				annonce a ON va.id_annonce = a.id_annonce AND a.id_etat = 30
+			GROUP BY 
+				annee, m.nom, m.reference
+			ORDER BY 
+				annee, m.reference;
+
+	-- FUNCTIONS
+		-- Annonce valider par mois par an
+
+		-- Regarder les details d'une view: \d+ <nom_view>
+			CREATE OR REPLACE FUNCTION get_validate_annonce_by_year(_annee INT)
+				RETURNS TABLE (
+					annee DOUBLE PRECISION,
+					mois VARCHAR,
+					nbr_annonce_valide BIGINT
+				) AS $$
+				BEGIN
+					RETURN QUERY
+						SELECT 
+							COALESCE(v.annee, _annee) AS annee,
+							m.nom AS mois,
+							COALESCE(v.nbr_annonce_valide, 0) AS nbr_annonce_valide
+						FROM 
+							(SELECT _annee AS annee) y
+						CROSS JOIN 
+							mois m
+						LEFT JOIN 
+							v_statistics_validate_month v ON m.nom = v.mois AND y.annee = v.annee
+						ORDER BY 
+							m.reference;
+				END; $$ LANGUAGE plpgsql;
+	
+	-- TEST
+		select * from get_validate_annonce_by_year(2023);	

@@ -1,6 +1,9 @@
 package com.example.carws.controller.stats;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,25 @@ public class StatisticController{
 			response.addData( "mois" , mois );
 			
 			return ResponseEntity.status( HttpStatus.OK ).body( response );
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.addError( "error" , e.getMessage() );
+			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(response);
+		}
+	}
+
+	@GetMapping("/byYear/{year}")
+	public ResponseEntity<Response> getStatisticsByYear(@PathVariable("year") Integer year) {
+		Response response = new Response();
+		try{
+
+			List<ValidateStatistique> statsByYear = service.getValidateStatisticsByYear(year);
+			response.addData( "statistics" , statsByYear );
+
+			System.out.println(statsByYear.get(2).getMois());
+			
+			return ResponseEntity.status( HttpStatus.OK ).body( response );
+
 		}catch (Exception e) {
 			e.printStackTrace();
 			response.addError( "error" , e.getMessage() );
