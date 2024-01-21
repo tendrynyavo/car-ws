@@ -9,12 +9,14 @@ import com.example.carws.model.primaire.Modele;
 import com.example.carws.service.ModeleService;
 
 import com.example.carws.response.*;
+import com.example.carws.service.model.ModelCategorieService;
 
 @RestController
-@RequestMapping("/api/modele")
+@RequestMapping("/api/modeles")
 public class ModeleController{
 
 	@Autowired ModeleService modeleService;
+          @Autowired ModelCategorieService modeleCategorieService;
 
 	@GetMapping
 	public ResponseEntity<?> getModeles() throws Exception{
@@ -78,5 +80,18 @@ public class ModeleController{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
 		}
 	}
+    
+         @PostMapping( "/categories/{categorie}" )
+         public ResponseEntity<Response> addModelToCategory(@RequestBody Modele modele, @PathVariable("categorie") Integer categorie ){
+                   Response response = new Response();
+                   try{
+                             modeleCategorieService.addModelToCategory(modele.getId(), categorie);
+                             return ResponseEntity.status( HttpStatus.OK ).body( response.addMessage( "success" , "Modele ajouté à la catégorie" ) );
+                   }catch( Exception e ){
+                              response.addError("error" , e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
+                   }
+                       
+         }
 
 }

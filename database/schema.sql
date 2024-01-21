@@ -28,8 +28,6 @@ create table carburant(
 	deleted boolean default false
 );
 
-
-
 create table transmission(
 	id_transmission serial primary key,
 	nom_transmission varchar(50) not null,
