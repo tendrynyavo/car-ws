@@ -1,19 +1,53 @@
 package com.example.carws.model.primaire;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.*;
+import java.util.Set;
 
 @Entity
 @Table( name = "modele" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 public class Modele{
+	
 	@Id
 	@Column( name = "id_modele", columnDefinition = "serial" )
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	// @Column
-	@Column( name = "nom_modele" )
+
+	@ManyToOne
+	@JoinColumn( name = "id_marque", nullable = false )
+	Marque marque;
+
+	@Column( name = "nom_modele" , nullable = false )
 	String nom;
+	
 	@Column( name = "deleted" )
 	boolean deleted;
+
+	@ManyToMany
+	@JoinTable(
+		name = "a_modele_categorie",
+		joinColumns = @JoinColumn(name = "id_modele"),
+		inverseJoinColumns = @JoinColumn(name = "id_categorie")
+	)
+	Set<Categorie> categories;
+
+	public void setCategories(Set<Categorie> cs){
+		this.categories = cs;
+	}
+
+	public Set<Categorie> getCategories(){
+		return this.categories;
+	}
+
+	public void setMarque(Marque marque){
+		this.marque = marque;
+	}
+	public Marque getMarque(){
+		return this.marque;
+	}
 
 	public boolean getDeleted(){
 		return this.deleted;
