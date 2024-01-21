@@ -3,14 +3,13 @@ package com.example.carws.model.primaire;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "transmission" )
-public class Transmission{
+@Table( name = "boite_vitesse" )
+public class Vitesse{
 	@Id
-	@Column( name = "id_transmission", columnDefinition = "serial" )
+	@Column( name = "id", columnDefinition = "serial" )
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	// @Column
-	@Column( name = "nom_transmission" )
+	@Column( name = "nom", nullable = false )
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
@@ -38,11 +37,11 @@ public class Transmission{
 		this.nom = nom;
 	}
 
-	public Transmission(){
+	public Vitesse(){
 
 	}
 
-	public Transmission( String nom ) throws Exception{
+	public Vitesse( String nom ) throws Exception{
 		this.setNom(nom);
 	}
 

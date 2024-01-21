@@ -11,7 +11,7 @@ import com.example.carws.service.MarqueService;
 import com.example.carws.response.*;
 
 @RestController
-@RequestMapping("/api/marque")
+@RequestMapping("/api/marques")
 public class MarqueController {
 
 	@Autowired

@@ -1,19 +1,35 @@
 package com.example.carws.model.primaire;
 
 import jakarta.persistence.*;
+import java.util.Set;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table( name = "categorie" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 public class Categorie{
 	@Id
 	@Column( name = "id_categorie", columnDefinition = "serial" )
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	// @Column
+	
 	@Column( name = "nom_categorie" )
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
+
+	@ManyToMany( mappedBy = "categories" )
+	Set<Modele> modeles;
+
+	public void setModeles( Set<Modele> modeles ){
+		this.modeles = modeles;
+	}
+
+	public Set<Modele> getModeles(){
+		return this.modeles;
+	}
 
 	public boolean getDeleted(){
 		return this.deleted;

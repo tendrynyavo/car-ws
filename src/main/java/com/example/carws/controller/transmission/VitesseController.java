@@ -5,24 +5,24 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.example.carws.model.primaire.Transmission;
-import com.example.carws.service.TransmissionService;
+import com.example.carws.model.primaire.Vitesse;
+import com.example.carws.service.VitesseService;
 
 import com.example.carws.response.*;
 
 @RestController
-@RequestMapping("/api/transmission")
-public class TransmissionController {
+@RequestMapping("/api/vitesses")
+public class VitesseController {
 
 	@Autowired
-	TransmissionService transmissionService;
+	VitesseService vitesseService;
 
 	@GetMapping
 	public ResponseEntity<?> getCategories() throws Exception {
 		try {
-			Transmission[] transmissions = null;
-			transmissions = transmissionService.getAllTransmissions().toArray(new Transmission[0]);
-			return ResponseEntity.status(HttpStatus.OK).body(transmissions);
+			Vitesse[] Vitesses = null;
+			Vitesses = vitesseService.getAllVitesses().toArray(new Vitesse[0]);
+			return ResponseEntity.status(HttpStatus.OK).body(Vitesses);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
@@ -30,11 +30,11 @@ public class TransmissionController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getTransmission(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Response> getVitesse(@PathVariable("id") Integer id) throws Exception {
 		try {
-			Transmission transmission = transmissionService.getTransmission(id);
+			Vitesse vitesse = vitesseService.getVitesse(id);
 			Response response = new Response();
-			response.addData("items", transmission);
+			response.addData("items", vitesse);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,11 +44,11 @@ public class TransmissionController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Response> addTransmission(@RequestBody Transmission transmission) throws Exception {
+	public ResponseEntity<Response> addVitesse(@RequestBody Vitesse vitesse) throws Exception {
 		Response response = new Response();
 		try {
-			transmissionService.saveTransmission(transmission);
-			response.addMessage("save", "La transmission a ete enregistrer");
+			vitesseService.saveVitesse(vitesse);
+			response.addMessage("save", "La Vitesse a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (Exception e) {
 			response.addError("error", e.getMessage());
@@ -57,13 +57,13 @@ public class TransmissionController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateTransmission(@RequestBody Transmission transmission,
+	public ResponseEntity<Response> updateVitesse(@RequestBody Vitesse vitesse,
 			@PathVariable("id") Integer id) {
 		Response response = new Response();
 		try {
-			transmission.setId(id);
-			transmissionService.updateTransmission(transmission);
-			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "transmission mis a jour"));
+			vitesse.setId(id);
+			vitesseService.updateVitesse(vitesse);
+			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Boite à vitesse mis a jour"));
 		} catch (Exception e) {
 			response.addError("error", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -71,10 +71,10 @@ public class TransmissionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteTransmission(@PathVariable("id") Integer id) {
+	public ResponseEntity<Response> deleteVitesse(@PathVariable("id") Integer id) {
 		Response response = new Response();
 		try {
-			transmissionService.deleteTransmission(id);
+			vitesseService.deleteVitesse(id);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Marque supprimé"));
 		} catch (Exception e) {
 			response.addError("error", e.getMessage());

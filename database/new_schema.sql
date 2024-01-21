@@ -1,24 +1,36 @@
-
 create table marque(
 	id_marque serial primary key,
-	nom_marque varchar(50) not null,
+	nom_marque varchar(50) not null unique,
+	origine varchar(50),
 	deleted boolean default false
 );
 
 create table modele(
 	id_modele serial primary key,
-	nom_modele varchar(50) not null,
-	deleted boolean default false
-);
-
-create table a_marque_modele(
-	id serial primary key,
-	
+	id_marque integer not null,
+	nom_modele varchar(50) not null unique,
+	annee integer,
+	deleted boolean default false,
+	foreign key ( id_marque ) REFERENCES marque(id_marque)
 );
 
 create table categorie(
 	id_categorie serial primary key,
-	nom_categorie varchar(50) not null,
+	nom_categorie varchar(50) not null unique,
+	deleted boolean default false
+);
+
+create table a_modele_categorie(
+	id serial primary key,
+	id_modele integer not null,
+	id_categorie integer not null,
+	foreign key( id_modele ) REFERENCES modele(id_modele),
+	foreign key( id_categorie ) REFERENCES categorie(id_categorie)
+);
+
+create table boite_vitesse(
+	id serial primary key,
+	nom varchar(50) not null unique,
 	deleted boolean default false
 );
 
@@ -29,11 +41,31 @@ create table carburant(
 );
 
 
+create table moteur(
+	id_moteur serial primary key,
+	marque integer not null,
+	modele varchar(50) not null,
+	puissance double precision,
+	carburant integer not null,
+	boite_vitesse integer not null,
+	cylindre double precision,
+	configuration varchar(50) not null,
+	foreign key(marque) REFERENCES marque( id_marque ),
+	foreign key(carburant) REFERENCES carburant( id_carburant )
+);
 
-create table transmission(
-	id_transmission serial primary key,
-	nom_transmission varchar(50) not null,
-	deleted boolean default false
+CREATE TABLE a_modele_moteur(
+	id serial primary key,
+	id_modele integer not null,
+	id_moteur integer not null,
+	foreign key( id_modele ) REFERENCES modele(id_modele),
+	foreign key( id_moteur ) REFERENCES moteur(id_moteur)
+);
+
+
+create table etats(
+	id int primary key,
+	nom VARCHAR(255) not null
 );
 
 
@@ -47,14 +79,22 @@ create table users(
 	date_naissance date
 );
 
+create table lieu(
+	id_lieu serial primary key,
+	nom_lieu varchar(50) not null unique,
+	code_postal varchar(25) not null
+);
+
+-- Ampiana condition ito ( neuf, occasion )
+
 create table annonce(
 	id_annonce serial primary key,
 	date_heure_publication timestamp,
 	id_user text not null,
+	id_etat int not null,
 	prix double precision,
-	id_etat int,
-	foreign key(id_user) REFERENCES users( id_user ),
-	foreign key(id_etat) REFERENCES etats( id )
+	foreign key( id_user ) REFERENCES users( id_user ),
+	foreign key( id_etat ) REFERENCES etats( id )
 );
 
 create table validate_annonce(
@@ -69,18 +109,16 @@ create table voiture_annonce(
 	id_voiture_annonce serial primary key,
 	id_marque integer not null,
 	id_modele integer not null,
-	id_carburant integer not null,
-	id_categorie integer nnullot null,
-	id_transmission integer not null,
+	id_categorie integer not null,
+	id_moteur integer not null,
+	id_annonce integer not null,
 	kilometrage double precision,
 	annee int,
-	id_detail_annonce integer not null,
 	foreign key( id_marque ) REFERENCES marque(id_marque),
 	foreign key( id_modele ) REFERENCES modele(id_modele),
-	foreign key( id_carburant ) REFERENCES carburant(id_carburant),
 	foreign key( id_categorie ) REFERENCES categorie(id_categorie),
-	foreign key( id_transmission ) REFERENCES transmission(id_transmission),
-	foreign key( id_detail_annonce ) REFERENCES detail_annonce(id_detail_annonce)
+	foreign key( id_moteur ) REFERENCES moteur(id_moteur),
+	foreign key( id_annonce ) REFERENCES annonce(id_annonce)
 );
 
 create table detail_annonce(
@@ -90,6 +128,16 @@ create table detail_annonce(
 	description text,
 	foreign key(id_annonce) REFERENCES annonce(id_annonce)
 );
+
+-- Ampiana an'ito anaovana informations additionnelle
+create table detail_car_annonce(
+	id_detail serial primary key,
+	id_annonce integer not null,
+	nom varchar(100) not null,
+	value varchar(100) not null,
+	foreign key(id_annonce) REFERENCES annonce(id_annonce)
+);
+
 
 -- Okey zavatra hafa indray zao
 
@@ -182,12 +230,6 @@ create or replace view v_stats_month
 		order by v_s.reference
 ;
 
-
-create table etats(
-	id int primary key,
-	nom VARCHAR(255)
-);
-
 alter table users add column date_naissance date;
 alter table voiture_annonce add column annee integer not null;
 
@@ -225,9 +267,9 @@ alter table voiture_annonce add column annee integer not null;
 				BEGIN
 					RETURN QUERY
 						SELECT 
-							COALESCE(v.annee, _annee) AS annee,
+							COALESCE(v.annaee, _annee) AS annee,
 							m.nom AS mois,
-							COALESCE(v.nbr_annonce_valide, 0) AS nbr_annonce_valide
+							COALESCE(v.nbr_annonce_validae, 0) AS nbr_annonce_valide
 						FROM 
 							(SELECT _annee AS annee) y
 						CROSS JOIN 
@@ -238,5 +280,5 @@ alter table voiture_annonce add column annee integer not null;
 							m.reference;
 				END; $$ LANGUAGE plpgsql;
 	
-	-- TEST
-		select * from get_validate_annonce_by_year(2023);
+	-- -- TEST
+	-- 	select * from get_validate_annonce_by_year(2023);
