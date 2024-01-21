@@ -40,18 +40,34 @@ create table carburant(
 	deleted boolean default false
 );
 
+create table type_moteur(
+	id serial primary key,
+	nom varchar(50) not null unique
+);
+
+create table a_carburant_type_moteur(
+	id serial primary key,
+	id_type_moteur integer not null,
+	id_carburant integer not null,
+	foreign key( id_type_moteur ) REFERENCES type_moteur(id),
+	foreign key( id_carburant ) REFERENCES carburant(id_carburant)
+);
 
 create table moteur(
 	id_moteur serial primary key,
 	marque integer not null,
 	modele varchar(50) not null,
 	puissance double precision,
+	id_type_moteur integer not null,
 	carburant integer not null,
 	boite_vitesse integer not null,
 	cylindre double precision,
 	configuration varchar(50) not null,
 	foreign key(marque) REFERENCES marque( id_marque ),
-	foreign key(carburant) REFERENCES carburant( id_carburant )
+	foreign key(id_type_moteur) REFERENCES type_moteur( id ),
+	foreign key(carburant) REFERENCES carburant( id_carburant ),
+	foreign key(boite_vitesse) REFERENCES boite_vitesse( id )
+	-- okey mila inona koa moa type ana moteur
 );
 
 CREATE TABLE a_modele_moteur(
