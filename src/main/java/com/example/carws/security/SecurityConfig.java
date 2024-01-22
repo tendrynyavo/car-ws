@@ -72,7 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
             .and().authorizeHttpRequests(request -> {
                 request
-                    .requestMatchers("/test/**").permitAll()
+                    .requestMatchers("/api/users/inscription_valide/**").permitAll()
+                    .requestMatchers("/api/users/inscription").permitAll()
+                    .requestMatchers("/api/users/login").permitAll()
+                    .requestMatchers("/api/users/authentification").permitAll()
+                    .requestMatchers("/api/users/token/**").permitAll()
                     .anyRequest().authenticated();
             })
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
