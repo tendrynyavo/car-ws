@@ -77,5 +77,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             })
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                // .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
+    //             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+    //             .antMatchers(HttpMethod.OPTIONS, "api/**").permitAll()
+    //             .anyRequest().authenticated().and()
+    //             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+    //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }

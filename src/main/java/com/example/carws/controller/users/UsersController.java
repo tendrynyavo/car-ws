@@ -69,6 +69,21 @@ public class UsersController {
         }
     }
 
+    @PostMapping("authentification")
+    public ResponseEntity<Response> authentification(@RequestBody Users users) throws Exception {
+        try {
+            users = usersService.authentification(users.getMail());
+            String token = new Token().generateJwt(users);
+            Response response = new Response();
+            response.addData("token", token);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", e.getMessage()));
+        }
+    }
+
     @GetMapping("/token/{token}")
     public ResponseEntity<Response> checkTokenValid(@PathVariable("token") String token) throws Exception {
         try {
