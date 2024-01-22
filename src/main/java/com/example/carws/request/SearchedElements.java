@@ -15,6 +15,8 @@ public class SearchedElements {
     double kilometrage;
     Integer annee;
 
+    // Ampiana couleur
+
     String description;
 
     public String getDescription(){

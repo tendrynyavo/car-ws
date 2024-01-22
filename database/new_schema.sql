@@ -45,6 +45,11 @@ create table type_moteur(
 	nom varchar(50) not null unique
 );
 
+create table couleur(
+	id serial primary key,
+	nom_couleur varchar(50) not null unique	
+);
+
 create table a_carburant_type_moteur(
 	id serial primary key,
 	id_type_moteur integer not null,
@@ -60,14 +65,20 @@ create table moteur(
 	puissance double precision,
 	id_type_moteur integer not null,
 	carburant integer not null,
-	boite_vitesse integer not null,
 	cylindre double precision,
 	configuration varchar(50) not null,
 	foreign key(marque) REFERENCES marque( id_marque ),
 	foreign key(id_type_moteur) REFERENCES type_moteur( id ),
-	foreign key(carburant) REFERENCES carburant( id_carburant ),
-	foreign key(boite_vitesse) REFERENCES boite_vitesse( id )
+	foreign key(carburant) REFERENCES carburant( id_carburant )
 	-- okey mila inona koa moa type ana moteur
+);
+
+create table moteur_vitesse(
+	id serial primary key,
+	id_moteur integer not null,
+	id_type_vitesse integer not null,
+	foreign key( id_moteur ) REFERENCES moteur(id_moteur),
+	foreign key( id_type_vitesse ) REFERENCES boite_vitesse( id )
 );
 
 CREATE TABLE a_modele_moteur(
@@ -76,6 +87,11 @@ CREATE TABLE a_modele_moteur(
 	id_moteur integer not null,
 	foreign key( id_modele ) REFERENCES modele(id_modele),
 	foreign key( id_moteur ) REFERENCES moteur(id_moteur)
+);
+
+create table caracteristique(
+	id serial primary key,
+	nom_caracterstique varchar(50) not null unique
 );
 
 
@@ -103,14 +119,40 @@ create table lieu(
 
 -- Ampiana condition ito ( neuf, occasion )
 
+
+create table voiture_annonce(
+	id_voiture_annonce serial primary key,
+	id_modele integer not null,
+	id_categorie integer not null,
+	id_moteur integer not null,
+	kilometrage double precision,
+	annee int,
+	foreign key( id_modele ) REFERENCES modele(id_modele),
+	foreign key( id_categorie ) REFERENCES categorie(id_categorie),
+	foreign key( id_moteur ) REFERENCES moteur(id_moteur)
+);
+
 create table annonce(
 	id_annonce serial primary key,
 	date_heure_publication timestamp,
 	id_user text not null,
 	id_etat int not null,
+	lieu integer not null,
+	description text,
+	id_voiture_annonce integer not null,
 	prix double precision,
 	foreign key( id_user ) REFERENCES users( id_user ),
-	foreign key( id_etat ) REFERENCES etats( id )
+	foreign key( id_etat ) REFERENCES etats( id ),
+	foreign key( lieu ) REFERENCES lieu(id_lieu),
+	foreign key( id_voiture_annonce ) REFERENCES voiture_annonce( id_voiture_annonce )
+);
+
+create table annonce_couleur(
+	id serial primary key,
+	id_annonce integer not null,
+	id_couleur integer not null,
+	foreign key( id_annonce ) REFERENCES annonce(id_annonce),
+	foreign key( id_couleur ) REFERENCES couleur( id )
 );
 
 create table validate_annonce(
@@ -121,37 +163,15 @@ create table validate_annonce(
 );
 
 
-create table voiture_annonce(
-	id_voiture_annonce serial primary key,
-	id_marque integer not null,
-	id_modele integer not null,
-	id_categorie integer not null,
-	id_moteur integer not null,
-	id_annonce integer not null,
-	kilometrage double precision,
-	annee int,
-	foreign key( id_marque ) REFERENCES marque(id_marque),
-	foreign key( id_modele ) REFERENCES modele(id_modele),
-	foreign key( id_categorie ) REFERENCES categorie(id_categorie),
-	foreign key( id_moteur ) REFERENCES moteur(id_moteur),
-	foreign key( id_annonce ) REFERENCES annonce(id_annonce)
-);
-
-create table detail_annonce(
-
-	id_detail_annonce serial primary key,
-	id_annonce integer not null,
-	description text,
-	foreign key(id_annonce) REFERENCES annonce(id_annonce)
-);
 
 -- Ampiana an'ito anaovana informations additionnelle
 create table detail_car_annonce(
 	id_detail serial primary key,
 	id_annonce integer not null,
-	nom varchar(100) not null,
+	id_caracteristique integer not null,
 	value varchar(100) not null,
-	foreign key(id_annonce) REFERENCES annonce(id_annonce)
+	foreign key(id_annonce) REFERENCES annonce(id_annonce),
+	foreign key(id_caracteristique) REFERENCES caracteristique(id)
 );
 
 
