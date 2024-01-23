@@ -4,23 +4,26 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
-
+import com.example.carws.security.SecurityFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     SecurityProperties restSecProps;
 
     @Autowired
-    public SecurityFilter tokenAuthenticationFilter;
+    SecurityFilter tokenAuthenticationFilter;
 
     @Bean
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
@@ -54,11 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(restSecProps.getAllowedOrigins());
-        configuration.setAllowedMethods(restSecProps.getAllowedMethods());
-        configuration.setAllowedHeaders(restSecProps.getAllowedHeaders());
-        configuration.setAllowCredentials(restSecProps.isAllowCredentials());
-        configuration.setExposedHeaders(restSecProps.getExposedHeaders());
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("*"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -68,19 +72,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .cors().configurationSource(this.corsConfigurationSource()).and()
-            .csrf().disable().formLogin().disable()
-            .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-            .and().authorizeHttpRequests(request -> {
-                request
-                    .requestMatchers("/api/users/inscription_valide/**").permitAll()
-                    .requestMatchers("/api/users/inscription").permitAll()
-                    .requestMatchers("/api/users/login").permitAll()
-                    .requestMatchers("/api/users/authentification").permitAll()
-                    .requestMatchers("/api/users/token/**").permitAll()
-                    .anyRequest().authenticated();
-            })
+            .csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
+            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+            .and()
+            .authorizeRequests(authorizeRequests ->
+                authorizeRequests
+                    .antMatchers(
+                        "/api/users/inscription_valide/**",
+                        "/api/users/inscription",
+                        "/api/users/login",
+                        "/api/users/authentification",
+                        "/api/users/token/**"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            )
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 // .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
     //             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()

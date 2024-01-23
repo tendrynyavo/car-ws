@@ -116,6 +116,11 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>5.6.0</version> <!-- Assurez-vous d'utiliser la version appropriée -->
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.6.0</version>
+		</dependency>
 
 
 	</dependencies>
