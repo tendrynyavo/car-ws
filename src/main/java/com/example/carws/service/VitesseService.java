@@ -18,7 +18,7 @@ public class VitesseService{
 		return repository.findByDeletedFalse();
 	}
 
-	public Vitesse getVitesse( Integer id ) throws Exception{
+	public Vitesse getVitesse( String id ) throws Exception{
 		Vitesse c = (Vitesse)repository.findByIdAndDeletedFalse( id );
 		if( c == null ){
 			throw new CategorieException("La Vitesse n'existe pas");
@@ -46,7 +46,7 @@ public class VitesseService{
 		return m;
 	}
 
-	public void deleteVitesse( Integer id ) throws Exception{
+	public void deleteVitesse( String id ) throws Exception{
 		Vitesse marque;
 		try{
 			marque = this.getVitesse( id );

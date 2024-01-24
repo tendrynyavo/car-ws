@@ -18,7 +18,7 @@ public class CarburantService{
 		return repository.findByDeletedFalse();
 	}
 
-	public Carburant getCarburant( Integer id ) throws Exception{
+	public Carburant getCarburant( String id ) throws Exception{
 		Carburant c = (Carburant)repository.findByIdAndDeletedFalse( id );
 		if( c == null ){
 			throw new CategorieException("Le type de Carburant n'existe pas");
@@ -46,7 +46,7 @@ public class CarburantService{
 		return carbu;
 	}
 
-	public void deleteCarburant( Integer id ) throws Exception{
+	public void deleteCarburant( String id ) throws Exception{
 		Carburant carburant;
 		try{
 			carburant = this.getCarburant( id );

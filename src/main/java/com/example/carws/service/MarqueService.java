@@ -18,7 +18,7 @@ public class MarqueService{
 		return repository.findByDeletedFalse();
 	}
 
-	public Marque getMarque( Integer id ) throws Exception{
+	public Marque getMarque( String id ) throws Exception{
 		Marque c = (Marque)repository.findByIdAndDeletedFalse( id );
 		if( c == null ){
 			throw new CategorieException("La marque n'existe pas");
@@ -45,7 +45,7 @@ public class MarqueService{
 		return m;
 	}
 
-	public void deleteMarque( Integer id ) throws Exception{
+	public void deleteMarque( String id ) throws Exception{
 		Marque marque;
 		try{
 			marque = this.getMarque( id );

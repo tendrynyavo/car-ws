@@ -3,43 +3,67 @@ package com.example.carws.model.primaire;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
 import java.util.Set;
-
+import com.example.carws.model.primaire.relation.*;
+import com.example.carws.utility.IdGenerator;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 @Entity
 @Table( name = "modele" )
 @JsonIdentityInfo(
  generator = ObjectIdGenerators.PropertyGenerator.class, 
  property = "id")
+
 public class Modele{
 	
 	@Id
 	@Column( name = "id_modele", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOD"), @Parameter( name = "sequence", value = "seq_modele" ), @Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
 	@ManyToOne
 	@JoinColumn( name = "id_marque", nullable = false )
 	Marque marque;
 
-	@Column( name = "nom_modele" , nullable = false )
+	@Column( name = "nom" , nullable = false )
 	String nom;
 	
 	@Column( name = "deleted" )
 	boolean deleted;
+          
+    @Column( name = "annee" )
+    Integer annee;
 
-	@ManyToMany
-	@JoinTable(
-		name = "a_modele_categorie",
-		joinColumns = @JoinColumn(name = "id_modele"),
-		inverseJoinColumns = @JoinColumn(name = "id_categorie")
-	)
-	Set<Categorie> categories;
+	@OneToMany( mappedBy = "modele" )
+	Set<Design> designs;
+          
+          @OneToMany( mappedBy = "modele" )
+          Set<Specificite> specificites;
 
-	public void setCategories(Set<Categorie> cs){
-		this.categories = cs;
+          public Set<Specificite> getSpecificites() {
+                    return specificites;
+          }
+
+          public void setSpecificites(Set<Specificite> specificites) {
+                    this.specificites = specificites;
+          }
+          
+          
+
+          public Integer getAnnee() {
+                    return annee;
+          }
+
+          public void setAnnee(Integer annee) {
+                    this.annee = annee;
+          }
+         
+	public void setDesigns(Set<Design> cs){
+		this.designs = cs;
 	}
 
-	public Set<Categorie> getCategories(){
-		return this.categories;
+	public Set<Design> getDesigns(){
+		return this.designs;
 	}
 
 	public void setMarque(Marque marque){
@@ -57,11 +81,11 @@ public class Modele{
 		this.deleted = bool;
 	}
 
-	public void setId( Integer id ){
+	public void setId( String id ){
 		this.id = id;
 	}
 
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 

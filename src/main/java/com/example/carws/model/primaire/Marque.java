@@ -1,8 +1,10 @@
 package com.example.carws.model.primaire;
 
+import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
 import java.util.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "marque" )
@@ -11,10 +13,11 @@ import java.util.*;
  property = "id")
 public class Marque{
 	@Id
-	@Column( name = "id_marque", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	@Column( name = "nom_marque" )
+	@Column( name = "id_marque" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "MAR"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_marque" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
+	@Column( name = "nom" )
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
@@ -38,11 +41,11 @@ public class Marque{
 		this.deleted = bool;
 	}
 
-	public void setId( Integer id ){
+	public void setId( String id ){
 		this.id = id;
 	}
 
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 

@@ -18,7 +18,7 @@ public class ModeleService{
 		return repository.findByDeletedFalse();
 	}
 
-	public Modele getModele( Integer id ) throws Exception{
+	public Modele getModele( String id ) throws Exception{
 		Modele c = (Modele)repository.findByIdAndDeletedFalse( id );
 		if( c == null ){
 			throw new CategorieException("Le modele n'existe pas");
@@ -46,7 +46,7 @@ public class ModeleService{
 		return m;
 	}
 
-	public void deleteModele( Integer id ) throws Exception{
+	public void deleteModele( String id ) throws Exception{
 		Modele modele;
 		try{
 			modele = this.getModele( id );

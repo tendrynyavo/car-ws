@@ -17,7 +17,7 @@ public class ModelCategorieService {
           
           @Autowired ModeleRepository repository;
           
-          public void addModelToCategory( Integer modele, Integer categorie ) throws Exception{
+          public void addModelToCategory( String modele, Integer categorie ) throws Exception{
                     repository.addModeleToCategorie(modele, categorie);
           }
           

@@ -30,7 +30,7 @@ public class VitesseController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getVitesse(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Response> getVitesse(@PathVariable("id") String id) throws Exception {
 		try {
 			Vitesse vitesse = vitesseService.getVitesse(id);
 			Response response = new Response();
@@ -58,7 +58,7 @@ public class VitesseController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateVitesse(@RequestBody Vitesse vitesse,
-			@PathVariable("id") Integer id) {
+			@PathVariable("id") String id) {
 		Response response = new Response();
 		try {
 			vitesse.setId(id);
@@ -71,7 +71,7 @@ public class VitesseController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteVitesse(@PathVariable("id") Integer id) {
+	public ResponseEntity<Response> deleteVitesse(@PathVariable("id") String id) {
 		Response response = new Response();
 		try {
 			vitesseService.deleteVitesse(id);

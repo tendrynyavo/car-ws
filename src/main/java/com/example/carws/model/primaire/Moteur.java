@@ -1,31 +1,58 @@
 package com.example.carws.model.primaire;
 
-import jakarta.persistence.*;
+import com.example.carws.model.primaire.relation.Specificite;
+import com.example.carws.utility.IdGenerator;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+@Entity
+@Table( name = "moteur" )
 public class Moteur{
-
-	Integer id;
+         @Id
+         @Column( name = "id_moteur" )
+         @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ), @Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
+         @ManyToOne
+         @JoinColumn(name = "id_marque")
 	Marque marque;
-	Modele modele;
+         @ManyToOne
+         @JoinColumn( name = "id_carburant" )
 	Carburant carburant;
 	double puissance;
 	double cylindre;
+         @ManyToOne
+          @JoinColumn(name = "id_type")
+         TypeMoteur type;
 	String configuration;
+          
+          @OneToMany( mappedBy = "moteur",  fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+          Set<Specificite> specifites;
 
-	Set<Modele> modelesCompatibles;
+          public Set<Specificite> getSpecifites() {
+                    return specifites;
+          }
 
-	public void setModelesCompatibles(Set<Modele> compatibles){
-		this.modelesCompatibles = compatibles;
-	}
-	public Set<Modele> getModelesCompatibles(){
-		return this.modelesCompatibles;
-	}
-
-	public void setId(Integer id){
+          public void setSpecifites(Set<Specificite> specifites) {
+                    this.specifites = specifites;
+          }
+          
+	public void setId(String id){
 		this.id = id;
 	}
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 
@@ -34,14 +61,6 @@ public class Moteur{
 	}
 	public Marque getMarque(){
 		return this.marque;
-	}
-
-	public void setModele(Modele modele){
-		this.modele = modele;
-	}
-
-	public Modele getModele(){
-		return this.modele;
 	}
 
 	public void setCarburant( Carburant carburant ){
@@ -74,4 +93,12 @@ public class Moteur{
 		return this.configuration;
 	}
 
+          public TypeMoteur getType() {
+                    return type;
+          }
+
+          public void setType(TypeMoteur type) {
+                    this.type = type;
+          }
+            
 }

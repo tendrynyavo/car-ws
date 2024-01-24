@@ -30,7 +30,7 @@ public class MarqueController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getMarque(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Response> getMarque(@PathVariable("id") String id) throws Exception {
 		try {
 			Marque marque = marqueService.getMarque(id);
 			Response response = new Response();
@@ -57,7 +57,7 @@ public class MarqueController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateMarque(@RequestBody Marque marque, @PathVariable("id") Integer id) {
+	public ResponseEntity<Response> updateMarque(@RequestBody Marque marque, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
 			marque.setId(id);
@@ -70,7 +70,7 @@ public class MarqueController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteMarque(@PathVariable("id") Integer id) {
+	public ResponseEntity<Response> deleteMarque(@PathVariable("id") String id) {
 		Response response = new Response();
 		try {
 			marqueService.deleteMarque(id);

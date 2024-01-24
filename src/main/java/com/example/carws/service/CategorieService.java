@@ -18,7 +18,7 @@ public class CategorieService{
 		return repository.findByDeletedFalse();
 	}
 
-	public Categorie getCategory( Integer id ) throws Exception{
+	public Categorie getCategory( String id ) throws Exception{
 		Categorie c = (Categorie)repository.findByIdAndDeletedFalse( id );
 		if( c == null ){
 			throw new CategorieException("La categorie n'existe pas");
@@ -46,7 +46,7 @@ public class CategorieService{
 		return category;
 	}
 
-	public void deleteCategorie( Integer id ) throws Exception{
+	public void deleteCategorie( String id ) throws Exception{
 		Categorie category;
 		try{
 			category = this.getCategory( id );

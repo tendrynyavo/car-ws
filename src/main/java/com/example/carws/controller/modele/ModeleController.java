@@ -31,7 +31,7 @@ public class ModeleController{
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getModele( @PathVariable("id") Integer id ) throws Exception{
+	public ResponseEntity<Response> getModele( @PathVariable("id") String id ) throws Exception{
 		try{
 			Modele modele = modeleService.getModele(id);
 			Response response = new Response();
@@ -57,7 +57,7 @@ public class ModeleController{
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateModele( @RequestBody Modele modele, @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> updateModele( @RequestBody Modele modele, @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			modele.setId(id);
@@ -70,7 +70,7 @@ public class ModeleController{
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteModele( @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> deleteModele( @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			modeleService.deleteModele( id );
