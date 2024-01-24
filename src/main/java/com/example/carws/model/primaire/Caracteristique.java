@@ -5,6 +5,7 @@
 package com.example.carws.model.primaire;
 
 import com.example.carws.utility.IdGenerator;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,9 @@ public class Caracteristique {
           @Id
            @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "CRT"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_caracteristique" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
         @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+           @Column( name = "id_caracteristique" )
           String id;
+          @Column
           String nom;
 
           public String getId() {
