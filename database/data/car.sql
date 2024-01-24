@@ -80,7 +80,7 @@ CREATE TABLE specificite(
 );
 
 CREATE TABLE etat(
-   valeur INTEGER,
+   valeur VARCHAR(50) ,
    designation VARCHAR(50) ,
    PRIMARY KEY(valeur)
 );
@@ -120,7 +120,7 @@ CREATE TABLE discussion(
    date_envoye TIMESTAMP,
    id_utilisateur VARCHAR(50)  NOT NULL,
    id_utilisateur_1 VARCHAR(50)  NOT NULL,
-   valeur INTEGER NOT NULL,
+   valeur VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_discussion),
    FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur),
    FOREIGN KEY(id_utilisateur_1) REFERENCES utilisateur(id_utilisateur),
@@ -168,7 +168,7 @@ CREATE TABLE annonce(
    prix DOUBLE PRECISION NOT NULL,
    id_lieu VARCHAR(50)  NOT NULL,
    id_utilisateur VARCHAR(50)  NOT NULL,
-   valeur INTEGER NOT NULL,
+   valeur VARCHAR(50)  NOT NULL,
    id_voiture VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_annonce),
    FOREIGN KEY(id_lieu) REFERENCES lieu(id_lieu),

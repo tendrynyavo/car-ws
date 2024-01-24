@@ -3,21 +3,20 @@ package com.example.carws.model.primaire;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "etats" )
+@Table( name = "etat" )
 public class Etat {
 	@Id
-	@Column( name = "id")
-	Integer id;
-	// @Column
+	@Column( name = "valeur")
+	Integer valeur;
 	@Column( name = "nom" )
 	String nom;
 
-	public void setId( Integer id ){
-		this.id = id;
+	public void setValeur( Integer id ){
+		this.valeur = id;
 	}
 
-	public Integer getId(){
-		return this.id;
+	public Integer getValeur(){
+		return this.valeur;
 	}
 
 	public void setNom( String nom ) throws Exception{
@@ -36,7 +35,7 @@ public class Etat {
 	}
 
 	public Etat( int id, String nom ) throws Exception{
-        this.setId(id);
+                   this.setValeur(id);
 		this.setNom(nom);
 	}
 

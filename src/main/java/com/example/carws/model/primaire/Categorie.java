@@ -3,6 +3,10 @@ package com.example.carws.model.primaire;
 import jakarta.persistence.*;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.*;
+import com.example.carws.model.primaire.relation.*;
+import com.example.carws.utility.IdGenerator;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table( name = "categorie" )
@@ -11,23 +15,26 @@ import com.fasterxml.jackson.annotation.*;
  property = "id")
 public class Categorie{
 	@Id
-	@Column( name = "id_categorie", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	@Column( name = "id_categorie"  )
+          
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "CAT"), @Parameter( name = "sequence", value = "seq_categorie" ), @Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 	
-	@Column( name = "nom_categorie" )
+	@Column( name = "nom" )
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
 
-	@ManyToMany( mappedBy = "categories" )
-	Set<Modele> modeles;
+	@OneToMany( mappedBy = "categorie" )
+	Set<Design> modeles;
 
-	public void setModeles( Set<Modele> modeles ){
+    
+	public void setDesigns( Set<Design> modeles ){
 		this.modeles = modeles;
 	}
 
-	public Set<Modele> getModeles(){
+	public Set<Design> getDesigns(){
 		return this.modeles;
 	}
 
@@ -39,11 +46,11 @@ public class Categorie{
 		this.deleted = bool;
 	}
 
-	public void setId( Integer id ){
+	public void setId( String id ){
 		this.id = id;
 	}
 
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 

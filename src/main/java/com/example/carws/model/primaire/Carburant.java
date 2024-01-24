@@ -1,16 +1,23 @@
 package com.example.carws.model.primaire;
 
+import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table( name = "carburant" )
 public class Carburant{
 	@Id
-	@Column( name = "id_carburant", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	// @Column
-	@Column( name = "nom_carburant" )
+	@Column( name = "id_carburant" )
+          @GenericGenerator( name = "custom-id", type = IdGenerator.class, 
+              parameters = {
+                        @Parameter(name = "prefix" , value = "CRB"), 
+                        @Parameter( name = "sequence", value = "seq_carburant" ), 
+                        @Parameter( name = "max_length", value = "7" ) }  )
+	@GeneratedValue( generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
+	@Column( name = "nom" )
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
@@ -23,11 +30,11 @@ public class Carburant{
 		this.deleted = bool;
 	}
 
-	public void setId( Integer id ){
+	public void setId( String id ){
 		this.id = id;
 	}
 
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 

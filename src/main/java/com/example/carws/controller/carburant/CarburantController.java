@@ -29,7 +29,7 @@ public class CarburantController{
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getCarburant( @PathVariable("id") Integer id ) throws Exception{
+	public ResponseEntity<Response> getCarburant( @PathVariable("id") String id ) throws Exception{
 		try{
 			Carburant carburant = carburantService.getCarburant(id);
 			Response response = new Response();
@@ -55,7 +55,7 @@ public class CarburantController{
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateCarburant( @RequestBody Carburant carburant, @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> updateCarburant( @RequestBody Carburant carburant, @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			carburant.setId(id);
@@ -68,7 +68,7 @@ public class CarburantController{
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteCarburant( @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> deleteCarburant( @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			carburantService.deleteCarburant( id );

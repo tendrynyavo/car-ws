@@ -29,7 +29,7 @@ public class CategorieController{
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getCategory( @PathVariable("id") Integer id ) throws Exception{
+	public ResponseEntity<Response> getCategory( @PathVariable("id") String id ) throws Exception{
 		try{
 			Categorie categorie = categorieService.getCategory(id);
 			Response response = new Response();
@@ -55,7 +55,7 @@ public class CategorieController{
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateCategorie( @RequestBody Categorie categorie, @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> updateCategorie( @RequestBody Categorie categorie, @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			categorie.setId(id);
@@ -68,7 +68,7 @@ public class CategorieController{
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteCategorie( @PathVariable("id") Integer id ){
+	public ResponseEntity<Response> deleteCategorie( @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
 			categorieService.deleteCategorie( id );

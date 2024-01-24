@@ -80,7 +80,7 @@ CREATE TABLE specificite(
 );
 
 CREATE TABLE etat(
-   valeur INTEGER,
+   valeur VARCHAR(50) ,
    designation VARCHAR(50) ,
    PRIMARY KEY(valeur)
 );
@@ -120,29 +120,11 @@ CREATE TABLE discussion(
    date_envoye TIMESTAMP,
    id_utilisateur VARCHAR(50)  NOT NULL,
    id_utilisateur_1 VARCHAR(50)  NOT NULL,
-   valeur INTEGER NOT NULL,
+   valeur VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_discussion),
    FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur),
    FOREIGN KEY(id_utilisateur_1) REFERENCES utilisateur(id_utilisateur),
    FOREIGN KEY(valeur) REFERENCES etat(valeur)
-);
-
-CREATE TABLE type_carburant(
-   id_type_carburant VARCHAR(50) ,
-   id_carburant VARCHAR(50)  NOT NULL,
-   id_type VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id_type_carburant),
-   FOREIGN KEY(id_carburant) REFERENCES carburant(id_carburant),
-   FOREIGN KEY(id_type) REFERENCES type_moteur(id_type)
-);
-
-CREATE TABLE mois(
-   id_mois VARCHAR(50) ,
-   nom VARCHAR(20) ,
-   reference INTEGER,
-   PRIMARY KEY(id_mois),
-   UNIQUE(nom),
-   UNIQUE(reference)
 );
 
 CREATE TABLE voiture(
@@ -168,7 +150,7 @@ CREATE TABLE annonce(
    prix DOUBLE PRECISION NOT NULL,
    id_lieu VARCHAR(50)  NOT NULL,
    id_utilisateur VARCHAR(50)  NOT NULL,
-   valeur INTEGER NOT NULL,
+   valeur VARCHAR(50)  NOT NULL,
    id_voiture VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_annonce),
    FOREIGN KEY(id_lieu) REFERENCES lieu(id_lieu),
@@ -217,21 +199,27 @@ CREATE TABLE valide(
    FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
 );
 
-CREATE TABLE Coloriage(
-   id_coloriage VARCHAR(50) ,
-   id_couleur VARCHAR(50)  NOT NULL,
-   id_voiture VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id_coloriage),
-   FOREIGN KEY(id_couleur) REFERENCES couleur(id_couleur),
-   FOREIGN KEY(id_voiture) REFERENCES voiture(id_voiture)
+CREATE TABLE type_carburant(
+   id_type VARCHAR(50) ,
+   id_carburant VARCHAR(50) ,
+   PRIMARY KEY(id_type, id_carburant),
+   FOREIGN KEY(id_type) REFERENCES type_moteur(id_type),
+   FOREIGN KEY(id_carburant) REFERENCES carburant(id_carburant)
 );
 
 CREATE TABLE detail(
-   id_detail VARCHAR(50) ,
+   id_annonce VARCHAR(50) ,
+   id_caracteristique VARCHAR(50) ,
    valeur VARCHAR(50)  NOT NULL,
-   id_caracteristique VARCHAR(50)  NOT NULL,
-   id_annonce VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id_detail),
-   FOREIGN KEY(id_caracteristique) REFERENCES caracteristique(id_caracteristique),
-   FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
+   PRIMARY KEY(id_annonce, id_caracteristique),
+   FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
+   FOREIGN KEY(id_caracteristique) REFERENCES caracteristique(id_caracteristique)
+);
+
+CREATE TABLE Asso_36_1(
+   id_voiture VARCHAR(50) ,
+   id_couleur VARCHAR(50) ,
+   PRIMARY KEY(id_voiture, id_couleur),
+   FOREIGN KEY(id_voiture) REFERENCES voiture(id_voiture),
+   FOREIGN KEY(id_couleur) REFERENCES couleur(id_couleur)
 );
