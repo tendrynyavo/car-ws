@@ -20,7 +20,7 @@ create sequence seq_specificite start with 1 increment by 1;
 create sequence seq_transmission start with 1 increment by 1;
 create sequence seq_type_carburant start with 1 increment by 1;
 create sequence seq_type_moteur start with 1 increment by 1;
-create sequence seq_utilisateur sta= "CRT"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_boite_vitesse" ), @org.hibernate.annotations.Parameter( name = rt with 1 increment by 1;
+create sequence seq_utilisateur start with 1 increment by 1;
 create sequence seq_valide start with 1 increment by 1;
 create sequence seq_vendu start with 1 increment by 1;
 create sequence seq_voiture start with 1 increment by 1;

@@ -1,6 +1,7 @@
 CREATE TABLE marque(
    id_marque VARCHAR(50) ,
    nom VARCHAR(50)  NOT NULL,
+   deleted BOOLEAN,
    PRIMARY KEY(id_marque)
 );
 
@@ -8,6 +9,7 @@ CREATE TABLE modele(
    id_modele VARCHAR(50) ,
    nom VARCHAR(50) ,
    annee DATE,
+   deleted BOOLEAN,
    id_marque VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_modele),
    FOREIGN KEY(id_marque) REFERENCES marque(id_marque)
@@ -16,24 +18,28 @@ CREATE TABLE modele(
 CREATE TABLE categorie(
    id_categorie VARCHAR(50) ,
    nom VARCHAR(50) ,
+   deleted BOOLEAN,
    PRIMARY KEY(id_categorie)
 );
 
 CREATE TABLE boite_vitesse(
    id_boite VARCHAR(50) ,
    nom VARCHAR(50) ,
+   deleted BOOLEAN,
    PRIMARY KEY(id_boite)
 );
 
 CREATE TABLE type_moteur(
    id_type VARCHAR(50) ,
    nom VARCHAR(50) ,
+   deleted BOOLEAN,
    PRIMARY KEY(id_type)
 );
 
 CREATE TABLE carburant(
    id_carburant VARCHAR(50) ,
-   nom VARCHAR(100) ,
+   deleted VARCHAR(50) ,
+   nom BOOLEAN,
    PRIMARY KEY(id_carburant)
 );
 
@@ -43,6 +49,7 @@ CREATE TABLE moteur(
    cylindre INTEGER,
    puissance DOUBLE PRECISION,
    configuration VARCHAR(100) ,
+   deleted BOOLEAN,
    id_marque VARCHAR(50)  NOT NULL,
    id_carburant VARCHAR(50)  NOT NULL,
    id_type VARCHAR(50)  NOT NULL,
@@ -99,18 +106,21 @@ CREATE TABLE utilisateur(
 CREATE TABLE lieu(
    id_lieu VARCHAR(50) ,
    nom VARCHAR(100)  NOT NULL,
+   deleted BOOLEAN,
    PRIMARY KEY(id_lieu)
 );
 
 CREATE TABLE caracteristique(
    id_caracteristique VARCHAR(50) ,
    nom VARCHAR(50)  NOT NULL,
+   deleted BOOLEAN,
    PRIMARY KEY(id_caracteristique)
 );
 
 CREATE TABLE couleur(
    id_couleur VARCHAR(50) ,
    nom VARCHAR(50)  NOT NULL,
+   deleted BOOLEAN,
    PRIMARY KEY(id_couleur)
 );
 
