@@ -12,13 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; 
+// import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter; 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,9 +27,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import com.example.carws.security.SecurityFilter;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity
+// @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+public class SecurityConfig {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -68,35 +69,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .cors().configurationSource(this.corsConfigurationSource()).and()
-            .csrf().disable()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-            .and()
-            .authorizeRequests(authorizeRequests ->
-                authorizeRequests
-                    .antMatchers(
-                        "/api/users/inscription_valide/**",
-                        "/api/users/inscription",
-                        "/api/users/login",
-                        "/api/users/authentification",
-                        "/api/users/token/**"
-                    ).permitAll()
-                    .anyRequest().authenticated()
-            )
-            .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Bean
+    public SecurityFilterChain securityFilterChain( HttpSecurity http) throws Exception {
+        // http
+        //     .cors().and()
+        //     .csrf().disable()
+        //     .formLogin().disable()
+        //     .httpBasic().disable()
+        //     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+        //     .and()
+        //     // .authorizeRequests(authorizeRequests ->
+        //     //     authorizeRequests
+        //     //         .antMatchers(
+        //     //             "/api/users/inscription_valide/**",
+        //     //             "/api/users/inscription",
+        //     //             "/api/users/login",
+        //     //             "/api/users/authentification",
+        //     //             "/api/users/token/**"
+        //     //         ).permitAll()
+        //     //         .anyRequest().authenticated()
+        //     // )
+        //     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        //     .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        //     return http.build();
 
-    //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                // .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
-    //             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-    //             .antMatchers(HttpMethod.OPTIONS, "api/**").permitAll()
-    //             .anyRequest().authenticated().and()
-    //             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-    //             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+         http
+            .csrf().disable()
+            .cors().configurationSource(this.corsConfigurationSource()).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .authorizeHttpRequests(request -> {
+                request
+                    .requestMatchers("/api/users/inscription_valide/**").permitAll()
+                    .requestMatchers("/api/users/inscription").permitAll()
+                    .requestMatchers("/api/users/login").permitAll()
+                    .requestMatchers("/api/users/authentification").permitAll()
+                    .requestMatchers("/api/users/token/**").permitAll()
+                    .anyRequest().authenticated();
+            });
+
+        http.addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 }

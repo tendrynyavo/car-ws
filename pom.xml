@@ -105,23 +105,6 @@
 			<version>1.18.22</version> 
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version> <!-- Assurez-vous de spécifier la version appropriée -->
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>5.6.0</version> <!-- Assurez-vous d'utiliser la version appropriée -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>5.6.0</version>
-		</dependency>
-
 
 	</dependencies>
 

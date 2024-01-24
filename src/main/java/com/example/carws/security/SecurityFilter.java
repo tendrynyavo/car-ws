@@ -24,7 +24,6 @@ import com.example.carws.service.UsersService;
 
 
 @Component
-@Slf4j
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     UsersService usersService;
