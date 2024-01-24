@@ -28,7 +28,6 @@ import com.example.carws.security.SecurityFilter;
 
 @Configuration
 @EnableMethodSecurity
-// @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -58,7 +57,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8100"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
@@ -71,32 +70,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain( HttpSecurity http) throws Exception {
-        // http
-        //     .cors().and()
-        //     .csrf().disable()
-        //     .formLogin().disable()
-        //     .httpBasic().disable()
-        //     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-        //     .and()
-        //     // .authorizeRequests(authorizeRequests ->
-        //     //     authorizeRequests
-        //     //         .antMatchers(
-        //     //             "/api/users/inscription_valide/**",
-        //     //             "/api/users/inscription",
-        //     //             "/api/users/login",
-        //     //             "/api/users/authentification",
-        //     //             "/api/users/token/**"
-        //     //         ).permitAll()
-        //     //         .anyRequest().authenticated()
-        //     // )
-        //     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        //     .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        //     return http.build();
-
          http
             .csrf().disable()
             .cors().configurationSource(this.corsConfigurationSource()).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
             .authorizeHttpRequests(request -> {
                 request
                     .requestMatchers("/api/users/inscription_valide/**").permitAll()
