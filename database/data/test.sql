@@ -73,3 +73,181 @@ insert into annonce values
 db.discussions.find({$or:[{ idEnvoyeur: "eTLPHjKBKTUyMQ2UCJ0UYSQBx5g1", idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },{ idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3", idReceveur: "eTLPHjKBKTUyMQ2UCJ0UYSQBx5g1" }]}).sort({ dateHeureEnvoie: 1 })
 
 
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
+                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+            ]
+        }
+    },
+    {
+        $group: {
+            _id: {
+                idEnvoyeur: "$idEnvoyeur",
+                idReceveur: "$idReceveur"
+            },
+            discussions: { $push: "$$ROOT" }
+        }
+    }
+]);
+
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
+                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+            ]
+        }
+    },
+    {
+        $group: {
+            _id: {
+                idEnvoyeur: "$idEnvoyeur",
+                idReceveur: "$idReceveur"
+            },
+            discussions: { $push: "$$ROOT" }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            idEnvoyeur: "$_id.idEnvoyeur",
+            idReceveur: "$_id.idReceveur"
+        }
+    }
+]);
+
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
+                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+            ]
+        }
+    },
+    {
+        $addFields: {
+            newIdEnvoyeur: {
+                $cond: {
+                    if: { $eq: ["$idEnvoyeur", "aRU7yww5lgZ6eDev3iJ95SKgmAA3"] },
+                    then: "$idReceveur",
+                    else: "$idEnvoyeur"
+                }
+            }
+        }
+    },
+    {
+        $group: {
+            _id: {
+                idEnvoyeur: "$newIdEnvoyeur",
+                idReceveur: "$idReceveur"
+            },
+            discussions: { $push: "$$ROOT" }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            idEnvoyeur: "$_id.idEnvoyeur",
+        }
+    }
+]);
+
+
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
+                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+            ]
+        }
+    },
+    {
+        $addFields: {
+            idEnvoyeur: {
+                $cond: {
+                    if: { $eq: ["$idEnvoyeur", "aRU7yww5lgZ6eDev3iJ95SKgmAA3"] },
+                    then: "$idReceveur",
+                    else: "$idEnvoyeur"
+                }
+            },
+            idReceveur: {
+                $cond: {
+                    if: { $eq: ["$idReceveur", "aRU7yww5lgZ6eDev3iJ95SKgmAA3"] },
+                    then: "$idEnvoyeur",
+                    else: "$idReceveur"
+                }
+            }
+        }
+    },
+    {
+        $group: {
+            _id: {
+                idEnvoyeur: "$idEnvoyeur",
+                idReceveur: "$idReceveur"
+            }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            idEnvoyeur: "$_id.idEnvoyeur",
+            idReceveur: "$_id.idReceveur"
+        }
+    }
+]);
+
+
+-- pour un utilisateur
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
+                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+            ]
+        }
+    },
+    {
+        $addFields: {
+            newIdEnvoyeur: {
+                $cond: {
+                    if: { $eq: ["$idEnvoyeur", "aRU7yww5lgZ6eDev3iJ95SKgmAA3"] },
+                    then: "$idReceveur",
+                    else: "$idEnvoyeur"
+                }
+            }
+        }
+    },
+    {
+        $group: {
+            _id: {
+                idEnvoyeur: "$newIdEnvoyeur",
+                idReceveur: "$idReceveur"
+            },
+            discussions: { $push: "$$ROOT" }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            idEnvoyeur: "$_id.idEnvoyeur"
+        }
+    },
+    {
+        $group: {
+            _id: "$idEnvoyeur"
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            idEnvoyeur: "$_id"
+        }
+    }
+]);
