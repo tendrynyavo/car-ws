@@ -1,44 +1,44 @@
-nom_marque
-ALFA ROMEO
-Aston Martin Lagonda Ltd
-Audi
-BMW
-Chevrolet
-Dodge
-Ferrari
-Honda
-Jaguar
-Lamborghini
-MAZDA
-McLaren
-Mercedes-Benz
-NISSAN
-Pagani Automobili S.p.A.
-Porsche
-FIAT
-Mini
-SCION
-Subaru
-Bentley
-Buick
-Ford
-HYUNDAI MOTOR COMPANY
-LEXUS
-MASERATI
-Roush
-Volkswagen
-Acura
-Cadillac
-INFINITI
-KIA MOTORS CORPORATION
-Mitsubishi Motors Corporation
-Rolls-Royce Motor Cars Limited
-TOYOTA
-Volvo
-Chrysler
-Lincoln
-GMC
-RAM
-CHEVROLET
-Jeep
-Land Rover
+id_marque;nom_marque
+MAR0001;ALFA ROMEO
+MAR0002;Aston Martin Lagonda Ltd
+MAR0003;Audi
+MAR0004;BMW
+MAR0005;Chevrolet
+MAR0006;Dodge
+MAR0007;Ferrari
+MAR0008;Honda
+MAR0009;Jaguar
+MAR0010;Lamborghini
+MAR0011;MAZDA
+MAR0012;McLaren
+MAR0013;Mercedes-Benz
+MAR0014;NISSAN
+MAR0015;Pagani Automobili S.p.A.
+MAR0016;Porsche
+MAR0017;FIAT
+MAR0018;Mini
+MAR0019;SCION
+MAR0020;Subaru
+MAR0021;Bentley
+MAR0022;Buick
+MAR0023;Ford
+MAR0024;HYUNDAI MOTOR COMPANY
+MAR0025;LEXUS
+MAR0026;MASERATI
+MAR0027;Roush
+MAR0028;Volkswagen
+MAR0029;Acura
+MAR0030;Cadillac
+MAR0031;INFINITI
+MAR0032;KIA MOTORS CORPORATION
+MAR0033;Mitsubishi Motors Corporation
+MAR0034;Rolls-Royce Motor Cars Limited
+MAR0035;TOYOTA
+MAR0036;Volvo
+MAR0037;Chrysler
+MAR0038;Lincoln
+MAR0039;GMC
+MAR0040;RAM
+MAR0041;CHEVROLET
+MAR0042;Jeep
+MAR0043;Land Rover

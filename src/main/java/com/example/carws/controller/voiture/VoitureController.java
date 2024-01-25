@@ -28,7 +28,7 @@ public class VoitureController{
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getVoiture( @PathVariable("id") Integer id ) throws Exception{
+	public ResponseEntity<Response> getVoiture( @PathVariable("id") String id ) throws Exception{
 		try{
 			Voiture voiture = voitureService.getVoiture(id);
 			Response response = new Response();
@@ -44,10 +44,11 @@ public class VoitureController{
 	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
 		Response response = new Response();
 		try{
-			voitureService.saveVoiture( voiture );
+			voitureService.saveVoiture( voiture.getUser(), voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
+			e.printStackTrace();
 			response.addError("error" , e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}

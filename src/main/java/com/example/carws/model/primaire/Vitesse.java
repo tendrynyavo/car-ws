@@ -1,5 +1,6 @@
 package com.example.carws.model.primaire;
 
+import com.example.carws.model.voiture.Voiture;
 import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +17,9 @@ public class Vitesse{
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
+
+	@OneToOne(mappedBy = "vitesse")
+	Voiture voiture;
 
 	public boolean getDeleted(){
 		return this.deleted;

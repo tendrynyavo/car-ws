@@ -2,6 +2,8 @@ package com.example.carws.model.primaire;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
+
+import java.sql.Date;
 import java.util.Set;
 import com.example.carws.model.primaire.relation.*;
 import com.example.carws.utility.IdGenerator;
@@ -32,32 +34,32 @@ public class Modele{
 	boolean deleted;
           
     @Column( name = "annee" )
-    Integer annee;
+    Date annee;
 
 	@OneToMany( mappedBy = "modele" )
 	Set<Design> designs;
           
-          @OneToMany( mappedBy = "modele" )
-          Set<Specificite> specificites;
+	@OneToMany( mappedBy = "modele" )
+	Set<Specificite> specificites;
 
-          public Set<Specificite> getSpecificites() {
-                    return specificites;
-          }
+	public Set<Specificite> getSpecificites() {
+			return specificites;
+	}
 
-          public void setSpecificites(Set<Specificite> specificites) {
-                    this.specificites = specificites;
-          }
-          
-          
+	public void setSpecificites(Set<Specificite> specificites) {
+			this.specificites = specificites;
+	}
+	
+	
 
-          public Integer getAnnee() {
-                    return annee;
-          }
+	public Date getAnnee() {
+			return annee;
+	}
 
-          public void setAnnee(Integer annee) {
-                    this.annee = annee;
-          }
-         
+	public void setAnnee(Date annee) {
+			this.annee = annee;
+	}
+	
 	public void setDesigns(Set<Design> cs){
 		this.designs = cs;
 	}

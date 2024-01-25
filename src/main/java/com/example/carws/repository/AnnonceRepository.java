@@ -6,9 +6,9 @@ import com.example.carws.model.annonce.* ;
 import java.util.*;
 
 public interface AnnonceRepository extends JpaRepository< Annonce, Integer >{
-	@Query("SELECT DISTINCT a FROM Annonce a LEFT JOIN FETCH a.details")
-	List<Annonce> findAllAnnoncesWithDetails();
+	// @Query("SELECT DISTINCT a FROM Annonce a LEFT JOIN FETCH a.details")
+	// List<Annonce> findAllAnnoncesWithDetails();
 	
-	List<Annonce> findByEtat( Integer etat );
-	List<Annonce> findByEtatAndUser( Integer etat, String user );
+	// List<Annonce> findByEtat( Integer etat );
+	// List<Annonce> findByEtatAndUser( Integer etat, String user );
 }

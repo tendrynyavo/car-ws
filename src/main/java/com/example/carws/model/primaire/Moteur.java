@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,34 +21,41 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table( name = "moteur" )
 public class Moteur{
-         @Id
-         @Column( name = "id_moteur" )
-         @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ), @Parameter( name = "max_length", value = "7" ) }  )
+
+	@Id
+	@Column( name = "id_moteur" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ), @Parameter( name = "max_length", value = "7" ) }  )
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
-         @ManyToOne
-         @JoinColumn(name = "id_marque")
+
+	@ManyToOne
+	@JoinColumn(name = "id_marque")
 	Marque marque;
-         @ManyToOne
-         @JoinColumn( name = "id_carburant" )
+
+	@ManyToOne
+	@JoinColumn( name = "id_carburant" )
 	Carburant carburant;
+
 	double puissance;
+
 	double cylindre;
-         @ManyToOne
-          @JoinColumn(name = "id_type")
-         TypeMoteur type;
+
+	@ManyToOne
+	@JoinColumn(name = "id_type")
+	TypeMoteur type;
+
 	String configuration;
           
-          @OneToMany( mappedBy = "moteur",  fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-          Set<Specificite> specifites;
+	@OneToMany( mappedBy = "moteur",  fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+	Set<Specificite> specifites;
 
-          public Set<Specificite> getSpecifites() {
-                    return specifites;
-          }
+	public Set<Specificite> getSpecifites() {
+			return specifites;
+	}
 
-          public void setSpecifites(Set<Specificite> specifites) {
-                    this.specifites = specifites;
-          }
+	public void setSpecifites(Set<Specificite> specifites) {
+			this.specifites = specifites;
+	}
           
 	public void setId(String id){
 		this.id = id;
@@ -89,16 +97,17 @@ public class Moteur{
 	public void setConfiguration( String conf ){
 		this.configuration = conf;
 	}
+
 	public String getConfiguration(){
 		return this.configuration;
 	}
 
-          public TypeMoteur getType() {
-                    return type;
-          }
+	public TypeMoteur getType() {
+			return type;
+	}
 
-          public void setType(TypeMoteur type) {
-                    this.type = type;
-          }
+	public void setType(TypeMoteur type) {
+			this.type = type;
+	}
             
 }
