@@ -1,19 +1,14 @@
 package com.example.carws.model.primaire;
 
-import com.example.carws.model.primaire.relation.Specificite;
 import com.example.carws.utility.IdGenerator;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -22,76 +17,77 @@ import org.hibernate.annotations.Parameter;
 public class Moteur{
          @Id
          @Column( name = "id_moteur" )
-         @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ), @Parameter( name = "max_length", value = "7" ) }  )
-    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+         @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ),             @Parameter( name = "max_length", value = "7" ) }  )
+          @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
+         @Column
+         String nom;
+         @Column
+         Integer cylindre;
+         @Column
+         Double puissance;
+         @Column
+         String configuration;
+         
          @ManyToOne
-         @JoinColumn(name = "id_marque")
-	Marque marque;
+          @JoinColumn( name = "id_marque" )
+         Marque marque;
+         
+         @ManyToOne
+         @JoinColumn( name = "id_type" )
+         TypeMoteur type;
+         
          @ManyToOne
          @JoinColumn( name = "id_carburant" )
-	Carburant carburant;
-	double puissance;
-	double cylindre;
-         @ManyToOne
-          @JoinColumn(name = "id_type")
-         TypeMoteur type;
-	String configuration;
-          
-          @OneToMany( mappedBy = "moteur",  fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-          Set<Specificite> specifites;
+         Carburant carburant;
 
-          public Set<Specificite> getSpecifites() {
-                    return specifites;
+          public String getId() {
+                    return id;
           }
 
-          public void setSpecifites(Set<Specificite> specifites) {
-                    this.specifites = specifites;
+          public void setId(String id) {
+                    this.id = id;
           }
-          
-	public void setId(String id){
-		this.id = id;
-	}
-	public String getId(){
-		return this.id;
-	}
 
-	public void setMarque( Marque marque ){
-		this.marque = marque;
-	}
-	public Marque getMarque(){
-		return this.marque;
-	}
+          public String getNom() {
+                    return nom;
+          }
 
-	public void setCarburant( Carburant carburant ){
-		this.carburant = carburant;
-	}
-	public Carburant getCarburant(){
-		return this.carburant;
-	}
+          public void setNom(String nom) {
+                    this.nom = nom;
+          }
 
-	public void setPuissance( double puissance ) throws Exception{
-		if( puissance < 0 ) throw new Exception("La puissance de l'automobile ne doit pas etre negatif");
-		this.puissance = puissance;
-	}
+          public Integer getCylindre() {
+                    return cylindre;
+          }
 
-	public double getPuissance(){
-		return this.puissance;
-	}
+          public void setCylindre(Integer cylindre) {
+                    this.cylindre = cylindre;
+          }
 
-	public void setCylindre(double cylindre){
-		this.cylindre = cylindre;
-	}
-	public double getCylindre(){
-		return this.cylindre;
-	}
+          public Double getPuissance() {
+                    return puissance;
+          }
 
-	public void setConfiguration( String conf ){
-		this.configuration = conf;
-	}
-	public String getConfiguration(){
-		return this.configuration;
-	}
+          public void setPuissance(Double puissance) {
+                    this.puissance = puissance;
+          }
+
+          public String getConfiguration() {
+                    return configuration;
+          }
+
+          public void setConfiguration(String configuration) {
+                    this.configuration = configuration;
+          }
+
+          public Marque getMarque() {
+                    return marque;
+          }
+
+          public void setMarque(Marque marque) {
+                    this.marque = marque;
+          }
 
           public TypeMoteur getType() {
                     return type;
@@ -100,5 +96,14 @@ public class Moteur{
           public void setType(TypeMoteur type) {
                     this.type = type;
           }
-            
+
+          public Carburant getCarburant() {
+                    return carburant;
+          }
+
+          public void setCarburant(Carburant carburant) {
+                    this.carburant = carburant;
+          }
+          
+             
 }
