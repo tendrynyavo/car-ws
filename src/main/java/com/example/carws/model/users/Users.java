@@ -4,18 +4,17 @@ import java.sql.Date;
 
 import jakarta.persistence.*;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
 
-import com.example.carws.model.annonce.AnnonceFavories;
+import com.example.carws.model.annonce.Annonce;
+import com.example.carws.model.voiture.Voiture;
 
 @Entity
-@Table(name = "users")
+@Table(name = "utilisateur")
 public class Users {
     @Id
-    @Column(name = "id_user")
+    @Column(name = "id_utilisateur")
     String id;
-    @Column(name = "nom_user")
+    @Column(name = "nom")
     String nom;
     @Column
     String prenom;
@@ -23,14 +22,20 @@ public class Users {
     String contact;
     @Column(name = "date_naissance")
     Date dateDeNaissance;
-    @Column
+    @Column(name = "email")
     String mail;
-    @Column
+    @Column(name = "mot_de_passe")
     String password;
 
-    @OneToMany(mappedBy="user")
-	Set<AnnonceFavories> favories;
+    // @OneToMany(mappedBy="user")
+	// Set<AnnonceFavories> favories;
 
+    @OneToOne(mappedBy = "user")
+    Annonce annonce;
+
+    @OneToOne(mappedBy = "user")
+    Voiture voiture;
+    
     public Users() {
     }
 
@@ -116,12 +121,12 @@ public class Users {
         this.password = password;
     }
 
-    public void setFavories(Set<AnnonceFavories> listes){
-        this.favories = listes;
-    }
+    // public void setFavories(Set<AnnonceFavories> listes){
+    //     this.favories = listes;
+    // }
 
-    public Set<AnnonceFavories> getFavories(){
-        return this.favories;
-    }
+    // public Set<AnnonceFavories> getFavories(){
+    //     return this.favories;
+    // }
 
 }

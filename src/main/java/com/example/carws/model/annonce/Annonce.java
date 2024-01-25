@@ -1,13 +1,18 @@
 package com.example.carws.model.annonce;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Set;
-
+import com.example.carws.model.primaire.Lieu;
+import com.example.carws.model.users.Users;
+import com.example.carws.model.voiture.Voiture;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import com.example.carws.utility.IdGenerator;
+
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 
@@ -18,72 +23,61 @@ import jakarta.persistence.*;
  property = "id")
 public class Annonce{
 	@Id
-	@Column( name = "id_annonce", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	@Column( name = "id_annonce" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "ANC"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_annonce" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
-	@Column( name = "date_heure_publication" )
-	Timestamp dateheure;
+    @Column( name = "date_annonce")
+	Timestamp date;
 
-	@Column( name = "id_user" )
-	String user;
+    @Column( name = "description")
+    String description;
 
-    @Column( name = "prix" )
+	@Column( name = "prix" )
 	double prix;
 
-    @OneToOne(mappedBy = "annonce")
-	@JsonManagedReference("annonce-details")
-	DetailsAnnonce details;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_lieu")
+	Lieu lieu;
 
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_utilisateur")
+	Users user;
 
-    @Column( name = "id_etat")
-    Integer etat;
+	@Column( name = "valeur" )
+	Integer valeur;
 
-	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
-	AnnonceVendus vendu;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_voiture")
+	@JsonManagedReference
+	Voiture voiture;
 
-	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
-	@JsonManagedReference("annonce-validate")
-	ValidateAnnonce validate;
-
-	@OneToOne(mappedBy = "annonce", cascade = CascadeType.ALL)
-	@JsonBackReference("annonce-favoris")
-	AnnonceFavories favoris;
-
-	@OneToMany(mappedBy="annonce")
-	Set<AnnoncePhoto> photos;
-
-	public void setId( Integer id ){
+	public void setId(String id){
 		this.id = id;
 	}
 
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 
-    public void setDateheure( Timestamp date ){
-		this.dateheure = date;
+	public void setDate(Timestamp date){
+		this.date = date;
 	}
 
-	public Timestamp getDateheure(){
-		return this.dateheure;
+	public Timestamp getDate(){
+		return this.date;
 	}
 
-	public void setUser( String user ) throws Exception {
-		if( user == null || user.isEmpty() ){
-			throw new Exception("L'id de l'utilisateur ne peut etre nulle");
-		}
-		this.user = user;
+	public void setDescription(String description){
+		this.description = description;
 	}
 
-    public String getUser(){
-        return this.user;
-    }
+	public String getDescription(){
+		return this.description;
+	}
 
-    public void setPrix( double prix ) throws Exception {
-        if(prix < 0){
-            throw new Exception("Le prix ne devrait pas etre negatif!");
-        }
+	public void setPrix(double prix){
 		this.prix = prix;
 	}
 
@@ -91,63 +85,39 @@ public class Annonce{
 		return this.prix;
 	}
 
-    public DetailsAnnonce getDetails(){
-        return this.details;
-    }
-
-    public void setDetails(DetailsAnnonce details){
-        this.details = details;
-    }
-
-    public void setEtat(int etat){
-        this.etat = etat;
-    }
-
-    public Integer getEtat(){
-        return this.etat;
-    }
-
-	public void setVendus(AnnonceVendus vendu){
-		this.vendu = vendu;
+	public void setLieu(Lieu lieu){
+		this.lieu = lieu;
 	}
 
-	public AnnonceVendus getVendus(){
-		return this.vendu;
+	public Lieu getLieu(){
+		return this.lieu;
 	}
 
-	public void setValidate(ValidateAnnonce validate){
-		this.validate = validate;
+	public void setUser(Users user){
+		this.user = user;
 	}
 
-	public ValidateAnnonce getValidate(){
-		return this.validate;
+	public Users getUser(){
+		return this.user;
 	}
 
-	public void setFavories(AnnonceFavories favories){
-		this.favoris = favories;
+	public void setValeur(Integer valeur){
+		this.valeur = valeur;
 	}
 
-	public AnnonceFavories getFavories(){
-		return this.favoris;
+	public Integer getValeur(){
+		return this.valeur;
 	}
 
-	public void setPhotos(Set<AnnoncePhoto> photos){
-		this.photos = photos;
+	public void setVoiture(Voiture voiture){
+		this.voiture = voiture;
 	}
-
-	public Set<AnnoncePhoto> getPhotos(){
-		return this.photos;
+	
+	public Voiture getVoiture(){
+		return this.voiture;
 	}
 
 	public Annonce(){
-
+		
 	}
-
-	public Annonce( Timestamp dateheure, String user, double prix , int etat) throws Exception{
-		this.setDateheure(dateheure);
-        this.setUser(user);
-        this.setPrix(prix);
-		this.setEtat(etat);
-	}
-
 }

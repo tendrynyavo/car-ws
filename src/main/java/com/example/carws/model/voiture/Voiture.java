@@ -1,103 +1,65 @@
 package com.example.carws.model.voiture;
 
-import com.example.carws.model.annonce.DetailsAnnonce;
+import com.example.carws.model.annonce.Annonce;
+import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Modele;
+import com.example.carws.model.primaire.Moteur;
+import com.example.carws.model.primaire.Vitesse;
+import com.example.carws.model.users.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import com.example.carws.utility.IdGenerator;
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "voiture_annonce" )
+@Table( name = "voiture" )
 @JsonIdentityInfo(
  generator = ObjectIdGenerators.PropertyGenerator.class, 
  property = "id")
 public class Voiture{
 	@Id
-	@Column( name = "id_voiture_annonce", columnDefinition = "serial" )
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	@Column( name = "id_voiture" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "VOI"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_voiture" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
-	@Column( name = "id_marque" )
-	Integer idMarque;
-
-	@Column( name = "id_modele" )
-	Integer idModele;
-
-    @Column( name = "id_carburant" )
-	Integer idCarburant;
-
-    @Column( name = "id_categorie" )
-	Integer idCategorie;
-
-    @Column( name = "id_transmission" )
-	Integer idTransmission;
-
-    @Column( name = "kilometrage" )
+    @Column( name = "kilometrage")
 	double kilometrage;
 
-    @Column( name = "annee" )
-	Integer annee;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_utilisateur")
+    Users user;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_categorie")
+    Categorie categorie;
 
-    @OneToOne
-    @JoinColumn(name = "id_detail_annonce")
-    @JsonBackReference("annonce-voiture")
-    DetailsAnnonce detailsAnnonce;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_boite")
+    Vitesse vitesse;
 
-    public DetailsAnnonce getDetails(){
-        return this.detailsAnnonce;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_moteur")
+    Moteur moteur;
 
-    public void setDetails(DetailsAnnonce details){
-        this.detailsAnnonce = details;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_modele")
+    Modele modele;
 
-	public void setId(int id){
+    @OneToOne(mappedBy = "voiture")
+    @JsonBackReference
+    Annonce annonce;
+
+    public void setId(String id){
         this.id = id;
     }
 
-    public Integer getId(){
+    public String getId(){
         return this.id;
-    }
-
-    public void setIdMarque(int idMarque){
-        this.idMarque = idMarque;
-    }
-
-    public Integer getIdMarque(){
-        return this.idMarque;
-    }
-
-    public void setIdModele(Integer idModele){
-        this.idModele = idModele;
-    }
-
-    public Integer getIdModele(){
-        return this.idModele;
-    }
-
-    public void setIdCarburant(Integer idCarburant){
-        this.idCarburant = idCarburant;
-    }
-
-    public Integer getIdCarburant(){
-        return this.idCarburant;
-    }
-
-    public void setIdCategorie(Integer idCategorie){
-        this.idCategorie = idCategorie;
-    }
-
-    public Integer getIdCategorie(){
-        return this.idCategorie;
-    }
-
-    public void setIdTransmission(Integer idTransmission){
-        this.idTransmission = idTransmission;
-    }
-
-    public Integer getIdTransmission(){
-        return this.idTransmission;
     }
 
     public void setKilometrage(double kilometrage){
@@ -108,39 +70,55 @@ public class Voiture{
         return this.kilometrage;
     }
 
-    public void setAnnee(int annee){
-        this.annee = annee;
+    public void setUser(Users user){
+        this.user = user;
     }
 
-    public Integer getAnnee(){
-        return this.annee;
+    public Users getUser(){
+        return this.user;
     }
 
-	public Voiture(){
+    public void setCategorie(Categorie categorie){
+        this.categorie = categorie;
+    }
 
-	}
+    public Categorie getCategorie(){
+        return this.categorie;
+    }
 
-	public Voiture(int idMarque, int idModele, int idCarburant, int idCategorie, int idTransmission, double kilometrage, int annee) {
-        this.setIdMarque(idMarque);
-        this.setIdModele(idModele);
-        this.setIdCarburant(idCarburant);
-        this.setIdCategorie(idCategorie);
-        this.setIdTransmission(idTransmission);
-        this.setKilometrage(kilometrage);
-        this.setAnnee(annee);
-	}
+    public void setVitesse(Vitesse vitesse){
+        this.vitesse = vitesse;
+    }
 
-	/*
-	 * 
-	 * Get static data for category
-	 * 
-	 */
-	// public Categorie[] test() throws Exception{
-	// 	Categorie[] categories = new Categorie[3];
-	// 	categories[0] = new Categorie("Camion");
-	// 	categories[1] = new Categorie("Plaisir");
-	// 	categories[2] = new Categorie("Mini Bus");
-	// 	return categories;
-	// }
+    public Vitesse getVitesse(){
+        return this.vitesse;
+    }
 
+    public void setMoteur(Moteur moteur){
+        this.moteur = moteur;
+    }
+
+    public Moteur getMoteur(){
+        return this.moteur;
+    }
+
+    public void setModele(Modele modele){
+        this.modele = modele;
+    }
+
+    public Modele getModele(){
+        return this.modele;
+    }
+
+    public void setAnnonce(Annonce annonce){
+        this.annonce = annonce;
+    }
+
+    public Annonce getAnnonce(){
+        return this.annonce;
+    }
+
+    public Voiture(){
+        
+    }
 }

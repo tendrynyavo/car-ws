@@ -8,6 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -15,6 +19,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table( name = "moteur" )
 public class Moteur{
+
          @Id
          @Column( name = "id_moteur" )
          @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOT"), @Parameter( name = "sequence", value = "seq_moteur" ),             @Parameter( name = "max_length", value = "7" ) }  )
@@ -89,9 +94,11 @@ public class Moteur{
                     this.marque = marque;
           }
 
-          public TypeMoteur getType() {
-                    return type;
-          }
+
+	public TypeMoteur getType() {
+			return type;
+	}
+
 
           public void setType(TypeMoteur type) {
                     this.type = type;
@@ -105,5 +112,5 @@ public class Moteur{
                     this.carburant = carburant;
           }
           
-             
+
 }

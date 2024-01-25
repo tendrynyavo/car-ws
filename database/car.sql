@@ -38,8 +38,8 @@ CREATE TABLE type_moteur(
 
 CREATE TABLE carburant(
    id_carburant VARCHAR(50) ,
-   deleted VARCHAR(50) ,
-   nom BOOLEAN,
+   nom VARCHAR(50) ,
+   deeted BOOLEAN,
    PRIMARY KEY(id_carburant)
 );
 

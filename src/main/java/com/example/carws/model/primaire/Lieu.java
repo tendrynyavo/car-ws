@@ -4,12 +4,14 @@
  */
 package com.example.carws.model.primaire;
 
+import com.example.carws.model.annonce.Annonce;
 import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,12 +23,16 @@ import org.hibernate.annotations.GenericGenerator;
 @Table( name = "lieu" )
 public class Lieu {
           @Id
-              @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "LIE"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_lieu" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
-        @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+          @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "LIE"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_lieu" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+          @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
           @Column( name = "id_lieu" )
           String id;
+          
           @Column
           String nom;
+
+          @OneToOne(mappedBy = "lieu")
+          Annonce annonce;
 
           public String getId() {
                     return id;

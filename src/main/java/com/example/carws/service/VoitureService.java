@@ -1,10 +1,18 @@
 package com.example.carws.service;
+import com.example.carws.repository.CategorieRepository;
+import com.example.carws.repository.ModeleRepository;
+import com.example.carws.repository.VitesseRepository;
 import com.example.carws.repository.VoitureRepository;
 
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
 import java.util.*;
 
+import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Modele;
+import com.example.carws.model.primaire.Moteur;
+import com.example.carws.model.primaire.Vitesse;
+import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.*;
 import com.example.carws.exception.*;
 
@@ -14,19 +22,39 @@ public class VoitureService{
 	@Autowired
 	VoitureRepository repository;
 
+	@Autowired
+	CategorieRepository categorieRepository;
+
+	@Autowired
+	VitesseRepository vitesseRepository;
+
+	@Autowired
+	ModeleRepository modeleRepository;
+
 	public List<Voiture> getAllVoitures() throws Exception{
 		return repository.findAll();
 	}
 
-	public Voiture getVoiture( Integer id ) throws Exception{
-		Voiture voiture = (Voiture)repository.findById( id ).orElse(null);
+	public Voiture getVoiture( String id ) throws Exception{
+		Voiture voiture = (Voiture)repository.findById( id );
 		if( voiture == null ){
 			throw new CategorieException("La voiture n'existe pas");
 		}
 		return voiture;
 	}
 
-	public void saveVoiture( Voiture voiture ) throws Exception{
+	public void saveVoiture( Users user, Categorie categorie, Vitesse vitesse, Moteur moteur, Modele modele, double kilometrage ) throws Exception{
+		Categorie categorieExistant = categorieRepository.findByIdAndDeletedFalse(categorie.getId());
+		Vitesse vitesseExistant = vitesseRepository.findByIdAndDeletedFalse(vitesse.getId());
+		Modele modeleExistant = modeleRepository.findByIdAndDeletedFalse(modele.getId());
+		
+		Voiture voiture = new Voiture();
+        voiture.setUser(user);
+        voiture.setCategorie(categorieExistant);
+        voiture.setVitesse(vitesseExistant);
+        voiture.setMoteur(moteur);
+        voiture.setModele(modeleExistant);
+        voiture.setKilometrage(kilometrage);
 		repository.save( voiture );
 	}
 

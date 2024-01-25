@@ -10,15 +10,17 @@ import org.hibernate.annotations.Parameter;
 public class Carburant{
 	@Id
 	@Column( name = "id_carburant" )
-          @GenericGenerator( name = "custom-id", type = IdGenerator.class, 
-              parameters = {
-                        @Parameter(name = "prefix" , value = "CRB"), 
-                        @Parameter( name = "sequence", value = "seq_carburant" ), 
-                        @Parameter( name = "max_length", value = "7" ) }  )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, 
+		parameters = {
+				@Parameter(name = "prefix" , value = "CRB"), 
+				@Parameter( name = "sequence", value = "seq_carburant" ), 
+				@Parameter( name = "max_length", value = "7" ) }  )
 	@GeneratedValue( generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
+
 	@Column( name = "nom" )
 	String nom;
+
 	@Column( name = "deleted" )
 	boolean deleted;
 

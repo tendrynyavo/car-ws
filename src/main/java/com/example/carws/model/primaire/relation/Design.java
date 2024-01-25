@@ -10,10 +10,12 @@ public class Design {
 	@Id
 	@Column(name="id_design")
 	Integer id;
+
 	@ManyToOne
 	@JoinColumn(name="id_modele")
 	Modele modele;
-	@ManyToOne()
+
+	@ManyToOne
 	@JoinColumn( name = "id_categorie" )
 	Categorie categorie;
 
