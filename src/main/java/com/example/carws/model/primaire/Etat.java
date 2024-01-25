@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 @Table( name = "etat" )
 public class Etat {
 	@Id
-	@Column( name = "valeur")
+	@Column( name = "valeur", unique = true, nullable = false)
 	Integer valeur;
-	@Column( name = "nom" )
+	@Column( name = "designation" )
 	String nom;
 
 	public void setValeur( Integer id ){
@@ -21,7 +21,7 @@ public class Etat {
 
 	public void setNom( String nom ) throws Exception{
 		if( nom == null || nom.isEmpty() ){
-			throw new Exception("Le nom de categorie ne peut etre nulle");
+			throw new Exception("La désignation de l'état ne peut etre nulle");
 		}
 		this.nom = nom;
 	}
