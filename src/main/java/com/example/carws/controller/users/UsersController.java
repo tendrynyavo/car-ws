@@ -72,7 +72,7 @@ public class UsersController {
     @PostMapping("authentification")
     public ResponseEntity<Response> authentification(@RequestBody Users users) throws Exception {
         try {
-            users = usersService.authentification(users.getMail());
+            users = usersService.authentification(users);
             String token = new Token().generateJwt(users);
             Response response = new Response();
             response.addData("token", token);

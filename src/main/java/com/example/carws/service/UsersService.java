@@ -3,6 +3,7 @@ package com.example.carws.service;
 import com.example.carws.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.*;
 import com.example.carws.model.users.Users;
+import com.google.cloud.storage.Acl.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,17 @@ public class UsersService {
         }
     }
 
+    public Users authentification(Users users) throws Exception {
+        try {
+            Users user = usersRepository.getUsersByEmailAndPassword(users.getMail(), users.getPassword()).orElse(null);
+            if (user == null)
+                throw new Exception("Email ou mot de passe incorrecte.");
+            return user;
+        } catch (Exception e) {
+            throw new Exception("Aucun enregistrement d’utilisateur n’a été trouvé cette adresse e-mail fournie!");
+        }
+    }
+
     public String inscriptionFireBase(String email, String password) throws Exception {
         try {
             UserRecord.CreateRequest request = new UserRecord.CreateRequest()
@@ -62,11 +74,9 @@ public class UsersService {
 
     @Transactional
     public void ajoutRole(String idUser, String idRole) throws Exception {
-        String sql = "INSERT INTO roles_user (id_user, roles_id) VALUES ('"+ idUser +"', '"+ idRole +"')";
+        String sql = "INSERT INTO roles_user (id_user, roles_id) VALUES ('" + idUser + "', '" + idRole + "')";
         System.out.println(sql);
         entityManager.createNativeQuery(sql).executeUpdate();
     }
-
-
 
 }

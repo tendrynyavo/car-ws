@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.example.carws.model.users.Role;
 import com.example.carws.repository.RoleRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

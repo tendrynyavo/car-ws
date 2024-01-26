@@ -10,18 +10,24 @@ import java.util.*;
 import com.example.carws.model.statistics.*;
 
 @Service
-public class StatistiqueService{
+public class StatistiqueService {
 
-	@Autowired StatisticRepository repository;
+	@Autowired
+	StatisticRepository repository;
 
-	@Autowired ValidateStatistiqueRepository validateRepository;
-	
-	public List<Statistique> getStatisticMonthly() throws Exception{
+	@Autowired
+	ValidateStatistiqueRepository validateRepository;
+
+	public List<Statistique> getStatisticMonthly() throws Exception {
 		return repository.getStatisticByMonth();
 	}
 
 	public List<ValidateStatistique> getValidateStatisticsByYear(Integer year) throws Exception {
 		return validateRepository.getStatisticByYear(year);
+	}
+
+	public int[][] getStatistiqueVenteParAn(String annee) throws Exception {
+		return this.repository.getStatistiqueVenteParAn(Integer.valueOf(annee));
 	}
 
 }

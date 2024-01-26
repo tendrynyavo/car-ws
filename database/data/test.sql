@@ -254,3 +254,17 @@ db.discussions.aggregate([
 
 insert into role values ('ADMIN', 'Administrateur'), ('USER', 'Client');
 insert into roles_user (id_user, roles_id) values ('Vo9M3bvgthYy1zUfklqUqrf4C8a2', 'ADMIN');
+
+CREATE OR REPLACE FUNCTION get_statistique_vente_mois(annee_donne INT)
+RETURNS TABLE (mois INT, quantite bigint) AS
+$$
+BEGIN
+    RETURN QUERY 
+    SELECT m.mois, COALESCE(v.quantite, 0) AS quantite
+    FROM generate_series(1, 12) AS m(mois)
+    LEFT JOIN v_statistique_vente_mois v 
+    ON m.mois = v.mois AND v.annee = annee_donne
+    ORDER BY m.mois;
+END;
+$$
+LANGUAGE PLPGSQL;

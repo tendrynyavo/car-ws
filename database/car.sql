@@ -207,7 +207,7 @@ CREATE TABLE photo(
 
 CREATE TABLE vendu(
    id_vendu VARCHAR(50) ,
-   date_vendu VARCHAR(50) ,
+   date_vendu date ,
    id_utilisateur VARCHAR(50)  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_vendu),
@@ -251,23 +251,30 @@ create table role (
    role varchar(25) unique
 );
 
-CREATE TABLE role_user (
-   id serial primary key,
-   id_user varchar(50) NOT NULL,
-   role_id varchar(50) NOT NULL,
-   etat int default 1
-);
 
 CREATE TABLE roles_user (
    id serial primary key,
    id_user varchar(50) NOT NULL,
-   roles_id varchar(50) NOT NULL,
+   roles_id varchar(10) references role(id),
    etat int default 1
 );
 
-create view liste_role_users as 
-select ru.id, id_user, ru.role idRole, r.role, etat from role_user ru join role r on ru.role = r.id;
+create view vente_mois as
+select vendu.*, EXTRACT(YEAR From date_vendu) annee, EXTRACT(Month from date_vendu) mois from vendu;
 
-create or replace view liste_role_users_valide as
-select id_user, idRole id, role from liste_role_users where etat = 1;
+create view v_statistique_vente_mois as
+select annee, mois, count(*) quantite from vente_mois group by annee, mois;
 
+CREATE OR REPLACE FUNCTION get_statistique_vente_mois(annee_donne INT)
+RETURNS TABLE (mois INT, quantite bigint) AS
+$$
+BEGIN
+    RETURN QUERY 
+    SELECT m.mois, COALESCE(v.quantite, 0) AS quantite
+    FROM generate_series(1, 12) AS m(mois)
+    LEFT JOIN v_statistique_vente_mois v 
+    ON m.mois = v.mois AND v.annee = annee_donne
+    ORDER BY m.mois;
+END;
+$$
+LANGUAGE PLPGSQL;

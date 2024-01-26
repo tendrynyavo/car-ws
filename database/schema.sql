@@ -198,15 +198,15 @@ alter table voiture_annonce add column annee integer not null;
 	CREATE OR REPLACE VIEW v_statistics_validate_month
 		AS
 			SELECT 
-				EXTRACT(YEAR FROM va.date_time_validation) AS annee,
+				EXTRACT(YEAR FROM va.date_valide) AS annee,
 				m.nom AS mois, 
 				COALESCE(COUNT(va.id_annonce), 0) AS nbr_annonce_valide
 			FROM 
 				mois m 
 			LEFT JOIN 
-				validate_annonce va ON EXTRACT(MONTH FROM va.date_time_validation) = m.reference
+				valide va ON EXTRACT(MONTH FROM va.date_valide) = m.reference
 			LEFT JOIN 
-				annonce a ON va.id_annonce = a.id_annonce AND a.id_etat = 30
+				annonce a ON va.id_annonce = a.id_annonce AND a.valeur = 20
 			GROUP BY 
 				annee, m.nom, m.reference
 			ORDER BY 
