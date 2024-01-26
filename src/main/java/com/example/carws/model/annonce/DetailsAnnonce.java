@@ -1,74 +1,80 @@
-// package com.example.carws.model.annonce;
+package com.example.carws.model.annonce;
 
-// import com.example.carws.model.voiture.Voiture;
-// import com.fasterxml.jackson.annotation.JsonBackReference;
-// import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
-// import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.example.carws.model.primaire.Caracteristique;
+import com.example.carws.model.voiture.Voiture;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-// import jakarta.persistence.*;
+import com.example.carws.utility.IdGenerator;
 
-// @Entity
-// @Table( name = "detail_annonce" )
-// @JsonIdentityInfo(
-//  generator = ObjectIdGenerators.PropertyGenerator.class, 
-//  property = "id")
-// public class DetailsAnnonce{
-// 	@Id
-// 	@Column( name = "id_detail_annonce", columnDefinition = "serial" )
-// 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-// 	Integer id;
+import org.hibernate.annotations.GenericGenerator;
 
-//     @Column( name = "description" )
-// 	String description;
+import jakarta.persistence.*;
 
-//     @OneToOne
-//     @JoinColumn(name = "id_annonce")
-//     @JsonBackReference("annonce-details")
-//     Annonce annonce;
+@Entity
+@Table( name = "detail" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
+public class DetailsAnnonce{
+	@Id
+	@Column( name = "id_detail" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "DTL"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_detail" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
-//     @OneToOne(mappedBy = "detailsAnnonce")
-//     @JsonManagedReference("annonce-voiture")
-//     Voiture voiture;
+    @Column( name = "valeur" )
+	String valeur;
 
-// 	public void setId( Integer id ){
-// 		this.id = id;
-// 	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_caracteristique")
+    Caracteristique caracteristique;
 
-// 	public Integer getId(){
-// 		return this.id;
-// 	}
+    @OneToOne
+    @JoinColumn(name = "id_annonce")
+    // @JsonBackReference("annonce-details")
+    Annonce annonce;
 
-//     public void setDescription( String description ){
-// 		this.description = description;
-// 	}
+	public void setId( String id ){
+		this.id = id;
+	}
 
-// 	public String getDescription(){
-// 		return this.description;
-// 	}
+	public String getId(){
+		return this.id;
+	}
 
-//     public void setAnnonce(Annonce annonce){
-//         this.annonce = annonce;
-//     }
+    public void setValeur( String valeur ){
+		this.valeur = valeur;
+	}
 
-//     public Annonce getAnnonce(){
-//         return this.annonce;
-//     }
+	public String getValeur(){
+		return this.valeur;
+	}
 
-//     public void setVoiture(Voiture voiture){
-//         this.voiture = voiture;
-//     }
+    public void setCaracteristique( Caracteristique caracteristique ){
+        this.caracteristique = caracteristique;
+    }
 
-//     public Voiture getVoiture(){
-//         return this.voiture;
-//     }
+    public Caracteristique getCaracteristique(){
+        return this.caracteristique;
+    }
 
-// 	public DetailsAnnonce(){
+    public void setAnnonce(Annonce annonce){
+        this.annonce = annonce;
+    }
 
-// 	}
+    public Annonce getAnnonce(){
+        return this.annonce;
+    }
 
-// 	public DetailsAnnonce( String description ) throws Exception{
-//         this.setDescription(description);
-// 	}
+	public DetailsAnnonce(){
 
-// }
+	}
+
+	public DetailsAnnonce( String valeur ) throws Exception{
+        this.setValeur(valeur);
+	}
+
+}

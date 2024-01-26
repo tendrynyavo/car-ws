@@ -12,5 +12,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author sarobidy
  */
 public interface MoteurRepository extends CrudRepository<Moteur, String> {
-          
+    Moteur findByIdAndDeletedFalse( String id );
 }

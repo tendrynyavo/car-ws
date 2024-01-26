@@ -29,6 +29,13 @@ public class UsersService {
         return user;
     }
 
+    public Users findBy(String id) throws Exception {
+        Users user = usersRepository.findById(id).orElse(null);
+        if (user == null)
+            throw new Exception("Utilisateur non trouvé.");
+        return user;
+    }
+
     // public String authenticateUser(String email, String password) throws Exception {
     //     try {
     //         FirebaseToken token = FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).getResult();
