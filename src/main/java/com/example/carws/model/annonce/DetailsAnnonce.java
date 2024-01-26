@@ -28,7 +28,7 @@ public class DetailsAnnonce{
     @Column( name = "valeur" )
 	String valeur;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_caracteristique")
     Caracteristique caracteristique;
 

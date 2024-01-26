@@ -207,7 +207,7 @@ CREATE TABLE photo(
 
 CREATE TABLE vendu(
    id_vendu VARCHAR(50) ,
-   date_vendu VARCHAR(50) ,
+   date_vendu DATE ,
    id_utilisateur VARCHAR(50)  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_vendu),
@@ -248,12 +248,10 @@ CREATE TABLE detail(
 
 CREATE TABLE historique(
    id_historique VARCHAR(50) ,
-   ancien_valeur INTEGER  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    date DATE,
    id_utilisateur VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_historique),
-   FOREIGN KEY(valeur) REFERENCES etat(valeur),
    FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
    FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
 );
