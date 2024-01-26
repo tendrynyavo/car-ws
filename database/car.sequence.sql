@@ -1,0 +1,27 @@
+create sequence seq_annonce start with 1 increment by 1;
+create sequence seq_boite_vitesse start with 1 increment by 1;
+create sequence seq_caracteristique start with 1 increment by 1;
+create sequence seq_carburant start with 1 increment by 1;
+create sequence seq_categorie start with 1 increment by 1;
+create sequence seq_coloriage start with 1 increment by 1;
+create sequence seq_couleur start with 1 increment by 1;
+create sequence seq_design start with 1 increment by 1;
+create sequence seq_detail start with 1 increment by 1;
+create sequence seq_discussion start with 1 increment by 1;
+create sequence seq_etat start with 1 increment by 1;
+create sequence seq_favori start with 1 increment by 1;
+create sequence seq_lieu start with 1 increment by 1;
+create sequence seq_marque start with 1 increment by 1;
+create sequence seq_modele start with 1 increment by 1;
+create sequence seq_mois start with 1 increment by 1;
+create sequence seq_moteur start with 1 increment by 1;
+create sequence seq_photo start with 1 increment by 1;
+create sequence seq_specificite start with 1 increment by 1;
+create sequence seq_transmission start with 1 increment by 1;
+create sequence seq_type_carburant start with 1 increment by 1;
+create sequence seq_type_moteur start with 1 increment by 1;
+create sequence seq_utilisateur start with 1 increment by 1;
+create sequence seq_valide start with 1 increment by 1;
+create sequence seq_vendu start with 1 increment by 1;
+create sequence seq_voiture start with 1 increment by 1;
+
