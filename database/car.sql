@@ -254,7 +254,7 @@ CREATE TABLE historique(
    date DATE,
    id_utilisateur VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_historique),
-   FOREIGN KEY(valeur) REFERENCES etat(valeur),
+   FOREIGN KEY(ancien_valeur) REFERENCES etat(valeur),
    FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
    FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
 );

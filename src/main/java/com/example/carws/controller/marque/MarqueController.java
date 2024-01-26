@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.primaire.Marque;
 import com.example.carws.service.MarqueService;
@@ -43,6 +44,7 @@ public class MarqueController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addMarque(@RequestBody Marque marque) throws Exception {
 		Response response = new Response();
@@ -56,6 +58,7 @@ public class MarqueController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateMarque(@RequestBody Marque marque, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -69,6 +72,7 @@ public class MarqueController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteMarque(@PathVariable("id") String id) {
 		Response response = new Response();

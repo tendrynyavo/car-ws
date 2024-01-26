@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.annonce.Annonce;
 import com.example.carws.model.annonce.AnnonceFavories;
@@ -105,6 +106,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/validate/{id}")
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") String id) {
 		Response response = new Response();

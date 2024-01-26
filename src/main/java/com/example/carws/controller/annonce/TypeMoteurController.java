@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class TypeMoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
           public ResponseEntity<Response> put(@PathVariable String id, @RequestBody TypeMoteur input) {
                     Response response = new Response();
@@ -69,6 +71,7 @@ public class TypeMoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
           public ResponseEntity<Response> post(@RequestBody TypeMoteur input) {
                    Response response = new Response();
@@ -83,11 +86,12 @@ public class TypeMoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<Response> delete(@PathVariable String id) {
                     Response response = new Response();
                     try{
-//                              input.setId(id);
+                            //  input.setId(id);
                               service.delete(id);
                               return ResponseEntity.ok().body(response.addMessage("success" , "Le type de moteur a ete supprimée"));
                     }catch(Exception e){
@@ -97,6 +101,7 @@ public class TypeMoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping( "/{id}/carburants" )
           public ResponseEntity<?> addCarburant( @PathVariable String id, @RequestBody Carburant carburant ){
                     Response response = new Response();

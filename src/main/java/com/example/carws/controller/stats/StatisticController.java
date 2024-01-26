@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.statistics.*;
 import com.example.carws.service.*;
@@ -19,6 +20,7 @@ public class StatisticController{
  	
  	@Autowired StatistiqueService service;
 
+	@PreAuthorize("hasRole('ADMIN')")
  	@GetMapping("/monthly")
 	public ResponseEntity<Response> getMonthlyStatistics() {
 		Response response = new Response();
@@ -36,6 +38,7 @@ public class StatisticController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/byYear/{year}")
 	public ResponseEntity<Response> getStatisticsByYear(@PathVariable("year") Integer year) {
 		Response response = new Response();

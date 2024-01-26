@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
@@ -45,6 +46,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addModele( @RequestBody Modele modele ) throws Exception{
 		Response response = new Response();
@@ -58,6 +60,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateModele( @RequestBody Modele modele, @PathVariable("id") String id ){
 		Response response = new Response();
@@ -71,6 +74,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteModele( @PathVariable("id") String id ){
 		Response response = new Response();
@@ -96,30 +100,32 @@ public class ModeleController{
 //                       
 //         }
          
-          @PostMapping( "/{id}/categories" )
-          public ResponseEntity<?> addCategory( @PathVariable String id, @RequestBody Categorie categorie ){
-                    Response response = new Response();
-                    try{
-                              this.modeleService.addCategoryToModel(id, categorie.getId());
-                              
-                              return ResponseEntity.ok().body( response.addMessage( "success", "Catégoie ajouté au modele" ) );
-                              
-                    }catch(Exception e){
-                              return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
-                    }
-          }
-          
-          @PostMapping("/{id}/moteurs")
-          public ResponseEntity<?> addEngine( @PathVariable String id, @RequestBody Moteur moteur ){
-                    Response response = new Response();
-                    try{
-                              this.modeleService.addEngineToModel(id, moteur.getId());
-                              
-                              return ResponseEntity.ok().body( response.addMessage( "success", "Moteur ajouté au modele" ) );
-                              
-                    }catch(Exception e){
-                              return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
-                    }
-          }
+		@PreAuthorize("hasRole('ADMIN')")
+		@PostMapping( "/{id}/categories" )
+		public ResponseEntity<?> addCategory( @PathVariable String id, @RequestBody Categorie categorie ){
+				Response response = new Response();
+				try{
+							this.modeleService.addCategoryToModel(id, categorie.getId());
+							
+							return ResponseEntity.ok().body( response.addMessage( "success", "Catégoie ajouté au modele" ) );
+							
+				}catch(Exception e){
+							return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
+				}
+		}
+		
+		@PreAuthorize("hasRole('ADMIN')")
+		@PostMapping("/{id}/moteurs")
+		public ResponseEntity<?> addEngine( @PathVariable String id, @RequestBody Moteur moteur ){
+				Response response = new Response();
+				try{
+							this.modeleService.addEngineToModel(id, moteur.getId());
+							
+							return ResponseEntity.ok().body( response.addMessage( "success", "Moteur ajouté au modele" ) );
+							
+				}catch(Exception e){
+							return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
+				}
+		}
 
 }

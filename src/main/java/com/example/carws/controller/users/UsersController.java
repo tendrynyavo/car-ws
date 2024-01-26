@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.token.Token;
 import com.example.carws.model.users.Messagerie;
@@ -98,6 +99,7 @@ public class UsersController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("messagerie")
     public ResponseEntity<Response> nouveauMessage(@RequestBody Messagerie messagerie) {
         try {
@@ -115,6 +117,7 @@ public class UsersController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("discussions")
     public ResponseEntity<Response> discussions(@RequestBody Messagerie messagerie) {
         try {
@@ -131,6 +134,7 @@ public class UsersController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("StatusVu")
     public ResponseEntity<Response> setStatusVu(@RequestBody Messagerie messagerie) {
         try {
