@@ -54,6 +54,15 @@ public class MoteurService {
                     repository.deleteById(id);
           }
           
-           
+           public void addTransmission( String id_boite, String id_moteur ) throws Exception{
+                    String sql = "insert into transmission values( nextval('seq_transmission') , '%s' , '%s' )";
+                    sql = String.format( sql , id_boite, id_moteur );
+                    try{
+                              jdbc.update( sql );
+                    }catch(Exception e){
+                              e.printStackTrace();
+                              throw e;
+                    }
+          }
           
 }

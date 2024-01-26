@@ -4,9 +4,9 @@ FROM 'E:/ITU/Semestre 5/Mr Rojo/Projet_Cloud/car-ws/car-ws/database/data/manufac
 DELIMITER ';'
 CSV HEADER;
 
-COPY categorie(nom)
+COPY categorie(id_categorie,nom)
 FROM '/home/mounts/GitHub/car-ws/database/data/categories.csv'
-DELIMITER ','
+DELIMITER ';'
 CSV HEADER;
 
 insert into design values ( default , 1 , 1 );
