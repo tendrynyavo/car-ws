@@ -47,7 +47,7 @@ public class VoitureController{
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
 		try{
-			Users user = userService.findBy(userId);
+			Users user = userService.login(userId);
 			Voiture[] voitures =  voitureService.getVoituresByUser(user).toArray( new Voiture[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( voitures );
 		}catch( Exception exception ){
