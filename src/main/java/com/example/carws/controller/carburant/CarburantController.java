@@ -11,7 +11,7 @@ import com.example.carws.service.*;
 import com.example.carws.response.*;
 
 @RestController
-@RequestMapping("/api/carburant")
+@RequestMapping("/api/carburants")
 public class CarburantController{
 
 	@Autowired CarburantService carburantService;
