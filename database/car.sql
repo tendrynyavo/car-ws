@@ -254,7 +254,14 @@ create table role (
 CREATE TABLE role_user (
    id serial primary key,
    id_user varchar(50) NOT NULL,
-   role varchar(50) NOT NULL,
+   role_id varchar(50) NOT NULL,
+   etat int default 1
+);
+
+CREATE TABLE roles_user (
+   id serial primary key,
+   id_user varchar(50) NOT NULL,
+   roles_id varchar(50) NOT NULL,
    etat int default 1
 );
 

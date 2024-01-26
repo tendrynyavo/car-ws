@@ -44,7 +44,7 @@ public class SecurityConfig {
         return (httpServletRequest, httpServletResponse, e) -> {
             Map<String, Object> errorObject = new HashMap<>();
             int errorCode = 401;
-            errorObject.put("message", e.getMessage());
+            errorObject.put("message", "Acces non autorise");
             errorObject.put("error", HttpStatus.UNAUTHORIZED);
             errorObject.put("code", errorCode);
             errorObject.put("timestamp", new Timestamp(new Date().getTime()));
@@ -82,6 +82,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/users/login").permitAll()
                     .requestMatchers("/api/users/authentification").permitAll()
                     .requestMatchers("/api/users/token/**").permitAll()
+                    .requestMatchers("/api/users/authentificationAdmin").permitAll()
                     .anyRequest().authenticated();
             });
 

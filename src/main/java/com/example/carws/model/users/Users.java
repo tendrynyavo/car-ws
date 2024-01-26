@@ -10,12 +10,12 @@ import java.util.Set;
 import com.example.carws.model.annonce.AnnonceFavories;
 
 @Entity
-@Table(name = "users")
+@Table(name = "utilisateur")
 public class Users {
     @Id
-    @Column(name = "id_user")
+    @Column(name = "id_utilisateur")
     String id;
-    @Column(name = "nom_user")
+    @Column(name = "nom")
     String nom;
     @Column
     String prenom;
@@ -23,14 +23,14 @@ public class Users {
     String contact;
     @Column(name = "date_naissance")
     Date dateDeNaissance;
-    @Column
+    @Column(name = "email")
     String mail;
-    @Column
+    @Column(name = "mot_de_passe")
     String password;
 
     @OneToMany
     @JoinTable(
-        name = "liste_role_users_valide",  
+        name = "roles_user",  
         joinColumns = @JoinColumn(name = "id_user")
     )
     Set<Role> roles;
@@ -137,6 +137,23 @@ public class Users {
 
     public void setRoles(Set<Role> role) {
         this.roles = role;
+    }
+
+    public boolean isRole(String role) {
+        if(this.getRoles() == null)
+            return false;
+        if(this.getRoles().size() == 0)
+            return false;
+        int count = 0;
+        for(Role _role : this.getRoles()) {
+            if(_role.getId().equals(role)) {
+                count++;
+                break;
+            }
+        }
+        if(count == 0)
+            return false;
+        return true;
     }
 
 }

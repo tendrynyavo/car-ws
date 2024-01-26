@@ -63,7 +63,7 @@ public class UsersController {
             response.addData("token", token);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erreur: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", e.getMessage()));
         }
@@ -78,7 +78,7 @@ public class UsersController {
             response.addData("token", token);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erreur: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", e.getMessage()));
         }
@@ -110,7 +110,6 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
-            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", exception.getMessage()));
         }
@@ -127,7 +126,6 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
-            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", exception.getMessage()));
         }
@@ -144,9 +142,25 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
-            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", exception.getMessage()));
+        }
+    }
+
+    @PostMapping("authentificationAdmin")
+    public ResponseEntity<Response> authentificationAdmin(@RequestBody Users users) throws Exception {
+        try {
+            users = usersService.login(users.getId());
+            if(!users.isRole("ADMIN"))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response().addError("exception", "Acces non autorise."));
+            String token = new Token().generateJwt(users);
+            Response response = new Response();
+            response.addData("token", token);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Response().addError("exception", e.getMessage()));
         }
     }
 

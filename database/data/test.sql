@@ -251,3 +251,6 @@ db.discussions.aggregate([
         }
     }
 ]);
+
+insert into role values ('ADMIN', 'Administrateur'), ('USER', 'Client');
+insert into roles_user (id_user, roles_id) values ('Vo9M3bvgthYy1zUfklqUqrf4C8a2', 'ADMIN');
