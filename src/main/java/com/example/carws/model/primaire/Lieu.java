@@ -34,6 +34,14 @@ public class Lieu {
           @OneToOne(mappedBy = "lieu")
           Annonce annonce;
 
+          public Annonce getAnnonce(){
+            return this.annonce;
+          }
+
+          public void setAnnonce(Annonce annonce){
+            this.annonce = annonce;
+          }
+
           public String getId() {
                     return id;
           }

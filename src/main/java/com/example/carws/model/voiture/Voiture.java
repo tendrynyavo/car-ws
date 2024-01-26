@@ -51,7 +51,7 @@ public class Voiture{
     Modele modele;
 
     @OneToOne(mappedBy = "voiture")
-    @JsonBackReference
+    // @JsonBackReference
     Annonce annonce;
 
     public void setId(String id){

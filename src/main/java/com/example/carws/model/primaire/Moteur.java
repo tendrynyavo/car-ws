@@ -46,6 +46,9 @@ public class Moteur{
          @JoinColumn( name = "id_carburant" )
          Carburant carburant;
 
+         @Column( name = "deleted" )
+	    boolean deleted;
+
           public String getId() {
                     return id;
           }
@@ -112,5 +115,11 @@ public class Moteur{
                     this.carburant = carburant;
           }
           
-
+        public boolean getDeleted(){
+            return this.deleted;
+        }
+    
+        public void setDeleted( boolean bool ){
+            this.deleted = bool;
+        }
 }

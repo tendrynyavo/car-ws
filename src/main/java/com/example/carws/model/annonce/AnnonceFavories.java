@@ -1,76 +1,78 @@
-// package com.example.carws.model.annonce;
+package com.example.carws.model.annonce;
 
-// import java.sql.Date;
+import java.sql.Date;
 
-// import com.example.carws.model.users.Users;
-// import com.fasterxml.jackson.annotation.JsonBackReference;
-// import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
-// import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.example.carws.model.users.Users;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-// import jakarta.persistence.*;
+import com.example.carws.utility.IdGenerator;
 
-// @Entity
-// @Table( name = "favoris" )
-// @JsonIdentityInfo(
-//  generator = ObjectIdGenerators.PropertyGenerator.class, 
-//  property = "id")
-// public class AnnonceFavories{
-// 	@Id
-// 	@Column( name = "id_favoris", columnDefinition = "serial" )
-// 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-// 	Integer id;
+import org.hibernate.annotations.GenericGenerator;
 
-//     @OneToOne(cascade = CascadeType.ALL)
-//     @JoinColumn(name = "id_annonce")
-//     @JsonManagedReference("annonce-favoris")
-//     Annonce annonce;
+import jakarta.persistence.*;
 
-//     @ManyToOne
-//     @JoinColumn(name="id_user", nullable=false)
-//     Users user;
+@Entity
+@Table( name = "favori" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
+public class AnnonceFavories{
+	@Id
+	@Column( name = "id_favori" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "FAV"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_favori" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
-//     @Column( name = "date_ajout" )
-// 	Date date;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_annonce")
+    Annonce annonce;
 
-// 	public void setId( Integer id ){
-// 		this.id = id;
-// 	}
+    @ManyToOne
+	@JoinColumn(name = "id_utilisateur")
+    Users user;
 
-// 	public Integer getId(){
-// 		return this.id;
-// 	}
+    @Column( name = "date_ajout" )
+	Date date;
 
-//     public void setAnnonce(Annonce annonce){
-//         this.annonce = annonce;
-//     }
+	public void setId( String id ){
+		this.id = id;
+	}
 
-//     public Annonce getAnnonce(){
-//         return this.annonce;
-//     }
+	public String getId(){
+		return this.id;
+	}
 
-//     public void setUser(Users user){
-//         this.user = user;
-//     }
+    public void setAnnonce(Annonce annonce){
+        this.annonce = annonce;
+    }
 
-//     public Users getUser(){
-//         return this.user;
-//     }
+    public Annonce getAnnonce(){
+        return this.annonce;
+    }
 
-//     public void setDate(Date dateheure){
-//         this.date = dateheure;
-//     }
+    public void setUser(Users user){
+        this.user = user;
+    }
 
-//     public Date getDatetime(){
-//         return this.date;
-//     }
+    public Users getUser(){
+        return this.user;
+    }
 
-// 	public AnnonceFavories(){
+    public void setDate(Date dateheure){
+        this.date = dateheure;
+    }
 
-// 	}
+    public Date getDatetime(){
+        return this.date;
+    }
 
-// 	public AnnonceFavories( Date date ) throws Exception{
-//         this.setDate(date);
-// 	}
+	public AnnonceFavories(){
 
-// }
+	}
+
+	public AnnonceFavories( Date date ) throws Exception{
+        this.setDate(date);
+	}
+
+}

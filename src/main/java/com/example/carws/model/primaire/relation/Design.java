@@ -3,13 +3,19 @@ package com.example.carws.model.primaire.relation;
 import jakarta.persistence.*;
 import com.example.carws.model.primaire.*;
 
+import com.example.carws.utility.IdGenerator;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 @Entity
 @Table(name = "design")
 public class Design {
 	
 	@Id
-	@Column(name="id_design")
-	Integer id;
+	@Column( name = "id_design" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "DSG"), @Parameter( name = "sequence", value = "seq_design" ), @Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
 	@ManyToOne
 	@JoinColumn(name="id_modele")
@@ -19,10 +25,10 @@ public class Design {
 	@JoinColumn( name = "id_categorie" )
 	Categorie categorie;
 
-	public void setId(Integer id){
+	public void setId(String id){
 		this.id = id;
 	}
-	public Integer getId(){
+	public String getId(){
 		return this.id;
 	}
 

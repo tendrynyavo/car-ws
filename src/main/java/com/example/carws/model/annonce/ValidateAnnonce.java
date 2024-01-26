@@ -1,62 +1,83 @@
-// package com.example.carws.model.annonce;
+package com.example.carws.model.annonce;
 
-// import java.sql.Timestamp;
+import java.sql.Date;
+import java.sql.Timestamp;
 
-// import com.fasterxml.jackson.annotation.JsonBackReference;
-// import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-// import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
 
-// @Entity
-// @Table( name = "validate_annonce" )
-// @JsonIdentityInfo(
-//  generator = ObjectIdGenerators.PropertyGenerator.class, 
-//  property = "id")
-// public class ValidateAnnonce{
-// 	@Id
-// 	@Column( name = "id_annonce_valide", columnDefinition = "serial" )
-// 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-// 	Integer id;
+import com.example.carws.model.users.Users;
+import com.example.carws.utility.IdGenerator;
 
-//     @OneToOne(cascade = CascadeType.ALL)
-//     @JoinColumn(name = "id_annonce")
-//     @JsonBackReference("annonce-validate")
-//     Annonce annonce;
+import org.hibernate.annotations.GenericGenerator;
 
-//     @Column( name = "date_time_validation" )
-// 	Timestamp datetimevalidation;
+@Entity
+@Table( name = "valide" )
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
+public class ValidateAnnonce{
+	@Id
+	@Column( name = "id_valide" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "VAL"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_valide" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+    @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
+	String id;
 
-// 	public void setId( Integer id ){
-// 		this.id = id;
-// 	}
+    @OneToOne
+    @JoinColumn(name = "id_annonce")
+    // @JsonBackReference
+    Annonce annonce;
 
-// 	public Integer getId(){
-// 		return this.id;
-// 	}
+    @OneToOne
+    @JoinColumn(name = "id_utilisateur")
+    Users user;
 
-//     public void setAnnonce(Annonce annonce){
-//         this.annonce = annonce;
-//     }
+    @Column( name = "date_valide" )
+	Date datetimevalidation;
 
-//     public Annonce getAnnonce(){
-//         return this.annonce;
-//     }
+	public void setId( String id ){
+		this.id = id;
+	}
 
-//     public void setDatetimevalidation(Timestamp dateheure){
-//         this.datetimevalidation = dateheure;
-//     }
+	public String getId(){
+		return this.id;
+	}
 
-//     public Timestamp getDatetime(){
-//         return this.datetimevalidation;
-//     }
+    public void setAnnonce(Annonce annonce){
+        this.annonce = annonce;
+    }
 
-// 	public ValidateAnnonce(){
+    public Annonce getAnnonce(){
+        return this.annonce;
+    }
 
-// 	}
+    public void setDatetimevalidation(Date dateheure){
+        this.datetimevalidation = dateheure;
+    }
 
-// 	public ValidateAnnonce( Timestamp dateheure ) throws Exception{
-//         this.setDatetimevalidation(dateheure);
-// 	}
+    public Date getDatetime(){
+        return this.datetimevalidation;
+    }
 
-// }
+    public Users getUser(){
+        return this.user;
+    }
+
+    public void setUser(Users user){
+        this.user = user;
+    }
+
+	public ValidateAnnonce(){
+
+	}
+
+	public ValidateAnnonce( Date dateheure ) throws Exception{
+        this.setDatetimevalidation(dateheure);
+	}
+
+}

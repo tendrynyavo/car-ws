@@ -4,8 +4,13 @@ import java.sql.Date;
 
 import jakarta.persistence.*;
 import java.util.Calendar;
+import java.util.List;
 
 import com.example.carws.model.annonce.Annonce;
+import com.example.carws.model.annonce.AnnonceFavories;
+import com.example.carws.model.annonce.AnnonceVendus;
+import com.example.carws.model.annonce.Historique;
+import com.example.carws.model.annonce.ValidateAnnonce;
 import com.example.carws.model.voiture.Voiture;
 
 @Entity
@@ -14,27 +19,50 @@ public class Users {
     @Id
     @Column(name = "id_utilisateur")
     String id;
+
     @Column(name = "nom")
     String nom;
+
     @Column
     String prenom;
+
     @Column
     String contact;
+
     @Column(name = "date_naissance")
     Date dateDeNaissance;
+
     @Column(name = "email")
     String mail;
+    
     @Column(name = "mot_de_passe")
     String password;
 
     // @OneToMany(mappedBy="user")
 	// Set<AnnonceFavories> favories;
 
-    @OneToOne(mappedBy = "user")
-    Annonce annonce;
+    @OneToMany(mappedBy = "user")
+    // @JsonBackReference
+    List<Annonce> annonces;
 
     @OneToOne(mappedBy = "user")
     Voiture voiture;
+
+    @OneToOne(mappedBy = "user")
+    // @JsonBackReference
+    ValidateAnnonce validatesAnnonces;
+
+    @OneToMany(mappedBy = "user")
+    // @JsonBackReference
+    List<AnnonceFavories> favoriesAnnonces;
+
+    @OneToMany(mappedBy = "user")
+    // @JsonBackReference
+    List<AnnonceVendus> vendusAnnonces;
+
+    @OneToMany(mappedBy = "user")
+    // @JsonBackReference
+    List<Historique> historiques;
     
     public Users() {
     }
@@ -119,6 +147,14 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setAnnonces(List<Annonce> annonces){
+        this.annonces = annonces;
+    }
+
+    public List<Annonce> getAnnonces(){
+        return this.annonces;
     }
 
     // public void setFavories(Set<AnnonceFavories> listes){

@@ -4,12 +4,15 @@
  */
 package com.example.carws.model.primaire;
 
+import com.example.carws.model.annonce.Annonce;
+import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,6 +30,17 @@ public class Caracteristique {
           String id;
           @Column
           String nom;
+
+          @OneToOne(mappedBy = "caracteristique")
+          DetailsAnnonce details;
+
+          public void setDetails(DetailsAnnonce details){
+            this.details = details;
+          }
+
+          public DetailsAnnonce getDetails(){
+            return this.details;
+          }
 
           public String getId() {
                     return id;
