@@ -8,7 +8,6 @@ public class CarWsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CarWsApplication.class, args);
-		System.out.println("Push notification");
 	}
 
 }
