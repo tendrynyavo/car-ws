@@ -36,20 +36,6 @@ public class Modele{
     @Column( name = "annee" )
     Date annee;
 
-	@OneToMany( mappedBy = "modele" )
-	Set<Design> designs;
-          
-	@OneToMany( mappedBy = "modele" )
-	Set<Specificite> specificites;
-
-	public Set<Specificite> getSpecificites() {
-			return specificites;
-	}
-
-	public void setSpecificites(Set<Specificite> specificites) {
-			this.specificites = specificites;
-	}
-	
 	
 
 	public Date getAnnee() {
@@ -60,14 +46,6 @@ public class Modele{
 			this.annee = annee;
 	}
 	
-	public void setDesigns(Set<Design> cs){
-		this.designs = cs;
-	}
-
-	public Set<Design> getDesigns(){
-		return this.designs;
-	}
-
 	public void setMarque(Marque marque){
 		this.marque = marque;
 	}

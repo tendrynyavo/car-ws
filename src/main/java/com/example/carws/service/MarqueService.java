@@ -15,11 +15,11 @@ public class MarqueService{
 	MarqueRepository repository;
 
 	public List<Marque> getAllMarques() throws Exception{
-		return repository.findByDeletedFalse();
+		return repository.findAll();
 	}
 
 	public Marque getMarque( String id ) throws Exception{
-		Marque c = (Marque)repository.findByIdAndDeletedFalse( id );
+		Marque c = (Marque)repository.findById( id ).get();
 		if( c == null ){
 			throw new CategorieException("La marque n'existe pas");
 		}
@@ -49,7 +49,7 @@ public class MarqueService{
 		Marque marque;
 		try{
 			marque = this.getMarque( id );
-			marque.setDeleted(true);
+//			marque.setDeleted(true);
 			repository.save(marque);
 		}catch (Exception e) {
 			throw e;
