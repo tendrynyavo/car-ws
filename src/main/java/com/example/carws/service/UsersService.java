@@ -1,22 +1,25 @@
 package com.example.carws.service;
 
 import com.example.carws.repository.UsersRepository;
-
-import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.*;
-
 import com.example.carws.model.users.Users;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import org.springframework.stereotype.Service;
+// import jakarta.persistence.EntityManager;
+// import jakarta.persistence.PersistenceContext;
+// import jakarta.transaction.Transactional;
 
 @Service
 public class UsersService {
 
     @Autowired
     UsersRepository usersRepository;
+    @Autowired
+    RoleService roleService;
+
+    // @PersistenceContext
+    // private EntityManager entityManager;
 
     public void inscription(Users users) throws Exception {
         String idUser = this.inscriptionFireBase(users.getMail(), users.getPassword());
@@ -54,5 +57,16 @@ public class UsersService {
             throw new Exception("L’utilisateur avec l’adresse e-mail fournie existe déjà!");
         }
     }
+
+    // public void ajoutRole(String idUser, String idRole) throws Exception {
+    //     String sql = "INSERT INTO role_user (id_user, role) VALUES ('?', '?')";
+    //     System.out.println(sql);
+    //     entityManager.createNativeQuery(sql)
+    //         .setParameter(1, idUser)
+    //         .setParameter(2, idRole)
+    //         .executeUpdate();
+    // }
+
+
 
 }

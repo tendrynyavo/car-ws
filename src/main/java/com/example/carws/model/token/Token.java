@@ -29,6 +29,7 @@ public class Token {
 
         return Jwts.builder()
                 .claim("id", user.getId())
+                .claim("roles", user.getRoles())
                 .setSubject(user.getMail())
                 .setExpiration(expiryAt)
                 .signWith(secret)

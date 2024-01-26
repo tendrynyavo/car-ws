@@ -28,8 +28,15 @@ public class Users {
     @Column
     String password;
 
-    @OneToMany(mappedBy="user")
-	Set<AnnonceFavories> favories;
+    @OneToMany
+    @JoinTable(
+        name = "liste_role_users_valide",  
+        joinColumns = @JoinColumn(name = "id_user")
+    )
+    Set<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    Set<AnnonceFavories> favories;
 
     public Users() {
     }
@@ -116,12 +123,20 @@ public class Users {
         this.password = password;
     }
 
-    public void setFavories(Set<AnnonceFavories> listes){
+    public void setFavories(Set<AnnonceFavories> listes) {
         this.favories = listes;
     }
 
-    public Set<AnnonceFavories> getFavories(){
+    public Set<AnnonceFavories> getFavories() {
         return this.favories;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> role) {
+        this.roles = role;
     }
 
 }
