@@ -4,7 +4,9 @@
  */
 package com.example.carws.controller.voiture;
 
+import com.example.carws.model.primaire.Carburant;
 import com.example.carws.model.primaire.Moteur;
+import com.example.carws.model.primaire.Vitesse;
 import com.example.carws.response.Response;
 import com.example.carws.service.MoteurService;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,5 +94,20 @@ public class MoteurController {
                               return ResponseEntity.badRequest().body( response.addError("error" , e.getMessage()) );
                     }
           }
+          
+          @PostMapping( "/{id}/transmission" )
+          public ResponseEntity<?> addTransmission( @PathVariable String id, @RequestBody Vitesse vitesse ){
+                    Response response = new Response();
+                    try{
+                              this.service.addTransmission(vitesse.getId(), id);
+                              
+                              return ResponseEntity.ok().body( response.addMessage( "success", "Boite de vitesse ajouté au type de moteur" ) );
+                              
+                    }catch(Exception e){
+                              return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
+                    }
+          }
+          
+           
           
 }

@@ -10,6 +10,7 @@ import com.example.carws.repository.MoteurRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class MoteurService {
           
           @Autowired MoteurRepository repository;
+          @Autowired JdbcTemplate jdbc;
           
           public List<Moteur> getAll() throws Exception{
                     return (List<Moteur>) repository.findAll();
@@ -50,6 +52,17 @@ public class MoteurService {
           
           public void delete( String id ) throws Exception{
                     repository.deleteById(id);
+          }
+          
+           public void addTransmission( String id_boite, String id_moteur ) throws Exception{
+                    String sql = "insert into transmission values( nextval('seq_transmission') , '%s' , '%s' )";
+                    sql = String.format( sql , id_boite, id_moteur );
+                    try{
+                              jdbc.update( sql );
+                    }catch(Exception e){
+                              e.printStackTrace();
+                              throw e;
+                    }
           }
           
 }

@@ -4,6 +4,7 @@
  */
 package com.example.carws.controller.categorie;
 
+//import com.example.carws.configuration.RelationRepository;
 import com.example.carws.model.primaire.Lieu;
 import com.example.carws.response.Response;
 import com.example.carws.service.LieuService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class LieuController {
           
           @Autowired LieuService service;
+//          @Autowired RelationRepository repo;
           
           @GetMapping()
           public ResponseEntity<Response> list() {
@@ -92,5 +94,7 @@ public class LieuController {
                               return ResponseEntity.badRequest().body( response.addError( "error", e.getMessage() ) );
                     }
           }
+          
+          
           
 }

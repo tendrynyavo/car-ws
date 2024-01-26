@@ -7,12 +7,16 @@ import java.util.*;
 
 import com.example.carws.model.primaire.*;
 import com.example.carws.exception.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @Service
 public class ModeleService{
 
 	@Autowired
 	ModeleRepository repository;
+          
+          @Autowired
+          JdbcTemplate jdbc;
 
 	public List<Modele> getAllModeles() throws Exception{
 		return repository.findByDeletedFalse();
@@ -56,5 +60,28 @@ public class ModeleService{
 			throw e;
 		}
 	}
+    
+          public void addEngineToModel( String id_model, String id_motor ) throws Exception{
+                    String sql = "insert into specificite values ( nextval('seq_specificite') , '%s' , '%s' )";
+                    sql = String.format(sql, id_model, id_motor);
+                    try{
+                          jdbc.update(sql);
+                    }catch(Exception e){
+                              e.printStackTrace();
+                              throw e;
+                    }
+          }
+          
+          public void addCategoryToModel( String id_model, String id_category ) throws Exception{
+                    String sql = "insert into design values (nextval('seq_design') , '%s' , '%s')";
+                     sql = String.format(sql, id_category, id_model);
+                     try{
+                               jdbc.update(sql);
+                     }catch(Exception e){
+                               e.printStackTrace();
+                               throw e;
+                     }
+          }
+          
     
 }

@@ -4,7 +4,9 @@
  */
 package com.example.carws.controller.annonce;
 
+import com.example.carws.model.primaire.Carburant;
 import com.example.carws.model.primaire.TypeMoteur;
+import com.example.carws.model.primaire.Vitesse;
 import com.example.carws.response.Response;
 import com.example.carws.service.TypeMoteurService;
 import org.springframework.web.bind.annotation.RestController;
@@ -94,5 +96,20 @@ public class TypeMoteurController {
                               
                     }
           }
+          
+          @PostMapping( "/{id}/carburants" )
+          public ResponseEntity<?> addCarburant( @PathVariable String id, @RequestBody Carburant carburant ){
+                    Response response = new Response();
+                    try{
+                              this.service.addCarburantToEngine(id, carburant.getId());
+                              
+                              return ResponseEntity.ok().body( response.addMessage( "success", "Carburant ajouté au type de moteur" ) );
+                              
+                    }catch(Exception e){
+                              return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
+                    }
+          }
+          
+          
           
 }
