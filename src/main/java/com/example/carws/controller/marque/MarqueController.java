@@ -19,13 +19,13 @@ public class MarqueController {
 	MarqueService marqueService;
 
 	@GetMapping
-	public ResponseEntity<Response> getMarques() throws Exception {
+	public ResponseEntity<?> getMarques() throws Exception {
               Response response = new Response();
 		try {
 			Marque[] categories = null;
 			categories = marqueService.getAllMarques().toArray(new Marque[0]);
-                              System.out.println("Ato ve zay eh .... " + Arrays.deepToString(categories) );
-			return ResponseEntity.ok().body(response.addData("data", categories));
+//                              System.out.println("Ato ve zay eh .... " + Arrays.deepToString(categories) );
+			return ResponseEntity.ok().body(categories);
 		} catch (Exception exception) {
                               
                               System.out.println("Ato ve zay exception .... " + exception );

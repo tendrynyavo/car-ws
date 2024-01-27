@@ -22,17 +22,8 @@ public class Marque{
 //	@Column( name = "deleted" )
 //	boolean deleted = false;
 
-//	@OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-//	 @JsonManagedReference("modele")
-//	List<Modele> modeles;
-//
-//	public void setModeles(List<Modele> modeles){
-//		this.modeles = modeles;
-//	}
-//	public List<Modele> getModeles(){
-//		return this.modeles;
-//	}
-@OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+
+          @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
 	 @JsonManagedReference("modele")
 	List<Modele> modeles;
 

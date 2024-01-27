@@ -29,14 +29,14 @@ public class CaracteristiqueController {
           @Autowired CaracteristiqueService service;
           
           @GetMapping
-          public ResponseEntity<Response> getAll(){
+          public ResponseEntity<?> getAll(){
                     Response response = new Response();
                     try{
                        Caracteristique[] caracteristiques = service.getCaracteristiques();
-                       return ResponseEntity.ok().body( response.addData("data", caracteristiques) );
+                       return ResponseEntity.ok().body( caracteristiques );
                     }catch(Exception e){
                               e.printStackTrace();
-                              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response.addError("error", e.getMessage()) );
+                              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( e.getMessage() );
                     }
           }
           

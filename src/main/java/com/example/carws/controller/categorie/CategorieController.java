@@ -11,7 +11,7 @@ import com.example.carws.service.CategorieService;
 import com.example.carws.response.*;
 
 @RestController
-@RequestMapping("/api/categorie")
+@RequestMapping("/api/categories")
 public class CategorieController{
 
 	@Autowired CategorieService categorieService;

@@ -30,14 +30,14 @@ public class EtatController {
           @Autowired EtatService service;
           
           @GetMapping()
-          public ResponseEntity<Response> list() {
+          public ResponseEntity<?> list() {
                     Response res = new Response();
                     try{
                               List<Etat> etats = service.getAll();
-                              return  ResponseEntity.ok().body(res.addData("data", etats));
+                              return  ResponseEntity.ok().body(etats);
                     }catch(Exception e){
                               e.printStackTrace();
-                              return  ResponseEntity.badRequest().body(res.addError("error", e.getMessage()));
+                              return  ResponseEntity.badRequest().body(e.getMessage());
                     }
           }
           
