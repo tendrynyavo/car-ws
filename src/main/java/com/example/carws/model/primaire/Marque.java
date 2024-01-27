@@ -19,11 +19,12 @@ public class Marque{
 	String id;
 	@Column( name = "nom" )
 	String nom;
-	@Column( name = "deleted" )
-	boolean deleted;
+//	@Column( name = "deleted" )
+//	boolean deleted = false;
 
-	@OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-	// @JsonManagedReference("modele")
+
+          @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+	 @JsonManagedReference("modele")
 	List<Modele> modeles;
 
 	public void setModeles(List<Modele> modeles){
@@ -32,14 +33,17 @@ public class Marque{
 	public List<Modele> getModeles(){
 		return this.modeles;
 	}
-
-	public boolean getDeleted(){
-		return this.deleted;
-	}
-
-	public void setDeleted( boolean bool ){
-		this.deleted = bool;
-	}
+//	public boolean getDeleted(){
+//		return this.deleted;
+//	}
+//    
+//          public boolean isDeleted(){
+//                    return this.getDeleted();
+//          }
+//
+//	public void setDeleted( boolean bool ){
+//		this.deleted = bool;
+//	}
 
 	public void setId( String id ){
 		this.id = id;
@@ -67,6 +71,11 @@ public class Marque{
 	public String getNom(){
 		return this.nom;
 	}
+    
+    @Override
+    public String toString(){
+              return " Marque = { id :  " + this.getId() + " , nom : " + this.getNom() + " }";
+    }
 
 	/*
 	 * 

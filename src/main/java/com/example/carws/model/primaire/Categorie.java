@@ -27,20 +27,9 @@ public class Categorie{
 	@Column( name = "deleted" )
 	boolean deleted;
 
-	@OneToMany( mappedBy = "categorie" )
-	Set<Design> modeles;
-
 	@OneToOne(mappedBy = "categorie")
 	Voiture voiture;
     
-	public void setDesigns( Set<Design> modeles ){
-		this.modeles = modeles;
-	}
-
-	public Set<Design> getDesigns(){
-		return this.modeles;
-	}
-
 	public boolean getDeleted(){
 		return this.deleted;
 	}

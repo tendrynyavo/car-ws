@@ -32,14 +32,14 @@ public class LieuController {
 //          @Autowired RelationRepository repo;
           
           @GetMapping()
-          public ResponseEntity<Response> list() {
+          public ResponseEntity<?> list() {
                     Response response = new Response();
                     try{
                               List<Lieu> lieus = service.list();
-                              return ResponseEntity.ok().body( response.addData( "data", lieus) );
+                              return ResponseEntity.ok().body( lieus );
                     }catch(Exception e){
                               e.getMessage();
-                              return ResponseEntity.badRequest().body( response.addError( "error", e.getMessage() ) );
+                              return ResponseEntity.badRequest().body( e.getMessage() );
                     }
 
           }

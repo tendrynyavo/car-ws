@@ -32,14 +32,14 @@ public class MoteurController {
           MoteurService service;
           
           @GetMapping()
-          public ResponseEntity<Response> list() {
+          public ResponseEntity<?> list() {
                     Response response = new Response();
                     try{
                               List<Moteur> moteurs = service.getAll();
-                              return ResponseEntity.ok().body( response.addData("data" , moteurs) );
+                              return ResponseEntity.ok().body( moteurs );
                     }catch(Exception e){
                               e.printStackTrace();
-                              return ResponseEntity.badRequest().body( response.addError("error" , e.getMessage()) );
+                              return ResponseEntity.badRequest().body( e.getMessage() );
                     }
                     
           }

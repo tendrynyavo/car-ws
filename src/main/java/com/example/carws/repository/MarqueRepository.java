@@ -4,6 +4,6 @@ import com.example.carws.model.primaire.*;
 import java.util.*;
 
 public interface MarqueRepository extends JpaRepository< Marque, String >{
-	List<Marque> findByDeletedFalse();
-	Marque findByIdAndDeletedFalse( String id );
+//	List<Marque> findByDeletedFalse();
+//	Marque findById( String id );
 }

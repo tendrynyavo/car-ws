@@ -9,6 +9,7 @@ import com.example.carws.model.primaire.Marque;
 import com.example.carws.service.MarqueService;
 
 import com.example.carws.response.*;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/marques")
@@ -19,13 +20,17 @@ public class MarqueController {
 
 	@GetMapping
 	public ResponseEntity<?> getMarques() throws Exception {
+              Response response = new Response();
 		try {
 			Marque[] categories = null;
 			categories = marqueService.getAllMarques().toArray(new Marque[0]);
-			return ResponseEntity.status(HttpStatus.OK).body(categories);
+//                              System.out.println("Ato ve zay eh .... " + Arrays.deepToString(categories) );
+			return ResponseEntity.ok().body(categories);
 		} catch (Exception exception) {
+                              
+                              System.out.println("Ato ve zay exception .... " + exception );
 			exception.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.addError("error" , exception.getMessage()));
 		}
 	}
 

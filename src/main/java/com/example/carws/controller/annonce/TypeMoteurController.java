@@ -31,14 +31,14 @@ public class TypeMoteurController {
           TypeMoteurService service;
           
           @GetMapping()
-          public ResponseEntity<Response> list() {
+          public ResponseEntity<?> list() {
                     Response response = new Response();
                     try{
                               TypeMoteur[] tms = service.findAll().toArray(new TypeMoteur[0]);
-                              return ResponseEntity.ok().body(response.addData("data" , tms));
+                              return ResponseEntity.ok().body(tms);
                     }catch(Exception e){
                               e.printStackTrace();
-                              return ResponseEntity.badRequest().body(response.addError("error" , e.getMessage()));
+                              return ResponseEntity.badRequest().body(e.getMessage());
                               
                     }
           }

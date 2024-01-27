@@ -13,7 +13,7 @@ import com.example.carws.service.VoitureService;
 import com.example.carws.response.*;
 
 @RestController
-@RequestMapping("/api/voiture")
+@RequestMapping("/api/voitures")
 public class VoitureController{
 
 	@Autowired VoitureService voitureService;
