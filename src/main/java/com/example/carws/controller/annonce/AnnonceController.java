@@ -177,6 +177,18 @@ public class AnnonceController{
 		}
 	}
 
+	@PutMapping("/defavoris/{id}")
+	public ResponseEntity<Response> defavorieAnnonce(@PathVariable("id") String id) {
+		Response response = new Response();
+		try {
+			annonceService.DefavoriseAnnonce(id);
+			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, en defavoris!"));
+		} catch (Exception e) {
+			response.addError("error", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+	}
+
 // 	@PostMapping("/search")
 // 	public ResponseEntity<?> advancedSearch(@RequestBody SearchedElements elements) {
 // 		try{

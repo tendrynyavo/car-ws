@@ -24,4 +24,5 @@ create sequence seq_utilisateur start with 1 increment by 1;
 create sequence seq_valide start with 1 increment by 1;
 create sequence seq_vendu start with 1 increment by 1;
 create sequence seq_voiture start with 1 increment by 1;
+create sequence seq_historique start with 1 increment by 1;
 

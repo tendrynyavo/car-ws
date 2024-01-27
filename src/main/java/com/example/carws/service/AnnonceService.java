@@ -4,6 +4,7 @@ import com.example.carws.repository.AnnonceRepository;
 import com.example.carws.repository.AnnonceVenduRepository;
 import com.example.carws.repository.CaracteristiqueRepository;
 import com.example.carws.repository.DetailsAnnonceRepository;
+import com.example.carws.repository.HistoriqueRepository;
 import com.example.carws.repository.LieuRepository;
 import com.example.carws.repository.UsersRepository;
 import com.example.carws.repository.ValidateAnnonceRepository;
@@ -59,6 +60,9 @@ public class AnnonceService{
 
     @Autowired
     CaracteristiqueRepository caracteristiqueRepository;
+
+	@Autowired
+	HistoriqueRepository historiqueRepository;
 
 	@Autowired
 	EntityManager entityManager;
@@ -220,6 +224,27 @@ public class AnnonceService{
 		} else {
 			throw new Exception("Annonce not found with id " + id + " in saveAnnonceFavories()");
 		}	  
+	}
+	
+
+	@Transactional
+	public void DefavoriseAnnonce( String id ) throws Exception{
+		Optional<AnnonceFavories> optionalAnnonce = favorisRepository.findById(id);
+		if (!optionalAnnonce.isPresent() || optionalAnnonce.get().getId() == null) {
+			throw new Exception("Annonce favoris not found or invalid with id " + id + " in DefavoriseAnnonce()");
+		}
+
+		Annonce annonce = optionalAnnonce.get().getAnnonce();
+		Users user = optionalAnnonce.get().getUser();
+
+		Historique historique = new Historique();
+		historique.setAnnonce(annonce);
+		historique.setDate(optionalAnnonce.get().getDatetime());
+		historique.setUser(user);
+
+		favorisRepository.deleteById(optionalAnnonce.get().getId());
+
+		historiqueRepository.save(historique);
 	}
 
 // 	@Transactional
