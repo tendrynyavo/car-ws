@@ -1,9 +1,12 @@
+
 drop view if exists one_annonce_to_month;
 create or replace view one_annonce_to_month
 	as		
 		select
-			*
-		from mois as m , annonce as a;
+                                            *
+		from mois as m 
+                                    left join annonce as a
+                                        on m.reference = EXTRACT( month from a.date_annonce );
 
 
 drop view if exists v_stats cascade;
@@ -22,6 +25,7 @@ create or replace view v_stats
 	order by o_a_m.reference;
 
 -- Statistiques par mois
+
 drop view if exists v_stats_month;
 create or replace view v_stats_month
 	as

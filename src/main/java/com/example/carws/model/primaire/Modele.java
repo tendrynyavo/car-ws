@@ -11,9 +11,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 @Entity
 @Table( name = "modele" )
-@JsonIdentityInfo(
- generator = ObjectIdGenerators.PropertyGenerator.class, 
- property = "id")
+//@JsonIdentityInfo(
+// generator = ObjectIdGenerators.PropertyGenerator.class, 
+// property = "id")
 
 public class Modele{
 	
@@ -25,6 +25,7 @@ public class Modele{
 
 	@ManyToOne
 	@JoinColumn( name = "id_marque", nullable = false )
+        @JsonManagedReference
 	Marque marque;
 
 	@Column( name = "nom" , nullable = false )

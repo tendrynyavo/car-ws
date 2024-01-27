@@ -10,7 +10,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -30,6 +34,23 @@ public class TypeMoteur {
           String nom;
           @Column
           boolean deleted;
+          
+          @ManyToMany
+           @JoinTable(
+               name = "type_carburant",
+               joinColumns = @JoinColumn(name = "id_type"),
+               inverseJoinColumns = @JoinColumn(name = "id_carburant")
+           )
+          Set<Carburant> carburants;
+
+          public Set<Carburant> getCarburants() {
+                    return carburants;
+          }
+
+          public void setCarburants(Set<Carburant> carburants) {
+                    this.carburants = carburants;
+          }
+          
 
           public String getId() {
                     return id;

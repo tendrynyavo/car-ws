@@ -2,6 +2,7 @@ package com.example.carws.model.primaire;
 
 import com.example.carws.utility.IdGenerator;
 import jakarta.persistence.*;
+import java.util.Set;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -23,7 +24,9 @@ public class Carburant{
 
 	@Column( name = "deleted" )
 	boolean deleted;
-
+          
+//          @ManyToMany
+            
 	public boolean getDeleted(){
 		return this.deleted;
 	}

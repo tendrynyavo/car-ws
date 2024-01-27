@@ -1,6 +1,7 @@
 package com.example.carws.controller.modele;
 
 import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Marque;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,9 @@ import com.example.carws.model.primaire.Moteur;
 import com.example.carws.service.ModeleService;
 
 import com.example.carws.response.*;
+import com.example.carws.service.MarqueService;
 import com.example.carws.service.model.ModelCategorieService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/modeles")
@@ -19,13 +22,18 @@ public class ModeleController{
 
 	@Autowired ModeleService modeleService;
           @Autowired ModelCategorieService modeleCategorieService;
-
+          @Autowired MarqueService marqueService;
+          
 	@GetMapping
 	public ResponseEntity<?> getModeles() throws Exception{
-		try{
+		Response r = new Response();
+              try{
 			Modele[] modeles = null;
 			modeles = modeleService.getAllModeles().toArray( new Modele[0] );
-			return ResponseEntity.status( HttpStatus.OK ).body( modeles );
+                           List<Marque> marques = marqueService.getAllMarques();
+                           r.addData("modeles" , modeles);
+                           r.addData("marques" , marques);
+			return ResponseEntity.status( HttpStatus.OK ).body( r );
 		}catch( Exception exception ){
 			exception.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( exception.getMessage() );
