@@ -1,12 +1,12 @@
 package com.example.carws.model.users;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 @Table(name = "utilisateur")
-public class Users {
+public class Users implements Serializable {
     @Id
     @Column(name = "id_utilisateur")
     String id;
@@ -40,10 +40,20 @@ public class Users {
     )
     Set<Role> roles;
 
-    // @OneToMany(mappedBy = "user")
-    // Set<AnnonceFavories> favories;
+    @OneToMany(mappedBy = "user")
+    Set<AnnonceFavories> favories;
 
     public Users() {
+    }
+
+    public Users(String id, String nom, String prenom, String contact, Date dateDeNaissance, String email, Set<Role> roles) throws Exception {
+        this.setId(id);
+        this.setNom(nom);
+        this.setPrenom(prenom);
+        this.setContact(contact);
+        this.setDateDeNaissance(dateDeNaissance);
+        this.setMail(email);
+        this.setRoles(roles);
     }
 
     public Users(String id) {
@@ -128,13 +138,13 @@ public class Users {
         this.password = password;
     }
 
-    // public void setFavories(Set<AnnonceFavories> listes) {
-    //     this.favories = listes;
-    // }
+    public void setFavories(Set<AnnonceFavories> listes) {
+        this.favories = listes;
+    }
 
-    // public Set<AnnonceFavories> getFavories() {
-    //     return this.favories;
-    // }
+    public Set<AnnonceFavories> getFavories() {
+        return this.favories;
+    }
 
     public Set<Role> getRoles() {
         return roles;
@@ -164,7 +174,8 @@ public class Users {
     public Collection<GrantedAuthority> getAuthorities() throws Exception {
         Collection<GrantedAuthority> authorisation = new ArrayList<GrantedAuthority>();
         for(Role _role : this.getRoles()) {
-            GrantedAuthority authority = new SimpleGrantedAuthority(_role.getRole());
+            System.out.println("role: "+ _role.getId());
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + _role.getId());
             authorisation.add(authority);
         }
         return authorisation;

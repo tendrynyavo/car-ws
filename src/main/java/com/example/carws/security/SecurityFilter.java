@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,13 +18,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
-
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.List;
 
 import com.example.carws.model.token.Token;
+import com.example.carws.model.users.Role;
 import com.example.carws.model.users.Users;
 import com.example.carws.service.UsersService;
-
-
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -37,20 +41,26 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void verifyToken(HttpServletRequest request) {
+    private void verifyToken(HttpServletRequest request)  {
         String token = this.getBearerToken(request);
         try {
-            Claims claim = new Token().verify(token);
-            String id = claim.get("id").toString();
-            Users user = usersService.login(id);
-            // UserDetails userDetails = 
-            if (user != null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()); // user null athorize
+            Users user = new Token().getUser(token);
+            if(user != null) {
+                UserDetails userDetails = org.springframework.security.core.userdetails.User
+                    .withUsername(user.getMail())
+                    .password(user.getPassword())
+                    .authorities(user.getAuthorities()) 
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .disabled(false)
+                    .build();
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Filter Error: " + e.getMessage());
         }
     }
 
@@ -62,6 +72,5 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
         return bearerToken;
     }
-
 
 }

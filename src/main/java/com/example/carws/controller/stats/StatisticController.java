@@ -58,4 +58,23 @@ public class StatisticController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/vente/{annee}")
+	public ResponseEntity<Response> getStatistiqueVenteParAn(@PathVariable("annee") String annee) {
+		Response response = new Response();
+		try{
+			int[][] statsParAn = this.service.getStatistiqueVenteParAn(annee);
+			response.addData( "statistics" , statsParAn );
+
+			System.out.println("Fevrier: " + statsParAn[1][1]);
+			
+			return ResponseEntity.status( HttpStatus.OK ).body( response );
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.addError( "error" , e.getMessage() );
+			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(response);
+		}
+	}
+
 }

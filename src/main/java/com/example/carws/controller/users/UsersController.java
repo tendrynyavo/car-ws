@@ -16,6 +16,11 @@ import com.example.carws.service.MessagerieService;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -59,6 +64,7 @@ public class UsersController {
     public ResponseEntity<Response> login(@RequestBody Users users) throws Exception {
         try {
             users = usersService.login(users.getId());
+            System.out.println("role: " + users.getRoles().size());
             String token = new Token().generateJwt(users);
             Response response = new Response();
             response.addData("token", token);
@@ -165,6 +171,21 @@ public class UsersController {
             System.out.println("Erreur: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new Response().addError("exception", e.getMessage()));
+        }
+    }
+
+    @PostMapping("test")
+    public void test(HttpServletRequest request) {
+        System.out.println("user: "  + request.isUserInRole("USER"));
+        System.out.println("admin: "  + request.isUserInRole("ADMIN"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities() != null) {
+            System.out.println("Roles de l'utilisateur :");
+            authentication.getAuthorities().forEach(authority -> {
+                System.out.println("==>" + authority.getAuthority());
+            });
+        } else {
+            System.out.println("Aucun rôle trouvé pour cet utilisateur.");
         }
     }
 
