@@ -238,19 +238,3 @@ alter table voiture_annonce add column annee integer not null;
 	
 	-- TEST
 		select * from get_validate_annonce_by_year(2023);
-
-
-CREATE TABLE t1 (
-	c0 VARCHAR(10),
-	c1 INTEGER
-);
-
-CREATE TABLE t2 (
-	c0 VARCHAR(10),
-	c1 INTEGER
-);
-
-CREATE TABLE t3 (
-	c0 VARCHAR(10),
-	c1 INTEGER
-);
