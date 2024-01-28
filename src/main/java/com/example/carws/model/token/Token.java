@@ -22,7 +22,7 @@ import java.util.List;
 public class Token {
 
     private static Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private static long expiryDuration = 150000 * 60;
+    private static long expiryDuration = 20 * 60;
 
     public String generateJwt(Users user) throws Exception {
 
