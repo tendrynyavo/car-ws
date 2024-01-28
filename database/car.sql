@@ -245,3 +245,6 @@ CREATE TABLE detail(
    FOREIGN KEY(id_caracteristique) REFERENCES caracteristique(id_caracteristique),
    FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
 );
+
+alter table moteur add column capacite double precision;
+alter table moteur add column consommation double precision;

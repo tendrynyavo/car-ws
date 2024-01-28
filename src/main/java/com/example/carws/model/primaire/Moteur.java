@@ -33,17 +33,25 @@ public class Moteur{
          Double puissance;
          @Column
          String configuration;
+         @Column
+         Double consommation;
+         @Column
+         Double capacite;
+         
          
          @ManyToOne
           @JoinColumn( name = "id_marque" )
+//          @Column
          Marque marque;
          
          @ManyToOne
          @JoinColumn( name = "id_type" )
+//          @Column
          TypeMoteur type;
          
          @ManyToOne
          @JoinColumn( name = "id_carburant" )
+//          @Column
          Carburant carburant;
 
           public String getId() {
@@ -111,6 +119,22 @@ public class Moteur{
           public void setCarburant(Carburant carburant) {
                     this.carburant = carburant;
           }
-          
 
+          public Double getConsommation() {
+                    return consommation;
+          }
+
+          public void setConsommation(Double consommation) {
+                    this.consommation = consommation;
+          }
+
+          public Double getCapacite() {
+                    return capacite;
+          }
+
+          public void setCapacite(Double capacite) {
+                    this.capacite = capacite;
+          }
+          
+          
 }

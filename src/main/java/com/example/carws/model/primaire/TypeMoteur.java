@@ -34,7 +34,7 @@ public class TypeMoteur {
           String nom;
           @Column
           boolean deleted;
-          
+//          
           @ManyToMany
            @JoinTable(
                name = "type_carburant",

@@ -4,9 +4,9 @@
  */
 package com.example.carws.controller.voiture;
 
-import com.example.carws.model.primaire.Carburant;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
+import com.example.carws.request.EngineRequest;
 import com.example.carws.response.Response;
 import com.example.carws.service.MoteurService;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,11 +57,12 @@ public class MoteurController {
           }
           
           @PutMapping("/{id}")
-          public ResponseEntity<?> put(@PathVariable String id, @RequestBody Moteur input) {
+          public ResponseEntity<?> put(@PathVariable String id, @RequestBody EngineRequest input) {
                     Response response = new Response();
                     try{
-                              input.setId( id );
-                              service.update(input);
+                              Moteur m = input.toEngine();
+                              m.setId( id );
+                              service.update(m);
                               return ResponseEntity.ok().body( response.addMessage("success" , "Moteur modifiée") );
                     }catch(Exception e){
                               e.printStackTrace();
@@ -70,11 +71,11 @@ public class MoteurController {
           }
           
           @PostMapping
-          public ResponseEntity<?> post(@RequestBody Moteur input) {
+          public ResponseEntity<?> post(@RequestBody EngineRequest input) {
                     Response response = new Response();
                     try{
                               
-                              service.save(input);
+                              service.save(input.toEngine());
                               return ResponseEntity.ok().body( response.addMessage("success" , "Moteur ajoutée") );
                     }catch(Exception e){
                               e.printStackTrace();

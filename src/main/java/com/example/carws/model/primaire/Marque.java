@@ -8,9 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "marque" )
-//@JsonIdentityInfo(
-// generator = ObjectIdGenerators.PropertyGenerator.class, 
-// property = "id")
+
 public class Marque{
 	@Id
 	@Column( name = "id_marque" )
