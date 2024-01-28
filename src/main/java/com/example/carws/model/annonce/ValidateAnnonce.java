@@ -31,7 +31,6 @@ public class ValidateAnnonce{
 
     @OneToOne
     @JoinColumn(name = "id_utilisateur")
-    @JsonIgnore
     Users user;
 
     @Column( name = "date_valide" )

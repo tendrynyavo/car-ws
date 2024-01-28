@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "favori" )
+@Table( name = "historique" )
 @JsonIdentityInfo(
  generator = ObjectIdGenerators.PropertyGenerator.class, 
  property = "id")
@@ -26,9 +26,8 @@ public class Historique{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_annonce")
-    Annonce annonce;
+    @Column( name = "id_annonce" )
+    String idAnnonce;
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
@@ -49,12 +48,12 @@ public class Historique{
 		return this.id;
 	}
 
-    public void setAnnonce(Annonce annonce){
-        this.annonce = annonce;
+    public void setIdAnnonce(String annonce){
+        this.idAnnonce = annonce;
     }
 
-    public Annonce getAnnonce(){
-        return this.annonce;
+    public String getIdAnnonce(){
+        return this.idAnnonce;
     }
 
     public void setUser(Users user){

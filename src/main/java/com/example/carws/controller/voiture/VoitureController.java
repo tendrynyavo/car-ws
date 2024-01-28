@@ -22,7 +22,7 @@ public class VoitureController{
 
 	@Autowired UsersService userService;
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping
 	public ResponseEntity<?> getVoitures() throws Exception{
 		try{

@@ -32,7 +32,6 @@ public class AnnonceVendus{
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
-    @JsonIgnore
     Users user;
 
     @Column( name = "date_vendu" )

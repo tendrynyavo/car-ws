@@ -243,10 +243,18 @@ public class AnnonceService{
 		Annonce annonce = optionalAnnonce.get().getAnnonce();
 		Users user = optionalAnnonce.get().getUser();
 
+		annonce.setFavories(null);
+
 		Historique historique = new Historique();
-		historique.setAnnonce(annonce);
+
+		System.out.println("id annonce: "+annonce.getId());
+
+		historique.setIdAnnonce(annonce.getId());
+		historique.setAncienValeur(optionalAnnonce.get().getAnnonce().getValeur());
 		historique.setDate(optionalAnnonce.get().getDatetime());
 		historique.setUser(user);
+
+		System.out.println("Testtt");
 
 		favorisRepository.deleteById(optionalAnnonce.get().getId());
 
