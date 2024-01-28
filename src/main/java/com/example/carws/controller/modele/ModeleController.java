@@ -119,11 +119,11 @@ public class ModeleController{
                     }
           }
           
-          @PostMapping("/{id}/moteurs")
-          public ResponseEntity<?> addEngine( @PathVariable String id, @RequestBody Moteur moteur ){
+          @PostMapping("/{id}/moteurs/{moteur}")
+          public ResponseEntity<?> addEngine( @PathVariable String id, @PathVariable String moteur ){
                     Response response = new Response();
                     try{
-                              this.modeleService.addEngineToModel(id, moteur.getId());
+                              this.modeleService.addEngineToModel(id, moteur);
                               
                               return ResponseEntity.ok().body( response.addMessage( "success", "Moteur ajouté au modele" ) );
                               

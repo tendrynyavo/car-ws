@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.sql.Date;
 import java.util.Set;
-import com.example.carws.model.primaire.relation.*;
 import com.example.carws.utility.IdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -48,15 +47,31 @@ public class Modele{
         @JsonIgnoreProperties("modele")
           Set<Categorie> categories;
 
-          public Set<Categorie> getCategories() {
-                    return categories;
-          }
+         
 
-          public void setCategories(Set<Categorie> categories) {
-                    this.categories = categories;
-          }
+  @ManyToMany
+  @JoinTable(
+  	name = "specificite",
+  	joinColumns = @JoinColumn(name = "id_modele"),
+  	inverseJoinColumns = @JoinColumn(name = "id_moteur")
+  )
+	Set<Moteur> moteurs;
 
-	
+	public Set<Categorie> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Categorie> categories) {
+		this.categories = categories;
+	}
+
+	public Set<Moteur> getMoteurs() {
+		return moteurs;
+	}
+
+	public void setMoteurs(Set<Moteur> categories) {
+		this.moteurs = categories;
+	}
 
 	public Date getAnnee() {
 			return annee;

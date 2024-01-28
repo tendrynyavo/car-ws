@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
  * @author sarobidy
  */
 @RestController
-@RequestMapping("/api/lieux")
+@RequestMapping("/api/lieus")
 public class LieuController {
           
           @Autowired LieuService service;
