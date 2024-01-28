@@ -1,5 +1,8 @@
 package com.example.carws.model.statistics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -43,5 +46,13 @@ public class ValidateStatistique {
     public ValidateStatistique(){
 
     }
+
+	public String[] getMonths( ValidateStatistique[] stats ){
+		List<String> month = new ArrayList<>();
+		for( ValidateStatistique stat : stats ){
+			month.add( stat.getMois() );
+		}
+		return month.toArray( new String[0] );
+	}
 
 }

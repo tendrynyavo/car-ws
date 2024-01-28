@@ -34,21 +34,21 @@ create or replace view v_stats_month
 -- Validatation views ( Layah )
 DROP VIEW IF EXISTS v_statistics_validate_month;
 CREATE OR REPLACE VIEW v_statistics_validate_month
-	AS
-		SELECT 
-			EXTRACT(YEAR FROM va.date_valide) AS annee,
-			m.nom AS mois, 
-			COALESCE(COUNT(va.id_annonce), 0) AS nbr_annonce_valide
-		FROM 
-			mois m 
-		LEFT JOIN 
-			valide va ON EXTRACT(MONTH FROM va.date_valide) = m.reference
-		LEFT JOIN 
-			annonce a ON va.id_annonce = a.id_annonce AND a.valeur = 30
-		GROUP BY 
-			annee, m.nom, m.reference
-		ORDER BY 
-			annee, m.reference;
+    AS
+    SELECT 
+        EXTRACT(YEAR FROM va.date_valide) AS annee,
+        m.nom AS mois, 
+        COALESCE(COUNT(va.id_annonce), 0) AS nbr_annonce_valide
+    FROM 
+        mois m 
+    LEFT JOIN 
+        valide va ON EXTRACT(MONTH FROM va.date_valide) = m.reference
+    LEFT JOIN 
+        annonce a ON va.id_annonce = a.id_annonce AND a.valeur = 30
+    GROUP BY 
+        annee, m.nom, m.reference
+    ORDER BY 
+        annee, m.reference;
 
 -- statistique vente mois par an
 create view vente_mois as

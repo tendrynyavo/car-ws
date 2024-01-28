@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.sql.Date;
 import java.util.Set;
-import com.example.carws.model.primaire.relation.*;
+
 import com.example.carws.utility.IdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.example.carws.model.primaire.relation.*;
+
 @Entity
 @Table( name = "modele" )
 @JsonIdentityInfo(

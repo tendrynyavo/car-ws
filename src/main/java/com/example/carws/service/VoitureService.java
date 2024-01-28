@@ -1,5 +1,6 @@
 package com.example.carws.service;
 import com.example.carws.repository.CategorieRepository;
+import com.example.carws.repository.ColoriageRepository;
 import com.example.carws.repository.ModeleRepository;
 import com.example.carws.repository.MoteurRepository;
 import com.example.carws.repository.UsersRepository;
@@ -43,19 +44,31 @@ public class VoitureService{
 	@Autowired
 	UsersRepository userRepository;
 
+	@Autowired
+	ColoriageRepository coloriageRepository;
+
 	@PersistenceContext
     private EntityManager entityManager;
 
 	public List<Voiture> getAllVoitures() throws Exception{
-		return repository.findAll();
+		List<Voiture> voitures = repository.findAll();
+		for (int i = 0; i < voitures.size(); i++) {
+			voitures.get(i).setCouleurActuelle(coloriageRepository.findLatestColor(voitures.get(i).getId()));
+		}
+		return voitures;
 	}
 
 	public List<Voiture> getVoituresByUser(Users user) {
-        return repository.findByUser(user);
+		List<Voiture> voitures = repository.findByUser(user);
+		for (int i = 0; i < voitures.size(); i++) {
+			voitures.get(i).setCouleurActuelle(coloriageRepository.findLatestColor(voitures.get(i).getId()));
+		}
+		return voitures;
     }
 
 	public Voiture getVoiture( String id ) throws Exception{
 		Voiture voiture = (Voiture)repository.findById( id );
+		voiture.setCouleurActuelle(coloriageRepository.findLatestColor(id));
 		if( voiture == null ){
 			throw new CategorieException("La voiture n'existe pas");
 		}

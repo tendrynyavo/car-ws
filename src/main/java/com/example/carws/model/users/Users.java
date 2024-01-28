@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.Collection;
+import java.util.List;
 
 import com.example.carws.model.annonce.AnnonceFavories;
 import org.springframework.security.core.GrantedAuthority;

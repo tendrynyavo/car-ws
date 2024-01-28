@@ -3,7 +3,9 @@ package com.example.carws.model.annonce;
 import com.example.carws.model.primaire.Lieu;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
@@ -41,7 +43,7 @@ public class Annonce{
 
 	@ManyToOne
 	@JoinColumn(name = "id_utilisateur")
-	// @JsonManagedReference
+	// @JsonBackReference("annonces-user")
 	Users user;
 
 	@Column( name = "valeur" )
@@ -49,49 +51,50 @@ public class Annonce{
 
 	@OneToOne
     @JoinColumn(name = "id_voiture")
-	// @JsonManagedReference
 	Voiture voiture;
 
 	@OneToOne(mappedBy = "annonce")
-	// @JsonManagedReference("annonce-details")
 	DetailsAnnonce details;
 
-	@OneToOne(mappedBy = "annonce")
-	// @JsonManagedReference
-	ValidateAnnonce validate;
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// ValidateAnnonce validate;
 
-	@OneToOne(mappedBy = "annonce")
-	AnnonceFavories favorie;
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// AnnonceFavories favorie;
 
-	@OneToOne(mappedBy = "annonce")
-	AnnonceVendus vendu;
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// AnnonceVendus vendu;
 
-	@OneToOne(mappedBy = "annonce")
-	Historique historique;
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// Historique historique;
 
-	public Historique getHistorique(){
-		return this.historique;
-	}
+	// public Historique getHistorique(){
+	// 	return this.historique;
+	// }
 
-	public void setHistorique(Historique historique){
-		this.historique = historique;
-	}
+	// public void setHistorique(Historique historique){
+	// 	this.historique = historique;
+	// }
 
-	public AnnonceVendus getVendu(){
-		return this.vendu;
-	}
+	// public AnnonceVendus getVendu(){
+	// 	return this.vendu;
+	// }
 
-	public void setVendu(AnnonceVendus vendu){
-		this.vendu = vendu;
-	}
+	// public void setVendu(AnnonceVendus vendu){
+	// 	this.vendu = vendu;
+	// }
 
-	public ValidateAnnonce getValidate(){
-		return this.validate;
-	}
+	// public ValidateAnnonce getValidate(){
+	// 	return this.validate;
+	// }
 
-	public void setValidate(ValidateAnnonce validate){
-		this.validate = validate;
-	}
+	// public void setValidate(ValidateAnnonce validate){
+	// 	this.validate = validate;
+	// }
 
 	public DetailsAnnonce getDetails(){
         return this.details;

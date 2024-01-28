@@ -21,9 +21,10 @@ public class Marque{
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
-
-	@OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-	// @JsonManagedReference("modele")
+	
+    @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+	@JsonManagedReference("modele")
+	@JsonIgnore
 	List<Modele> modeles;
 
 	public void setModeles(List<Modele> modeles){
