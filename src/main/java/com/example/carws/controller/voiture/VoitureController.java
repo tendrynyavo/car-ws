@@ -22,7 +22,7 @@ public class VoitureController{
 
 	@Autowired UsersService userService;
 
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> getVoitures() throws Exception{
 		try{
@@ -34,7 +34,7 @@ public class VoitureController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getVoiture( @PathVariable("id") String id ) throws Exception{
 		try{
@@ -48,7 +48,7 @@ public class VoitureController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
 		try{
@@ -61,7 +61,7 @@ public class VoitureController{
 		}
     }
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
 		Response response = new Response();
@@ -91,7 +91,7 @@ public class VoitureController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping("/couleur")
 	public ResponseEntity<Response> addColoriage( @RequestBody Coloriage coloriage ) throws Exception{
 		Response response = new Response();
