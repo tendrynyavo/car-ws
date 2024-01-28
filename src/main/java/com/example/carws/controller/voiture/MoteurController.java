@@ -96,11 +96,11 @@ public class MoteurController {
                     }
           }
           
-          @PostMapping( "/{id}/transmission" )
-          public ResponseEntity<?> addTransmission( @PathVariable String id, @RequestBody Vitesse vitesse ){
+          @PostMapping( "/{id}/transmission/{vitesse}" )
+          public ResponseEntity<?> addTransmission( @PathVariable String id, @PathVariable String vitesse ){
                     Response response = new Response();
                     try{
-                              this.service.addTransmission(vitesse.getId(), id);
+                              this.service.addTransmission(vitesse, id);
                               
                               return ResponseEntity.ok().body( response.addMessage( "success", "Boite de vitesse ajouté au type de moteur" ) );
                               
@@ -109,6 +109,5 @@ public class MoteurController {
                     }
           }
           
-           
-          
+                     
 }

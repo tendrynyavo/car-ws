@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -15,6 +17,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import java.util.Set;
 
 @Entity
 @Table( name = "moteur" )
@@ -53,6 +56,22 @@ public class Moteur{
          @JoinColumn( name = "id_carburant" )
 //          @Column
          Carburant carburant;
+
+         @ManyToMany
+         @JoinTable(
+            name = "transmission",
+            joinColumns = @JoinColumn( name = "id_moteur" ),
+            inverseJoinColumns = @JoinColumn( name = "id_boite" )
+         )
+         Set<Vitesse> vitesses;
+
+         public void setVitesses(Set<Vitesse> vitesses){
+            this.vitesses = vitesses;
+         }
+
+         public Set<Vitesse> getVitesses(){
+            return this.vitesses;
+         }
 
           public String getId() {
                     return id;
