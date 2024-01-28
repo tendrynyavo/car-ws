@@ -101,7 +101,7 @@ public class MoteurController {
           }
           
           @PreAuthorize("hasRole('ADMIN')")
-          @PostMapping( "/{id}/transmission" )
+          @PostMapping( "/{id}/transmission/{vitesse}" )
           public ResponseEntity<?> addTransmission( @PathVariable String id, @PathVariable String vitesse ){
                     Response response = new Response();
                     try{

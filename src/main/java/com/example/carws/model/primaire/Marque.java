@@ -18,10 +18,10 @@ public class Marque{
 	@Column( name = "nom" )
 	String nom;
 	@Column( name = "deleted" )
-	boolean deleted;
+	boolean deleted = false;
 	
-          @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-	 @JsonBackReference
+  @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+	@JsonBackReference
 	List<Modele> modeles;
 
 	public void setModeles(List<Modele> modeles){
@@ -30,17 +30,17 @@ public class Marque{
 	public List<Modele> getModeles(){
 		return this.modeles;
 	}
-//	public boolean getDeleted(){
-//		return this.deleted;
-//	}
-//    
-//          public boolean isDeleted(){
-//                    return this.getDeleted();
-//          }
-//
-//	public void setDeleted( boolean bool ){
-//		this.deleted = bool;
-//	}
+	public boolean getDeleted(){
+		return this.deleted;
+	}
+   
+         public boolean isDeleted(){
+                   return this.getDeleted();
+         }
+
+	public void setDeleted( boolean bool ){
+		this.deleted = bool;
+	}
 
 	public void setId( String id ){
 		this.id = id;

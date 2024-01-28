@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.primaire.Marque;
 import com.example.carws.service.MarqueService;
+import com.example.carws.request.MarqueRequest;
 
 import com.example.carws.response.*;
 import java.util.Arrays;
@@ -51,10 +52,10 @@ public class MarqueController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Response> addMarque(@RequestBody Marque marque) throws Exception {
+	public ResponseEntity<Response> addMarque(@RequestBody MarqueRequest marque) throws Exception {
 		Response response = new Response();
 		try {
-			marqueService.saveMarque(marque);
+			marqueService.saveMarque(marque.toMarque());
 			response.addMessage("save", "La marque a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (Exception e) {

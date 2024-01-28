@@ -16,6 +16,14 @@ public class ModeleRequest {
           String nom;
           Date annee;
           String marque;
+          boolean deleted = false;
+
+          public void setDeleted(boolean t){
+            this.deleted = t;
+          }
+          public boolean getDeleted(){
+            return this.deleted;
+          }
 
           public String getNom() {
                     return nom;
@@ -45,6 +53,7 @@ public class ModeleRequest {
                     Modele m = new Modele();
                     m.setAnnee(this.getAnnee());
                     Marque a= new Marque();
+                    m.setDeleted(this.getDeleted());
                     a.setId(this.getMarque());
                     m.setNom(this.getNom());
                     m.setMarque(a);
