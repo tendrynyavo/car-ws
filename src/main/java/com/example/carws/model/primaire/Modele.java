@@ -11,9 +11,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 @Entity
 @Table( name = "modele" )
-//@JsonIdentityInfo(
-// generator = ObjectIdGenerators.PropertyGenerator.class, 
-// property = "id")
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 
 public class Modele{
 	
@@ -26,6 +26,7 @@ public class Modele{
 	@ManyToOne
 	@JoinColumn( name = "id_marque", nullable = false )
         @JsonManagedReference
+        @JsonIgnoreProperties("modele")
 	Marque marque;
 
 	@Column( name = "nom" , nullable = false )
@@ -36,6 +37,24 @@ public class Modele{
           
     @Column( name = "annee" )
     Date annee;
+    
+          @ManyToMany
+          @JoinTable(
+              name = "design",
+              joinColumns = @JoinColumn(name = "id_modele"),
+              inverseJoinColumns = @JoinColumn(name = "id_categorie")
+          )
+//              @JsonBackReference
+        @JsonIgnoreProperties("modele")
+          Set<Categorie> categories;
+
+          public Set<Categorie> getCategories() {
+                    return categories;
+          }
+
+          public void setCategories(Set<Categorie> categories) {
+                    this.categories = categories;
+          }
 
 	
 

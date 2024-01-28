@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
+import com.example.carws.request.ModeleRequest;
 import com.example.carws.service.ModeleService;
 
 import com.example.carws.response.*;
@@ -54,10 +55,10 @@ public class ModeleController{
 	}
 
 	@PostMapping
-	public ResponseEntity<Response> addModele( @RequestBody Modele modele ) throws Exception{
+	public ResponseEntity<Response> addModele( @RequestBody ModeleRequest modele ) throws Exception{
 		Response response = new Response();
 		try{
-			modeleService.saveModele( modele );
+			modeleService.saveModele( modele.toModele() );
 			response.addMessage("save", "Le modele a ete ajouter");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
@@ -67,11 +68,12 @@ public class ModeleController{
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateModele( @RequestBody Modele modele, @PathVariable("id") String id ){
+	public ResponseEntity<Response> updateModele( @RequestBody ModeleRequest modele, @PathVariable("id") String id ){
 		Response response = new Response();
 		try{
-			modele.setId(id);
-			modeleService.updateModele( modele );
+                           Modele m = modele.toModele();
+			m.setId(id);
+			modeleService.updateModele( m );
 			return ResponseEntity.status( HttpStatus.OK ).body( response.addMessage( "success" , "modele mis a jour" ) );
 		}catch (Exception e) {
 			response.addError("error" , e.getMessage());
@@ -104,11 +106,11 @@ public class ModeleController{
 //                       
 //         }
          
-          @PostMapping( "/{id}/categories" )
-          public ResponseEntity<?> addCategory( @PathVariable String id, @RequestBody Categorie categorie ){
+          @PostMapping( "/{id}/categories/{categorie}" )
+          public ResponseEntity<?> addCategory( @PathVariable String id, @PathVariable String categorie ){
                     Response response = new Response();
                     try{
-                              this.modeleService.addCategoryToModel(id, categorie.getId());
+                              this.modeleService.addCategoryToModel(id, categorie);
                               
                               return ResponseEntity.ok().body( response.addMessage( "success", "Catégoie ajouté au modele" ) );
                               

@@ -26,9 +26,9 @@ public class Categorie{
 	String nom;
 	@Column( name = "deleted" )
 	boolean deleted;
-
-	@OneToOne(mappedBy = "categorie")
-	Voiture voiture;
+//
+//	@OneToOne(mappedBy = "categorie")
+//	Voiture voiture;
     
 	public boolean getDeleted(){
 		return this.deleted;
