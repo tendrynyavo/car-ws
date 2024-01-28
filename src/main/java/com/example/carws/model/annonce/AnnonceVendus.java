@@ -26,7 +26,7 @@ public class AnnonceVendus{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_annonce")
     Annonce annonce;
 

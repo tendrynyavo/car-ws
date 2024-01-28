@@ -39,7 +39,7 @@ CREATE TABLE type_moteur(
 CREATE TABLE carburant(
    id_carburant VARCHAR(50) ,
    nom VARCHAR(50) ,
-   deeted BOOLEAN,
+   deleted BOOLEAN,
    PRIMARY KEY(id_carburant)
 );
 
@@ -252,7 +252,6 @@ alter table moteur add column consommation double precision;
 -- erreur eto tsitany le etat
 CREATE TABLE historique(
    id_historique VARCHAR(50) ,
-   ancien_valeur INTEGER  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    date DATE,
    id_utilisateur VARCHAR(50)  NOT NULL,

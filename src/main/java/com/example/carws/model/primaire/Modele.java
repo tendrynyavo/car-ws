@@ -51,8 +51,6 @@ public class Modele{
         @JsonIgnoreProperties("modele")
           Set<Categorie> categories;
 
-         
-
   @ManyToMany
   @JoinTable(
   	name = "specificite",

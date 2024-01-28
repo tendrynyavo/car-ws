@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "favori" )
+@Table( name = "historique" )
 @JsonIdentityInfo(
  generator = ObjectIdGenerators.PropertyGenerator.class, 
  property = "id")
@@ -26,7 +26,7 @@ public class Historique{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_annonce")
     Annonce annonce;
 
@@ -37,9 +37,6 @@ public class Historique{
 
     @Column( name = "date" )
 	Date date;
-
-    @Column( name = "ancien_valeur" )
-    Integer ancienValeur;
 
 	public void setId( String id ){
 		this.id = id;
@@ -71,14 +68,6 @@ public class Historique{
 
     public Date getDatetime(){
         return this.date;
-    }
-
-    public void setAncienValeur(Integer valeur){
-        this.ancienValeur = valeur;
-    }
-
-    public Integer getAncienValeur(){
-        return this.ancienValeur;
     }
 
 	public Historique(){

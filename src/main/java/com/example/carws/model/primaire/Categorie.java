@@ -34,7 +34,6 @@ public class Categorie{
 	@OneToMany(mappedBy = "categorie")
 	@JsonIgnore
 	List<Voiture> voiture;
-
     
 	public boolean getDeleted(){
 		return this.deleted;
