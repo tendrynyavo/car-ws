@@ -2,11 +2,17 @@ insert into categorie ( nom_categorie ) values ('Camion');
 insert into categorie ( nom_categorie ) values ('Plaisir');
 insert into categorie ( nom_categorie ) values ('Taxi');
 
-insert into etats (id, nom ) values (10, 'en attente');
-insert into etats (id, nom ) values (20, 'supprimer');
-insert into etats (id, nom ) values (30, 'validee');
-insert into etats (id, nom ) values (40, 'favorie');
-insert into etats (id, nom ) values (50, 'vendu');
+insert into etats (id, nom ) values (10, 'Non valider');
+insert into etats (id, nom ) values (20, 'Valider');
+insert into etats (id, nom ) values (30, 'Retirer');
+insert into etats (id, nom ) values (40, 'vendu');
+
+ valeur | designation
+--------+-------------
+     10 | Non valider
+     20 | Valider
+     30 | Retirer
+     40 | Vendu
 
 insert into mois values
 	( 'JAN' , 'Janvier' , 1 ),

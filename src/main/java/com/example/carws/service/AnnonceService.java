@@ -284,14 +284,14 @@ public class AnnonceService{
 // 		return results;
 // 	}
 
-// 	Predicate addConditionIfNotNull(CriteriaBuilder criteriaBuilder, Root<Annonce> root, Predicate predicate, String attributeName, Object value) {
-// 		if (value != null) {
-// 			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
-// 			Join<DetailsAnnonce, Voiture> voitureJoin = detailsJoin.join("voiture");
-// 			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(attributeName), value));
-// 		}
-// 		return predicate;
-// 	}
+	Predicate addConditionIfNotNull(CriteriaBuilder criteriaBuilder, Root<Annonce> root, Predicate predicate, String attributeName, Object value) {
+		if (value != null) {
+			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
+			Join<DetailsAnnonce, Voiture> voitureJoin = detailsJoin.join("voiture");
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(attributeName), value));
+		}
+		return predicate;
+	}
 
 
 }

@@ -1,13 +1,17 @@
 package com.example.carws.model.primaire;
 
 import jakarta.persistence.*;
-import java.util.Set;
 import com.fasterxml.jackson.annotation.*;
-import com.example.carws.model.primaire.relation.*;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.utility.IdGenerator;
+
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.example.carws.model.primaire.relation.*;;
 
 @Entity
 @Table( name = "categorie" )
@@ -27,8 +31,9 @@ public class Categorie{
 	@Column( name = "deleted" )
 	boolean deleted;
 
-	@OneToOne(mappedBy = "categorie")
-	Voiture voiture;
+	@OneToMany(mappedBy = "categorie")
+	@JsonIgnore
+	List<Voiture> voiture;
     
 	public boolean getDeleted(){
 		return this.deleted;

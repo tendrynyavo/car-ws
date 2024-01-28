@@ -3,6 +3,7 @@ package com.example.carws.model.annonce;
 import java.sql.Date;
 
 import com.example.carws.model.users.Users;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -30,6 +31,7 @@ public class AnnonceFavories{
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
+    @JsonBackReference
     Users user;
 
     @Column( name = "date_ajout" )

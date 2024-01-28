@@ -75,3 +75,6 @@ INSERT INTO type_carburant (id_type_carburant, id_carburant, id_type) VALUES ('T
 -- Test voiture
 INSERT INTO voiture VALUES ('VOI01', 1000, 'USER1', 'CAT01', 'BDV01', 'MOT01', 'MOD01');
 INSERT INTO voiture VALUES ('VOI02', 40000, 'USER1', 'CAT02', 'BDV02', 'MOT01', 'MOD02');
+
+insert into role values ('USER', 'Utilisateur');
+insert into role values ('ADMIN', 'Administrateur');

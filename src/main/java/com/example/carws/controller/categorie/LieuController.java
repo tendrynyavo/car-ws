@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
  * @author sarobidy
  */
 @RestController
-@RequestMapping("/api/lieux")
+@RequestMapping("/api/lieus")
 public class LieuController {
           
           @Autowired LieuService service;
@@ -56,6 +57,7 @@ public class LieuController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
           public ResponseEntity<Response> put(@PathVariable String id, @RequestBody Lieu input) {
                     Response response = new Response();
@@ -69,6 +71,7 @@ public class LieuController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
           public ResponseEntity<Response> post(@RequestBody Lieu input) {
                     Response response = new Response();
@@ -82,6 +85,7 @@ public class LieuController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<?> delete(@PathVariable String id) {
                     Response response = new Response();

@@ -4,9 +4,9 @@
  */
 package com.example.carws.controller.voiture;
 
-import com.example.carws.model.primaire.Carburant;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
+import com.example.carws.request.EngineRequest;
 import com.example.carws.response.Response;
 import com.example.carws.service.MoteurService;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,12 +57,14 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
-          public ResponseEntity<?> put(@PathVariable String id, @RequestBody Moteur input) {
+          public ResponseEntity<?> put(@PathVariable String id, @RequestBody EngineRequest input) {
                     Response response = new Response();
                     try{
-                              input.setId( id );
-                              service.update(input);
+                              Moteur m = input.toEngine();
+                              m.setId( id );
+                              service.update(m);
                               return ResponseEntity.ok().body( response.addMessage("success" , "Moteur modifiée") );
                     }catch(Exception e){
                               e.printStackTrace();
@@ -69,12 +72,13 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
-          public ResponseEntity<?> post(@RequestBody Moteur input) {
+          public ResponseEntity<?> post(@RequestBody EngineRequest input) {
                     Response response = new Response();
                     try{
                               
-                              service.save(input);
+                              service.save(input.toEngine());
                               return ResponseEntity.ok().body( response.addMessage("success" , "Moteur ajoutée") );
                     }catch(Exception e){
                               e.printStackTrace();
@@ -82,6 +86,7 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<?> delete(@PathVariable String id) {
                     Response response = new Response();
@@ -95,11 +100,12 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping( "/{id}/transmission" )
-          public ResponseEntity<?> addTransmission( @PathVariable String id, @RequestBody Vitesse vitesse ){
+          public ResponseEntity<?> addTransmission( @PathVariable String id, @PathVariable String vitesse ){
                     Response response = new Response();
                     try{
-                              this.service.addTransmission(vitesse.getId(), id);
+                              this.service.addTransmission(vitesse, id);
                               
                               return ResponseEntity.ok().body( response.addMessage( "success", "Boite de vitesse ajouté au type de moteur" ) );
                               
@@ -108,6 +114,5 @@ public class MoteurController {
                     }
           }
           
-           
-          
+                     
 }

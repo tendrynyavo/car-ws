@@ -1,12 +1,9 @@
 package com.example.carws.model.annonce;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -30,11 +27,11 @@ public class ValidateAnnonce{
 
     @OneToOne
     @JoinColumn(name = "id_annonce")
-    // @JsonBackReference
     Annonce annonce;
 
     @OneToOne
     @JoinColumn(name = "id_utilisateur")
+    @JsonIgnore
     Users user;
 
     @Column( name = "date_valide" )

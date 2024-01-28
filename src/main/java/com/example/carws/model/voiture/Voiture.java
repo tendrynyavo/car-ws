@@ -2,15 +2,19 @@ package com.example.carws.model.voiture;
 
 import com.example.carws.model.annonce.Annonce;
 import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
 import com.example.carws.model.users.Users;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
+
+import java.util.List;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -30,29 +34,44 @@ public class Voiture{
     @Column( name = "kilometrage")
 	double kilometrage;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_utilisateur")
     Users user;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_categorie")
     Categorie categorie;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_boite")
     Vitesse vitesse;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_moteur")
     Moteur moteur;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_modele")
     Modele modele;
 
     @OneToOne(mappedBy = "voiture")
     // @JsonBackReference
+    @JsonIgnore
     Annonce annonce;
+
+    @OneToMany(mappedBy = "voiture")
+    List<Coloriage> coloriages;
+
+    @Transient
+    Coloriage couleurActuelle;
+
+    public Coloriage getCouleurActuelle(){
+        return this.couleurActuelle;
+    }
+
+    public void setCouleurActuelle(Coloriage couleur){
+        this.couleurActuelle = couleur;
+    }
 
     public void setId(String id){
         this.id = id;
@@ -116,6 +135,14 @@ public class Voiture{
 
     public Annonce getAnnonce(){
         return this.annonce;
+    }
+
+    public List<Coloriage> getColoriages(){
+        return this.coloriages;
+    }
+
+    public void setColoriages(List<Coloriage> coloriages){
+        this.coloriages = coloriages;
     }
 
     public Voiture(){

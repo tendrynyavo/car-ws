@@ -8,9 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "marque" )
-@JsonIdentityInfo(
- generator = ObjectIdGenerators.PropertyGenerator.class, 
- property = "id")
+
 public class Marque{
 	@Id
 	@Column( name = "id_marque" )
@@ -19,12 +17,11 @@ public class Marque{
 	String id;
 	@Column( name = "nom" )
 	String nom;
-//	@Column( name = "deleted" )
-//	boolean deleted = false;
-
-
+	@Column( name = "deleted" )
+	boolean deleted;
+	
           @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-	 @JsonManagedReference("modele")
+	 @JsonBackReference
 	List<Modele> modeles;
 
 	public void setModeles(List<Modele> modeles){

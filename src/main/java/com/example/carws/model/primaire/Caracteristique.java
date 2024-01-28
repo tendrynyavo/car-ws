@@ -4,9 +4,10 @@
  */
 package com.example.carws.model.primaire;
 
-import com.example.carws.model.annonce.Annonce;
 import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.utility.IdGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class Caracteristique {
           String nom;
 
           @OneToOne(mappedBy = "caracteristique")
+          @JsonIgnore
           DetailsAnnonce details;
 
           public void setDetails(DetailsAnnonce details){

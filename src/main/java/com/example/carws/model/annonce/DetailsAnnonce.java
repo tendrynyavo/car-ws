@@ -1,10 +1,8 @@
 package com.example.carws.model.annonce;
 
 import com.example.carws.model.primaire.Caracteristique;
-import com.example.carws.model.voiture.Voiture;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
@@ -34,7 +32,7 @@ public class DetailsAnnonce{
 
     @OneToOne
     @JoinColumn(name = "id_annonce")
-    // @JsonBackReference("annonce-details")
+    @JsonIgnore
     Annonce annonce;
 
 	public void setId( String id ){

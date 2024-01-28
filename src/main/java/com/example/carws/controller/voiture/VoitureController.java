@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
@@ -44,10 +45,11 @@ public class VoitureController{
 		}
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
 		try{
-			Users user = userService.findBy(userId);
+			Users user = userService.login(userId);
 			Voiture[] voitures =  voitureService.getVoituresByUser(user).toArray( new Voiture[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( voitures );
 		}catch( Exception exception ){
@@ -56,6 +58,7 @@ public class VoitureController{
 		}
     }
 
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
 		Response response = new Response();
@@ -70,6 +73,7 @@ public class VoitureController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateCarburant( @RequestBody Voiture voiture, @PathVariable("id") String id ){
 		Response response = new Response();

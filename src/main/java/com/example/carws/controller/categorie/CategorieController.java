@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.primaire.Categorie;
 import com.example.carws.service.CategorieService;
@@ -41,6 +42,7 @@ public class CategorieController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addCategorie( @RequestBody Categorie categorie ) throws Exception{
 		Response response = new Response();
@@ -54,6 +56,7 @@ public class CategorieController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateCategorie( @RequestBody Categorie categorie, @PathVariable("id") String id ){
 		Response response = new Response();
@@ -67,6 +70,7 @@ public class CategorieController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteCategorie( @PathVariable("id") String id ){
 		Response response = new Response();
