@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
@@ -54,6 +55,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addModele( @RequestBody ModeleRequest modele ) throws Exception{
 		Response response = new Response();
@@ -67,6 +69,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateModele( @RequestBody ModeleRequest modele, @PathVariable("id") String id ){
 		Response response = new Response();
@@ -81,6 +84,7 @@ public class ModeleController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteModele( @PathVariable("id") String id ){
 		Response response = new Response();
@@ -106,6 +110,7 @@ public class ModeleController{
 //                       
 //         }
          
+		@PreAuthorize("hasRole('ADMIN')")
           @PostMapping( "/{id}/categories/{categorie}" )
           public ResponseEntity<?> addCategory( @PathVariable String id, @PathVariable String categorie ){
                     Response response = new Response();
@@ -119,6 +124,7 @@ public class ModeleController{
                     }
           }
           
+		@PreAuthorize("hasRole('ADMIN')")
           @PostMapping("/{id}/moteurs/{moteur}")
           public ResponseEntity<?> addEngine( @PathVariable String id, @PathVariable String moteur ){
                     Response response = new Response();

@@ -40,4 +40,6 @@ public class MessagerieService {
         mongoTemplate.updateFirst(query, update, Messagerie.class);
         System.out.println("Set status teto");
     }
+
+    
 }

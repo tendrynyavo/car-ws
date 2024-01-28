@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +54,7 @@ public class EtatController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
           public ResponseEntity<?> put(@PathVariable Integer id, @RequestBody Etat input) {
                     Response res = new Response();
@@ -66,6 +68,7 @@ public class EtatController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
           public ResponseEntity<?> post(@RequestBody Etat input) {
                     Response res = new Response();
@@ -79,6 +82,7 @@ public class EtatController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<?> delete(@PathVariable Integer id) {
                     Response res = new Response();

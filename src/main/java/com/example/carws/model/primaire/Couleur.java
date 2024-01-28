@@ -5,12 +5,21 @@
 package com.example.carws.model.primaire;
 
 import com.example.carws.utility.IdGenerator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.List;
+
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -19,6 +28,9 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "couleur")
+@JsonIdentityInfo(
+ generator = ObjectIdGenerators.PropertyGenerator.class, 
+ property = "id")
 public class Couleur {
           @Id
           @GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "COU"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_couleur" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
@@ -27,6 +39,10 @@ public class Couleur {
           String id;
           @Column
           String nom;
+
+          @OneToMany(mappedBy = "couleur")
+          @JsonIgnore
+          List<Coloriage> coloriage;
           
           public String getId() {
                     return id;
@@ -44,5 +60,13 @@ public class Couleur {
                     this.nom = nom;
           }
           
+
+          public List<Coloriage> getColoriage(){
+            return this.coloriage;
+          }
+
+          public void setColoriage(List<Coloriage> coloriage){
+            this.coloriage = coloriage;
+          }
           
 }

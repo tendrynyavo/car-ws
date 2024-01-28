@@ -5,7 +5,7 @@ import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
@@ -37,21 +37,72 @@ public class Annonce{
 	@Column( name = "prix" )
 	double prix;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
     @JoinColumn(name = "id_lieu")
 	Lieu lieu;
 
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_utilisateur")
+	@ManyToOne
+	@JoinColumn(name = "id_utilisateur")
+	// @JsonBackReference("annonces-user")
 	Users user;
 
 	@Column( name = "valeur" )
 	Integer valeur;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
     @JoinColumn(name = "id_voiture")
-	@JsonManagedReference
 	Voiture voiture;
+
+	@OneToOne(mappedBy = "annonce")
+	DetailsAnnonce details;
+
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// ValidateAnnonce validate;
+
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// AnnonceFavories favorie;
+
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// AnnonceVendus vendu;
+
+	// @OneToOne(mappedBy = "annonce")
+	// @JsonIgnore
+	// Historique historique;
+
+	// public Historique getHistorique(){
+	// 	return this.historique;
+	// }
+
+	// public void setHistorique(Historique historique){
+	// 	this.historique = historique;
+	// }
+
+	// public AnnonceVendus getVendu(){
+	// 	return this.vendu;
+	// }
+
+	// public void setVendu(AnnonceVendus vendu){
+	// 	this.vendu = vendu;
+	// }
+
+	// public ValidateAnnonce getValidate(){
+	// 	return this.validate;
+	// }
+
+	// public void setValidate(ValidateAnnonce validate){
+	// 	this.validate = validate;
+	// }
+
+	public DetailsAnnonce getDetails(){
+        return this.details;
+    }
+
+    public void setDetails(DetailsAnnonce details){
+        this.details = details;
+    }
 
 	public void setId(String id){
 		this.id = id;

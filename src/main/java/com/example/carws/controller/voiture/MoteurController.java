@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
           public ResponseEntity<?> put(@PathVariable String id, @RequestBody EngineRequest input) {
                     Response response = new Response();
@@ -70,6 +72,7 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
           public ResponseEntity<?> post(@RequestBody EngineRequest input) {
                     Response response = new Response();
@@ -83,6 +86,7 @@ public class MoteurController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<?> delete(@PathVariable String id) {
                     Response response = new Response();
@@ -96,7 +100,8 @@ public class MoteurController {
                     }
           }
           
-          @PostMapping( "/{id}/transmission/{vitesse}" )
+          @PreAuthorize("hasRole('ADMIN')")
+          @PostMapping( "/{id}/transmission" )
           public ResponseEntity<?> addTransmission( @PathVariable String id, @PathVariable String vitesse ){
                     Response response = new Response();
                     try{

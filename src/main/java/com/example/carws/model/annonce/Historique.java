@@ -15,14 +15,14 @@ import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "vendu" )
+@Table( name = "favori" )
 @JsonIdentityInfo(
  generator = ObjectIdGenerators.PropertyGenerator.class, 
  property = "id")
-public class AnnonceVendus{
+public class Historique{
 	@Id
-	@Column( name = "id_vendu" )
-	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "VEN"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_vendu" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
+	@Column( name = "id_historique" )
+	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@org.hibernate.annotations.Parameter(name = "prefix" , value = "HST"), @org.hibernate.annotations.Parameter( name = "sequence", value = "seq_historique" ), @org.hibernate.annotations.Parameter( name = "max_length", value = "7" ) }  )
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
@@ -35,8 +35,11 @@ public class AnnonceVendus{
     @JsonIgnore
     Users user;
 
-    @Column( name = "date_vendu" )
+    @Column( name = "date" )
 	Date date;
+
+    @Column( name = "ancien_valeur" )
+    Integer ancienValeur;
 
 	public void setId( String id ){
 		this.id = id;
@@ -70,11 +73,19 @@ public class AnnonceVendus{
         return this.date;
     }
 
-	public AnnonceVendus(){
+    public void setAncienValeur(Integer valeur){
+        this.ancienValeur = valeur;
+    }
+
+    public Integer getAncienValeur(){
+        return this.ancienValeur;
+    }
+
+	public Historique(){
 
 	}
 
-	public AnnonceVendus( Date date ) throws Exception{
+	public Historique( Date date ) throws Exception{
         this.setDate(date);
 	}
 

@@ -4,13 +4,14 @@
  */
 package com.example.carws.repository;
 
-import com.example.carws.model.primaire.Moteur;
 import org.springframework.data.repository.CrudRepository;
+
+import com.example.carws.model.annonce.Historique;
 
 /**
  *
  * @author sarobidy
  */
-public interface MoteurRepository extends CrudRepository<Moteur, String> {
-    Moteur findByIdAndDeletedFalse( String id );
+public interface HistoriqueRepository extends CrudRepository<Historique, String> {
+        
 }

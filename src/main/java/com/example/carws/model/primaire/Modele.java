@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.sql.Date;
 import java.util.Set;
+
 import com.example.carws.utility.IdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.example.carws.model.primaire.relation.*;
+
 @Entity
 @Table( name = "modele" )
 @JsonIdentityInfo(
@@ -17,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 public class Modele{
 	
 	@Id
-	@Column( name = "id_modele", columnDefinition = "serial" )
+	@Column( name = "id_modele" )
 	@GenericGenerator( name = "custom-id", type = IdGenerator.class, parameters = {@Parameter(name = "prefix" , value = "MOD"), @Parameter( name = "sequence", value = "seq_modele" ), @Parameter( name = "max_length", value = "7" ) }  )
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;

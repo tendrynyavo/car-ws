@@ -11,9 +11,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -72,6 +69,8 @@ public class Moteur{
          public Set<Vitesse> getVitesses(){
             return this.vitesses;
          }
+         @Column( name = "deleted" )
+	    boolean deleted;
 
           public String getId() {
                     return id;
@@ -154,6 +153,12 @@ public class Moteur{
           public void setCapacite(Double capacite) {
                     this.capacite = capacite;
           }
-          
-          
+                    
+        public boolean getDeleted(){
+            return this.deleted;
+        }
+    
+        public void setDeleted( boolean bool ){
+            this.deleted = bool;
+        }
 }

@@ -1,9 +1,9 @@
-// package com.example.carws.repository;
+package com.example.carws.repository;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-// import com.example.carws.model.annonce.* ;
+import com.example.carws.model.annonce.* ;
 
-// public interface DetailsAnnonceRepository extends JpaRepository< DetailsAnnonce, Integer > {
+public interface DetailsAnnonceRepository extends JpaRepository< DetailsAnnonce, String > {
     
-// }
+}

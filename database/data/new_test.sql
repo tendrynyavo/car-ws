@@ -71,3 +71,7 @@ INSERT INTO couleur (id_couleur, nom, deleted) VALUES ('COU02', 'Blue', FALSE);
 -- Insert data into type_carburant
 INSERT INTO type_carburant (id_type_carburant, id_carburant, id_type) VALUES ('TPC01', 'CRB01', 'TPM01');
 INSERT INTO type_carburant (id_type_carburant, id_carburant, id_type) VALUES ('TPC02', 'CRB02', 'TPM02');
+
+-- Test voiture
+INSERT INTO voiture VALUES ('VOI01', 1000, 'USER1', 'CAT01', 'BDV01', 'MOT01', 'MOD01');
+INSERT INTO voiture VALUES ('VOI02', 40000, 'USER1', 'CAT02', 'BDV02', 'MOT01', 'MOD02');

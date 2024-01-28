@@ -2,11 +2,10 @@ package com.example.carws.controller.stats;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.statistics.*;
 import com.example.carws.service.*;
@@ -19,6 +18,7 @@ public class StatisticController{
  	
  	@Autowired StatistiqueService service;
 
+	@PreAuthorize("hasRole('ADMIN')")
  	@GetMapping("/monthly")
 	public ResponseEntity<Response> getMonthlyStatistics() {
 		Response response = new Response();
@@ -35,16 +35,38 @@ public class StatisticController{
 			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(response);
 		}
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/byYear/{year}")
 	public ResponseEntity<Response> getStatisticsByYear(@PathVariable("year") Integer year) {
 		Response response = new Response();
 		try{
 
-			List<ValidateStatistique> statsByYear = service.getValidateStatisticsByYear(year);
+			ValidateStatistique[] statsByYear = service.getValidateStatisticsByYear(year).toArray(new ValidateStatistique[0]);
+			String[] mois = new ValidateStatistique().getMonths(statsByYear);
 			response.addData( "statistics" , statsByYear );
+			response.addData( "months" , mois );
 
-			System.out.println(statsByYear.get(2).getMois());
+			System.out.println(statsByYear[2].getMois());
+			
+			return ResponseEntity.status( HttpStatus.OK ).body( response );
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.addError( "error" , e.getMessage() );
+			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(response);
+		}
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/vente/{annee}")
+	public ResponseEntity<Response> getStatistiqueVenteParAn(@PathVariable("annee") String annee) {
+		Response response = new Response();
+		try{
+			int[][] statsParAn = this.service.getStatistiqueVenteParAn(annee);
+			response.addData( "statistics" , statsParAn );
+
+			System.out.println("Fevrier: " + statsParAn[1][1]);
 			
 			return ResponseEntity.status( HttpStatus.OK ).body( response );
 

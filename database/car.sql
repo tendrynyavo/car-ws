@@ -207,7 +207,7 @@ CREATE TABLE photo(
 
 CREATE TABLE vendu(
    id_vendu VARCHAR(50) ,
-   date_vendu VARCHAR(50) ,
+   date_vendu date,
    id_utilisateur VARCHAR(50)  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_vendu),
@@ -248,3 +248,29 @@ CREATE TABLE detail(
 
 alter table moteur add column capacite double precision;
 alter table moteur add column consommation double precision;
+
+-- erreur eto tsitany le etat
+CREATE TABLE historique(
+   id_historique VARCHAR(50) ,
+   ancien_valeur INTEGER  NOT NULL,
+   id_annonce VARCHAR(50)  NOT NULL,
+   date DATE,
+   id_utilisateur VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id_historique),
+   FOREIGN KEY(ancien_valeur) REFERENCES etat(valeur),
+   FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
+   FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
+);
+
+create table role (
+   id varchar(10) primary key,
+   role varchar(25) unique
+);
+
+
+CREATE TABLE roles_user (
+   id serial primary key,
+   id_user varchar(50) NOT NULL,
+   roles_id varchar(10) references role(id),
+   etat int default 1
+);

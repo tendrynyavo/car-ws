@@ -18,9 +18,12 @@ public class Marque{
 	@Column( name = "nom" )
 	String nom;
 
-
+	@Column( name = "deleted" )
+	boolean deleted;
+	
           @OneToMany( mappedBy ="marque", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
 	 @JsonBackReference
+
 	List<Modele> modeles;
 
 	public void setModeles(List<Modele> modeles){

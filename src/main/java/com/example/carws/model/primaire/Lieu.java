@@ -6,6 +6,8 @@ package com.example.carws.model.primaire;
 
 import com.example.carws.model.annonce.Annonce;
 import com.example.carws.utility.IdGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +34,16 @@ public class Lieu {
           String nom;
 
           @OneToOne(mappedBy = "lieu")
+          @JsonIgnore
           Annonce annonce;
+
+          public Annonce getAnnonce(){
+            return this.annonce;
+          }
+
+          public void setAnnonce(Annonce annonce){
+            this.annonce = annonce;
+          }
 
           public String getId() {
                     return id;

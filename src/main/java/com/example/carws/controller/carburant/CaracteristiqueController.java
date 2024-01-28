@@ -10,6 +10,7 @@ import com.example.carws.service.CaracteristiqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class CaracteristiqueController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PostMapping
           public ResponseEntity<Response> save( @RequestBody Caracteristique c ){
                     Response response = new Response();
@@ -64,6 +66,7 @@ public class CaracteristiqueController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @PutMapping("/{id}")
           public ResponseEntity<Response> update(@PathVariable("id") String id , @RequestBody Caracteristique c){
                     c.setId(id);
@@ -77,6 +80,7 @@ public class CaracteristiqueController {
                     }
           }
           
+          @PreAuthorize("hasRole('ADMIN')")
           @DeleteMapping("/{id}")
           public ResponseEntity<Response> delete( @PathVariable String id ){
                     Response response = new Response();
