@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.carws.model.token.Token;
 import com.example.carws.model.users.Messagerie;
 import com.example.carws.model.users.Users;
+import com.example.carws.request.InscriptionRequest;
 import com.example.carws.service.MessagerieService;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
@@ -47,9 +48,9 @@ public class UsersController {
     }
 
     @PostMapping("inscription")
-    public ResponseEntity<Response> inscription(@RequestBody Users users) throws Exception {
+    public ResponseEntity<Response> inscription(@RequestBody InscriptionRequest users) throws Exception {
         try {
-            usersService.inscription(users);
+            usersService.inscription(users.toUser());
             Response response = new Response();
             response.addData("valide", "Le nouveau utilisateur a ete enregistre avec succès");
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -77,10 +78,10 @@ public class UsersController {
     }
 
     @PostMapping("authentification")
-    public ResponseEntity<Response> authentification(@RequestBody Users users) throws Exception {
+    public ResponseEntity<Response> authentification(@RequestBody InscriptionRequest users) throws Exception {
         try {
-            users = usersService.authentification(users);
-            String token = new Token().generateJwt(users);
+            Users u = usersService.authentification(users.toLoginUser());
+            String token = new Token().generateJwt(u);
             Response response = new Response();
             response.addData("token", token);
             return ResponseEntity.status(HttpStatus.OK).body(response);
