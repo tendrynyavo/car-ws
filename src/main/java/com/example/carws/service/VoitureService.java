@@ -1,6 +1,7 @@
 package com.example.carws.service;
 import com.example.carws.repository.CategorieRepository;
 import com.example.carws.repository.ColoriageRepository;
+import com.example.carws.repository.CouleurRepository;
 import com.example.carws.repository.ModeleRepository;
 import com.example.carws.repository.MoteurRepository;
 import com.example.carws.repository.UsersRepository;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.*;
 import java.util.*;
 
 import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Coloriage;
+import com.example.carws.model.primaire.Couleur;
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
@@ -46,6 +49,9 @@ public class VoitureService{
 
 	@Autowired
 	ColoriageRepository coloriageRepository;
+
+	@Autowired
+	CouleurRepository couleurRepository;
 
 	@PersistenceContext
     private EntityManager entityManager;
@@ -117,6 +123,17 @@ public class VoitureService{
 			throw e;
 		}
 		return voitureUpdate;
+	}
+
+	public void saveCouleurVoiture( Voiture voiture, Couleur couleur, Date dateApplication ) throws Exception{
+		Voiture voitureExistant = this.getVoiture(voiture.getId());
+		Optional<Couleur> couleurExistant = couleurRepository.findById(couleur.getId());
+		
+		Coloriage coloriage  = new Coloriage();
+        coloriage.setCouleur(couleurExistant.get());
+		coloriage.setVoiture(voitureExistant);
+		coloriage.setDate(dateApplication);
+		coloriageRepository.save( coloriage );
 	}
 
 	// public void deleteVoiture( String id ) throws Exception{

@@ -272,4 +272,4 @@ CREATE TABLE roles_user (
    etat int default 1
 );
 
-
+alter table coloriage add column date_application DATE;

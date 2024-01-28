@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 import com.example.carws.model.annonce.AnnonceFavories;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -41,6 +43,7 @@ public class Users implements Serializable {
     Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     Set<AnnonceFavories> favories;
 
     public Users() {

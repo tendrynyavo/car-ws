@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.service.UsersService;
@@ -21,6 +22,7 @@ public class VoitureController{
 
 	@Autowired UsersService userService;
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	public ResponseEntity<?> getVoitures() throws Exception{
 		try{
@@ -32,6 +34,7 @@ public class VoitureController{
 		}
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getVoiture( @PathVariable("id") String id ) throws Exception{
 		try{
@@ -85,6 +88,21 @@ public class VoitureController{
 			e.printStackTrace();
 			response.addError("error" , e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
+		}
+	}
+
+	@PreAuthorize("hasRole('USER')")
+	@PostMapping("/couleur")
+	public ResponseEntity<Response> addColoriage( @RequestBody Coloriage coloriage ) throws Exception{
+		Response response = new Response();
+		try{
+			voitureService.saveCouleurVoiture( coloriage.getVoiture(), coloriage.getCouleur(), coloriage.getDate() );
+			response.addMessage("save", "La couleur de la voiture a ete enregistrer");
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+		}catch(Exception e){
+			e.printStackTrace();
+			response.addError("error" , e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
 
