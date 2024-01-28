@@ -31,7 +31,6 @@ public class AnnonceFavories{
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
-    @JsonBackReference
     Users user;
 
     @Column( name = "date_ajout" )

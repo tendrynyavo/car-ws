@@ -50,7 +50,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
@@ -70,7 +70,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateAnnonce(@RequestBody Annonce annonce, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -85,7 +85,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteAnnonce( @PathVariable("id") String id ){
 		Response response = new Response();
@@ -136,7 +136,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/vendu/{id}")
 	public ResponseEntity<Response> annonceVendu(@RequestBody AnnonceVendus vendu, @PathVariable("id") String id) {
 		Response response = new Response();
