@@ -124,6 +124,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/validate")
 	public ResponseEntity<?> getValidateAnnonces() throws Exception{
 		try{
