@@ -56,9 +56,8 @@ public class Annonce{
 	@OneToOne(mappedBy = "annonce")
 	DetailsAnnonce details;
 
-	// @OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	// ValidateAnnonce validate;
+	@OneToOne(mappedBy = "annonce")
+	ValidateAnnonce validate;
 
 	// @OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
@@ -88,13 +87,13 @@ public class Annonce{
 	// 	this.vendu = vendu;
 	// }
 
-	// public ValidateAnnonce getValidate(){
-	// 	return this.validate;
-	// }
+	public ValidateAnnonce getValidate(){
+		return this.validate;
+	}
 
-	// public void setValidate(ValidateAnnonce validate){
-	// 	this.validate = validate;
-	// }
+	public void setValidate(ValidateAnnonce validate){
+		this.validate = validate;
+	}
 
 	public DetailsAnnonce getDetails(){
         return this.details;

@@ -12,12 +12,15 @@ import com.example.carws.repository.VoitureRepository;
 import com.example.carws.request.SearchedElements;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +29,10 @@ import java.util.*;
 
 import com.example.carws.model.annonce.*;
 import com.example.carws.model.primaire.Caracteristique;
+import com.example.carws.model.primaire.Coloriage;
+import com.example.carws.model.primaire.Couleur;
 import com.example.carws.model.primaire.Lieu;
+import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.exception.*;
@@ -128,24 +134,24 @@ public class AnnonceService{
 		return annonceUpdate;
 	}
 
-// 	@Transactional
-// 	public void deleteAnnonce(Integer id) throws Exception {
-// 		Optional<Annonce> optionalAnnonce = repository.findById(id);
-// 		if (optionalAnnonce.isPresent()) {
-// 			Annonce annonce = optionalAnnonce.get();
-// 			annonce.setEtat(20);
-// 			repository.save(annonce);
-// 		} else {
-// 			throw new Exception("Annonce not found with id " + id);
-// 		}
-// 	}
+	@Transactional
+	public void deleteAnnonce(String id) throws Exception {
+		Optional<Annonce> optionalAnnonce = repository.findById(id);
+		if (optionalAnnonce.isPresent()) {
+			Annonce annonce = optionalAnnonce.get();
+			annonce.setValeur(30);
+			repository.save(annonce);
+		} else {
+			throw new Exception("Annonce not found with id " + id);
+		}
+	}
 
 	public List<Annonce> findAllAnnoncesEnAttente() {
 		return repository.findByValeur(10); 
 	}
 
-	public List<ValidateAnnonce> findAllValidatedAnnonces() {
-		return validateRepository.findAll(); 
+	public List<Annonce> findAllValidatedAnnonces() {
+		return repository.findByValeur(20); 
 	}
 	  
 	public List<AnnonceFavories> findAllAnnoncesFavories(Users user) {
@@ -247,51 +253,70 @@ public class AnnonceService{
 		historiqueRepository.save(historique);
 	}
 
-// 	@Transactional
-// 	public List<Annonce> getAnnoncesMatch(SearchedElements elements){
-// 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-// 		CriteriaQuery<Annonce> criteriaQuery = criteriaBuilder.createQuery(Annonce.class);
-// 		Root<Annonce> root = criteriaQuery.from(Annonce.class);
-
-// 		Predicate predicate = criteriaBuilder.equal(root.get("etat"), 30);
-
-// 		HashMap<String, Object> conditions = elements.allConditions();
-
-// 		for (Map.Entry<String, Object> condition : conditions.entrySet()) {
-// 			if(condition.getValue() != null){
-// 				predicate = addConditionIfNotNull(criteriaBuilder, root, predicate, condition.getKey(), condition.getValue());
-// 			}
-// 		}
-
-// 		if (elements.getDescription() != null) {
-// 			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
-// 			predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(detailsJoin.get("description"), "%" + elements.getDescription() + "%"));
-// 		}
-
-// 		if (elements.getKilometrage() > 0) {
-// 			predicate = addConditionIfNotNull(criteriaBuilder, root, predicate, "kilometrage", elements.getKilometrage());
-// 		}
-
-// 		if (elements.getMinIntervalle() != -1 && elements.getMaxIntervalle() > 0) {
-// 			predicate = criteriaBuilder.and(predicate, criteriaBuilder.between(root.get("prix"), elements.getMinIntervalle(), elements.getMaxIntervalle()));
-// 		}
-
-// 		criteriaQuery.where(predicate);
-
-// 		TypedQuery<Annonce> query = entityManager.createQuery(criteriaQuery);
-// 		List<Annonce> results = query.getResultList();
-
-// 		return results;
-// 	}
-
-	Predicate addConditionIfNotNull(CriteriaBuilder criteriaBuilder, Root<Annonce> root, Predicate predicate, String attributeName, Object value) {
-		if (value != null) {
-			Join<Annonce, DetailsAnnonce> detailsJoin = root.join("details");
-			Join<DetailsAnnonce, Voiture> voitureJoin = detailsJoin.join("voiture");
-			predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(attributeName), value));
+	@Transactional
+	public List<Annonce> getAnnoncesMatch(SearchedElements elements){
+		// Requête native pour la condition de couleur
+		List<Annonce> results = new ArrayList<>();
+		if(elements.getIdCouleur() != null){
+			String sql = "SELECT v.* FROM annonce v " +
+						 " INNER JOIN (SELECT id_voiture, MAX(date_application) AS max_date FROM coloriage GROUP BY id_voiture) cv ON v.id_voiture = cv.id_voiture" +
+						 "	WHERE EXISTS ( SELECT 1 FROM coloriage c " +
+						 "    WHERE c.id_voiture = v.id_voiture AND c.date_application = cv.max_date AND c.id_couleur = :couleur)";
+	
+			Query query = entityManager.createNativeQuery(sql, Annonce.class);
+			query.setParameter("couleur", elements.getIdCouleur());
+			results = query.getResultList();
 		}
-		return predicate;
-	}
+	
+		// Requête Criteria API pour les autres conditions
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Annonce> criteriaQuery = criteriaBuilder.createQuery(Annonce.class);
+		Root<Annonce> root = criteriaQuery.from(Annonce.class);
+	
+		Predicate predicate = criteriaBuilder.equal(root.get("valeur"), 20);
+		Join<Annonce, Voiture> voitureJoin = root.join("voiture");
+		HashMap<String, Object> conditions = elements.allConditions();
+	
+		for (Map.Entry<String, Object> condition : conditions.entrySet()) {
+			if(condition.getValue() != null){
+				predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(condition.getKey()), condition.getValue()));
+			}
+		}
+	
+		if (elements.getDescription() != null) {
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("description"), "%" + elements.getDescription() + "%"));
+		}
+	
+		if (elements.getKilometrageMin() != -1 && elements.getKilometrageMax() > 0) {
+			predicate = criteriaBuilder.and(predicate, criteriaBuilder.between(voitureJoin.get("kilometrage"), elements.getKilometrageMin(), elements.getKilometrageMax()));
+		}
 
+		if (elements.getAnneeMin() != -1 && elements.getAnneeMax() > 0) {
+			Calendar minYear = Calendar.getInstance();
+			minYear.set(elements.getAnneeMin(), Calendar.JANUARY, 1);
+			Calendar maxYear = Calendar.getInstance();
+			maxYear.set(elements.getAnneeMax(), Calendar.DECEMBER, 31);
+			Predicate yearPredicate = criteriaBuilder.between(voitureJoin.get("modele").get("annee"), minYear, maxYear);
+			predicate = criteriaBuilder.and(predicate, yearPredicate);
+		}			
+	
+		criteriaQuery.where(predicate);
+		TypedQuery<Annonce> typedQuery = entityManager.createQuery(criteriaQuery);
+		List<Annonce> tempResults = typedQuery.getResultList();
+	
+		// Comparaison des résultats des deux requêtes
+		// results.retainAll(tempResults);
+		List<Annonce> resultatAnnonces = new ArrayList<>();
+		if(!results.isEmpty() && !tempResults.isEmpty()){
+			results.retainAll(tempResults);
+			resultatAnnonces = results;
+		} else if (!results.isEmpty() && tempResults.isEmpty()){
+			resultatAnnonces = results;
+		} else if (results.isEmpty() && !tempResults.isEmpty()){
+			resultatAnnonces = tempResults;
+		}
+	
+		return resultatAnnonces;
+	}	
 
 }

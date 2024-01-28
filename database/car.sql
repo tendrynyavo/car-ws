@@ -274,3 +274,5 @@ CREATE TABLE roles_user (
    roles_id varchar(10) references role(id),
    etat int default 1
 );
+
+alter table coloriage add column date_application DATE;
