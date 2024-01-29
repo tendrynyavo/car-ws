@@ -27,6 +27,8 @@ public class StatistiqueService {
 	}
 
 	public int[][] getStatistiqueVenteParAn(String annee) throws Exception {
+		if(annee.equals("All"))
+			return this.repository.getStatistiqueVente();
 		return this.repository.getStatistiqueVenteParAn(Integer.valueOf(annee));
 	}
 

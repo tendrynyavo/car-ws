@@ -61,6 +61,9 @@ select vendu.*, EXTRACT(YEAR From date_vendu) annee, EXTRACT(Month from date_ven
 create view v_statistique_vente_mois as
 select annee, mois, count(*) quantite from vente_mois group by annee, mois;
 
+create view v_statistique_vente_mois_global as
+select mois, count(*) quantite from vente_mois group by mois;
+
 CREATE OR REPLACE FUNCTION get_statistique_vente_mois(annee_donne INT)
 RETURNS TABLE (mois INT, quantite bigint) AS
 $$
@@ -70,6 +73,20 @@ BEGIN
     FROM generate_series(1, 12) AS m(mois)
     LEFT JOIN v_statistique_vente_mois v 
     ON m.mois = v.mois AND v.annee = annee_donne
+    ORDER BY m.mois;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION get_statistique_vente_mois()
+RETURNS TABLE (mois INT, quantite bigint) AS
+$$
+BEGIN
+    RETURN QUERY 
+    SELECT m.mois, COALESCE(v.quantite, 0) AS quantite
+    FROM generate_series(1, 12) AS m(mois)
+    LEFT JOIN v_statistique_vente_mois_global v 
+    ON m.mois = v.mois
     ORDER BY m.mois;
 END;
 $$
