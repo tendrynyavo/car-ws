@@ -61,7 +61,7 @@ public class AnnonceController{
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
-			response.addMessage("save", "L'annonce a ete enregistrer");
+			response.addMessage("save", "L'annonce a ete enregistrers");
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
