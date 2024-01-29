@@ -28,8 +28,8 @@ public class Modele{
 
 	@ManyToOne
 	@JoinColumn( name = "id_marque", nullable = false )
-        @JsonManagedReference
-        @JsonIgnoreProperties("modele")
+        // @JsonManagedReference
+        // @JsonIgnoreProperties("modele")
 	Marque marque;
 
 	@Column( name = "nom" , nullable = false )

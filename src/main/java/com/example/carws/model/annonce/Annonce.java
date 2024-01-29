@@ -49,7 +49,7 @@ public class Annonce{
 	@Column( name = "valeur" )
 	Integer valeur;
 
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "id_voiture")
 	Voiture voiture;
 
@@ -59,16 +59,16 @@ public class Annonce{
 	@OneToOne(mappedBy = "annonce")
 	ValidateAnnonce validate;
 
-	// @OneToOne(mappedBy = "annonce")
+	@OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
-	// AnnonceFavories favorie;
+	AnnonceFavories favorie;
 
 	// @OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
 	// AnnonceVendus vendu;
 
 	// @OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
+	// // @JsonIgnore
 	// Historique historique;
 
 	// public Historique getHistorique(){
@@ -79,13 +79,13 @@ public class Annonce{
 	// 	this.historique = historique;
 	// }
 
-	// public AnnonceVendus getVendu(){
-	// 	return this.vendu;
-	// }
+	public AnnonceFavories getFavories(){
+		return this.favorie;
+	}
 
-	// public void setVendu(AnnonceVendus vendu){
-	// 	this.vendu = vendu;
-	// }
+	public void setFavories(AnnonceFavories fav){
+		this.favorie = fav;
+	}
 
 	public ValidateAnnonce getValidate(){
 		return this.validate;

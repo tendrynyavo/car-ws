@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.carws.model.annonce.Annonce;
 import com.example.carws.model.annonce.AnnonceFavories;
@@ -19,12 +21,14 @@ import com.example.carws.request.AnnonceRequest;
 import com.example.carws.request.SearchedElements;
 import com.example.carws.service.AnnonceService;
 import com.example.carws.response.*;
+import com.example.carws.security.SecurityFilter;
 
 @RestController
 @RequestMapping("/api/annonce")
 public class AnnonceController{
 
 	@Autowired AnnonceService annonceService;
+	@Autowired SecurityFilter securityFilter;
 
 	@GetMapping("/list")
 	public ResponseEntity<?> getAnnonces() throws Exception{
@@ -50,7 +54,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
@@ -61,7 +65,7 @@ public class AnnonceController{
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
-			response.addMessage("save", "L'annonce a ete enregistrer");
+			response.addMessage("save", "L'annonce a ete enregistrers");
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
@@ -70,7 +74,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateAnnonce(@RequestBody Annonce annonce, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -85,7 +89,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteAnnonce( @PathVariable("id") String id ){
 		Response response = new Response();
@@ -115,6 +119,11 @@ public class AnnonceController{
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String idUser = (String)authentication.getPrincipal();
+			Users user = new Users();
+			user.setId(idUser);
+			validate.setUser(user);
 			annonceService.saveValidateAnnonce(id, validate);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, validee!"));
 		} catch (Exception e) {
@@ -136,11 +145,16 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/vendu/{id}")
 	public ResponseEntity<Response> annonceVendu(@RequestBody AnnonceVendus vendu, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String idUser = (String)authentication.getPrincipal();
+			Users user = new Users();
+			user.setId(idUser);
+			vendu.setUser(user);
 			annonceService.saveAnnonceVendu(id, vendu);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, vendu!"));
 		} catch (Exception e) {
@@ -161,11 +175,13 @@ public class AnnonceController{
 // 	}
 
 	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/favoris/{user}")
-	public ResponseEntity<?> getAnnoncesFavoris(@PathVariable("user") String user) throws Exception{
+	@GetMapping("/favoris")
+	public ResponseEntity<?> getAnnoncesFavoris() throws Exception{
 		try{
 			Users userP = new Users();
-			userP.setId(user);
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String idUser = (String)authentication.getPrincipal();
+			userP.setId(idUser);
 			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories(userP).toArray( new AnnonceFavories[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
@@ -179,6 +195,11 @@ public class AnnonceController{
 	public ResponseEntity<Response> favoriteAnnonce(@RequestBody AnnonceFavories favories, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String idUser = (String)authentication.getPrincipal();
+			Users user = new Users();
+			user.setId(idUser);
+			favories.setUser(user);;
 			annonceService.saveAnnonceFavories(id, favories);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, en favoris!"));
 		} catch (Exception e) {
