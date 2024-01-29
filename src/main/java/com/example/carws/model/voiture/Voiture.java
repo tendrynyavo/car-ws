@@ -54,10 +54,10 @@ public class Voiture{
     @JoinColumn(name = "id_modele")
     Modele modele;
 
-    @OneToOne(mappedBy = "voiture")
+    @OneToMany(mappedBy = "voiture")
     // @JsonBackReference
     @JsonIgnore
-    Annonce annonce;
+    List<Annonce> annonce;
 
     @OneToMany(mappedBy = "voiture")
     List<Coloriage> coloriages;
@@ -129,11 +129,11 @@ public class Voiture{
         return this.modele;
     }
 
-    public void setAnnonce(Annonce annonce){
+    public void setAnnonce(List<Annonce> annonce){
         this.annonce = annonce;
     }
 
-    public Annonce getAnnonce(){
+    public List<Annonce> getAnnonce(){
         return this.annonce;
     }
 
