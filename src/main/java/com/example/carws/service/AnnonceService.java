@@ -13,6 +13,7 @@ import com.example.carws.request.SearchedElements;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -33,6 +34,7 @@ import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.primaire.Couleur;
 import com.example.carws.model.primaire.Lieu;
 import com.example.carws.model.primaire.Modele;
+import com.example.carws.model.statistics.Commission;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.exception.*;
@@ -188,6 +190,18 @@ public class AnnonceService{
 		validateRepository.save(validateAnnonce);
 	}
 
+	public Integer getCommission(double prix){
+
+		List<Commission> results = new ArrayList<>();
+		String sql = "SELECT c.* FROM commission c WHERE :prix >= c.minimum AND :prix < c.maximum";
+
+		Query query = entityManager.createNativeQuery(sql, Annonce.class);
+		query.setParameter("prix", prix);
+		results = query.getResultList();
+
+		return results.get(0).getCommission();
+	}
+
 	@Transactional
 	public void saveAnnonceVendu( String id , AnnonceVendus annonceVendu ) throws Exception{
 		Optional<Annonce> optionalAnnonce = repository.findById(id);
@@ -205,8 +219,11 @@ public class AnnonceService{
 		
 		System.out.println("annonce : "+annonce.getId());
 
+		
 		annonceVendu.setUser(user.get());
 		annonceVendu.setAnnonce(annonce);
+		Integer commission = this.getCommission(annonceVendu.getAnnonce().getPrix());
+		annonceVendu.setCommission(commission);
 		venduRepository.save(annonceVendu);
 	}
 
