@@ -16,7 +16,6 @@ import com.example.carws.request.InscriptionRequest;
 import com.example.carws.service.MessagerieService;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
-import com.example.carws.security.SecurityFilter;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +32,6 @@ public class UsersController {
     UsersService usersService;
     @Autowired
     MessagerieService messagerieService;
-    @Autowired
-    SecurityFilter tokenAuthenticationFilter;
 
     @GetMapping("/inscription_valide/{date}")
     public ResponseEntity<Response> isInscriptionValid(@PathVariable("date") String date) throws Exception {
