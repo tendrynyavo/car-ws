@@ -16,6 +16,7 @@ import com.example.carws.request.InscriptionRequest;
 import com.example.carws.service.MessagerieService;
 import com.example.carws.service.UsersService;
 import com.example.carws.response.*;
+
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -110,9 +111,10 @@ public class UsersController {
     @PostMapping("messagerie")
     public ResponseEntity<Response> nouveauMessage(@RequestBody Messagerie messagerie) {
         try {
-            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
-            String idEnvoyeur = claims.get("id", String.class);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String idEnvoyeur = (String)authentication.getPrincipal();
             messagerie.setIdEnvoyeur(idEnvoyeur);
+            messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
             messagerieService.nouveauMessage(messagerie);
             Response response = new Response();
             response.addData("valide", "Message envoye");
@@ -128,8 +130,8 @@ public class UsersController {
     @PostMapping("discussions")
     public ResponseEntity<Response> discussions(@RequestBody Messagerie messagerie) {
         try {
-            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
-            String idEnvoyeur = claims.get("id", String.class);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String idEnvoyeur = (String)authentication.getPrincipal();
             List<Messagerie> discussions = messagerieService.getDiscussions(idEnvoyeur, messagerie.getIdReceveur());
             Response response = new Response();
             response.addData("discussions", discussions);
@@ -145,8 +147,8 @@ public class UsersController {
     @PostMapping("StatusVu")
     public ResponseEntity<Response> setStatusVu(@RequestBody Messagerie messagerie) {
         try {
-            Claims claims = new Token().verify(messagerie.getIdEnvoyeur());
-            String idEnvoyeur = claims.get("id", String.class);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String idEnvoyeur = (String)authentication.getPrincipal();
             messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
             Response response = new Response();
             response.addData("status", "Modification effectue");
@@ -177,11 +179,13 @@ public class UsersController {
 
     @PostMapping("test")
     public void test(HttpServletRequest request) {
+        // String token = this.tokenAuthenticationFilter.getBearerToken(request);
         System.out.println("user: "  + request.isUserInRole("USER"));
         System.out.println("admin: "  + request.isUserInRole("ADMIN"));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = (String)authentication.getPrincipal();
         if (authentication != null && authentication.getAuthorities() != null) {
-            System.out.println("Roles de l'utilisateur :");
+            System.out.println("Roles de l'utilisateur : " + id);
             authentication.getAuthorities().forEach(authority -> {
                 System.out.println("==>" + authority.getAuthority());
             });

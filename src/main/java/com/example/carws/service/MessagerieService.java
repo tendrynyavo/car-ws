@@ -21,6 +21,7 @@ public class MessagerieService {
     MongoTemplate mongoTemplate;
 
     public void nouveauMessage(Messagerie message) throws Exception {
+        System.out.println("envoyeur: " + message.getIdReceveur());
         messagingRepository.save(message);
     }
 
@@ -38,7 +39,7 @@ public class MessagerieService {
         Query query = new Query(Criteria.where("idEnvoyeur").is(idEnvoyeur).and("idReceveur").is(idReceveur).and("status").is(avant));
         Update update = new Update().set("status", status);
         mongoTemplate.updateFirst(query, update, Messagerie.class);
-        System.out.println("Set status teto");
+        System.out.println("Set status teto nandefa: " + idEnvoyeur + " et nandray: " + idReceveur);
     }
 
     
