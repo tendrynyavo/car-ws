@@ -55,7 +55,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                     .credentialsExpired(false)
                     .disabled(false)
                     .build();
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); 
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getId(), null, userDetails.getAuthorities()); 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
