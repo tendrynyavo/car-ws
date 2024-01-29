@@ -41,10 +41,10 @@ public class UsersService {
             UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
             Users user = usersRepository.findById(userRecord.getUid()).orElse(null);
             if (user == null)
-                throw new Exception("Utilisateur non trouvé.");
+                throw new Exception("Email ou mot de passe incorrecte.");
             return user;
         } catch (Exception e) {
-            throw new Exception("Aucun enregistrement d’utilisateur n’a été trouvé cette adresse e-mail fournie!");
+            throw new Exception("Email ou mot de passe incorrecte.");
         }
     }
 
@@ -55,7 +55,7 @@ public class UsersService {
                 throw new Exception("Email ou mot de passe incorrecte.");
             return user;
         } catch (Exception e) {
-            throw new Exception("Aucun enregistrement d’utilisateur n’a été trouvé cette adresse e-mail fournie!");
+            throw new Exception("Email ou mot de passe incorrecte.");
         }
     }
 
