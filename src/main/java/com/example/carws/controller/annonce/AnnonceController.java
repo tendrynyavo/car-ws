@@ -119,11 +119,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			validate.setUser(user);
 			annonceService.saveValidateAnnonce(id, validate);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, validee!"));
 		} catch (Exception e) {
@@ -150,11 +145,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> annonceVendu(@RequestBody AnnonceVendus vendu, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			vendu.setUser(user);
 			annonceService.saveAnnonceVendu(id, vendu);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, vendu!"));
 		} catch (Exception e) {
@@ -178,11 +168,7 @@ public class AnnonceController{
 	@GetMapping("/favoris")
 	public ResponseEntity<?> getAnnoncesFavoris() throws Exception{
 		try{
-			Users userP = new Users();
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			userP.setId(idUser);
-			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories(userP).toArray( new AnnonceFavories[0] );
+			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories().toArray( new AnnonceFavories[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -195,11 +181,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> favoriteAnnonce(@RequestBody AnnonceFavories favories, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			favories.setUser(user);;
 			annonceService.saveAnnonceFavories(id, favories);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, en favoris!"));
 		} catch (Exception e) {

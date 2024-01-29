@@ -25,6 +25,9 @@ import jakarta.persistence.criteria.Subquery;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.*;
 
 import com.example.carws.model.annonce.*;
@@ -94,7 +97,11 @@ public class AnnonceService{
 
         Optional<Lieu> lieu = lieuRepository.findById(annonce.getLieu().getId());
         Voiture voiture = voitureRepository.findById(annonce.getVoiture().getId());
-        Users user = userRepository.findById(annonce.getUser().getId()).orElseThrow(() -> new Exception("User not found in annonceService"));
+        
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+
+		Users user = userRepository.findById(idUser).orElseThrow(() -> new Exception("User not found in annonceService"));
         Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
         
         annonce.setLieu(lieu.get());
@@ -115,7 +122,10 @@ public class AnnonceService{
 			annonceUpdate = this.getAnnonce( annonce.getId() );
 			annonceUpdate.setDate(annonce.getDate());
 
-			Optional<Users> user = userRepository.findById(annonce.getUser().getId());
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String idUser = (String)authentication.getPrincipal();
+
+			Optional<Users> user = userRepository.findById(idUser);
             annonceUpdate.setUser(user.get());
 
             annonceUpdate.setPrix(annonce.getPrix());
@@ -154,8 +164,12 @@ public class AnnonceService{
 		return repository.findByValeur(20); 
 	}
 	  
-	public List<AnnonceFavories> findAllAnnoncesFavories(Users user) {
-		return favorisRepository.findAllByUser(user); 
+	public List<AnnonceFavories> findAllAnnoncesFavories() {
+		Users userP = new Users();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		userP.setId(idUser);
+		return favorisRepository.findAllByUser(userP); 
 	}
 
 // 	public List<AnnonceVendus> findAllVenduAnnonces() {
@@ -168,6 +182,13 @@ public class AnnonceService{
 		if (!optionalAnnonce.isPresent() || optionalAnnonce.get().getId() == null) {
 			throw new Exception("Annonce not found or invalid with id " + id + " in saveValidateAnnonce()");
 		}
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		Users user = new Users();
+		user.setId(idUser);
+		validateAnnonce.setUser(user);
+
 		Annonce annonce = optionalAnnonce.get();
 		annonce.setValeur(20);
 		annonce = this.updateAnnonce(annonce);
@@ -175,15 +196,15 @@ public class AnnonceService{
 		System.out.println("annonce : "+annonce.getId());
 		System.out.println("user : "+validateAnnonce.getUser().getId());
 
-		Optional<Users> user = userRepository.findById(validateAnnonce.getUser().getId());
-		if (!user.isPresent() || user.get().getId() == null) {
+		Optional<Users> optionnaleUser = userRepository.findById(validateAnnonce.getUser().getId());
+		if (!optionnaleUser.isPresent() || optionnaleUser.get().getId() == null) {
 			throw new Exception("Annonce not found or invalid with id " + id + " for user in saveValidateAnnonce()");
 		}
 
-		System.out.println(user.get().getId());
+		System.out.println(optionnaleUser.get().getId());
 
 		validateAnnonce.setAnnonce(annonce);
-		validateAnnonce.setUser(user.get());
+		validateAnnonce.setUser(optionnaleUser.get());
 
 		validateRepository.save(validateAnnonce);
 	}
@@ -195,8 +216,14 @@ public class AnnonceService{
 			throw new Exception("Annonce not found or invalid with id " + id + " in saveAnnonceVendu()");
 		}
 
-		Optional<Users> user = userRepository.findById(annonceVendu.getUser().getId());
-		if (!user.isPresent() || user.get().getId() == null) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		Users user = new Users();
+		user.setId(idUser);
+		annonceVendu.setUser(user);
+
+		Optional<Users> optionnaleUser = userRepository.findById(annonceVendu.getUser().getId());
+		if (!optionnaleUser.isPresent() || optionnaleUser.get().getId() == null) {
 			throw new Exception("Annonce not found or invalid with id " + id + " for user in saveAnnonceFavories()");
 		}
 		Annonce annonce = optionalAnnonce.get();
@@ -205,7 +232,7 @@ public class AnnonceService{
 		
 		System.out.println("annonce : "+annonce.getId());
 
-		annonceVendu.setUser(user.get());
+		annonceVendu.setUser(optionnaleUser.get());
 		annonceVendu.setAnnonce(annonce);
 		venduRepository.save(annonceVendu);
 	}
@@ -213,18 +240,23 @@ public class AnnonceService{
 	@Transactional
 	public void saveAnnonceFavories( String id , AnnonceFavories annonceFavories ) throws Exception{
 		Optional<Annonce> optionalAnnonce = repository.findById(id);
-		Optional<Users> user = userRepository.findById(annonceFavories.getUser().getId());
-		if (!user.isPresent() || user.get().getId() == null) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		Users user = new Users();
+		user.setId(idUser);
+		annonceFavories.setUser(user);
+
+		Optional<Users> optionnalUser = userRepository.findById(annonceFavories.getUser().getId());
+		if (!optionnalUser.isPresent() || optionnalUser.get().getId() == null) {
 			throw new Exception("Annonce not found or invalid with id " + id + " for user in saveAnnonceFavories()");
 		}
 
 		if (optionalAnnonce.isPresent()) {
 			Annonce annonce = optionalAnnonce.get();
 
-			Users users = user.get();
-
 			annonceFavories.setAnnonce(annonce);
-			annonceFavories.setUser(users);
+			annonceFavories.setUser(optionnalUser.get());
 			favorisRepository.save(annonceFavories);
 			
 		} else {

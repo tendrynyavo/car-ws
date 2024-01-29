@@ -14,6 +14,9 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.*;
 
 import com.example.carws.model.primaire.Categorie;
@@ -64,7 +67,11 @@ public class VoitureService{
 		return voitures;
 	}
 
-	public List<Voiture> getVoituresByUser(Users user) {
+	public List<Voiture> getVoituresByUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		Users user = new Users();
+		user.setId(idUser);
 		List<Voiture> voitures = repository.findByUser(user);
 		for (int i = 0; i < voitures.size(); i++) {
 			voitures.get(i).setCouleurActuelle(coloriageRepository.findLatestColor(voitures.get(i).getId()));
@@ -81,12 +88,16 @@ public class VoitureService{
 		return voiture;
 	}
 
-	public void saveVoiture( Users user, Categorie categorie, Vitesse vitesse, Moteur moteur, Modele modele, double kilometrage ) throws Exception{
+	public void saveVoiture(Categorie categorie, Vitesse vitesse, Moteur moteur, Modele modele, double kilometrage ) throws Exception{
 		Categorie categorieExistant = categorieRepository.findByIdAndDeletedFalse(categorie.getId());
 		Vitesse vitesseExistant = vitesseRepository.findByIdAndDeletedFalse(vitesse.getId());
 		Modele modeleExistant = modeleRepository.findByIdAndDeletedFalse(modele.getId());
 		Moteur moteurExistant = moteurRepository.findByIdAndDeletedFalse(moteur.getId());
-		Users userExistant = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found in voitureService"));;
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+
+		Users userExistant = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("User not found in voitureService"));;
 		
 		Voiture voiture = new Voiture();
         voiture.setUser(userExistant);
