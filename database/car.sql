@@ -1,3 +1,11 @@
+
+CREATE table commission(
+   id_commission serial primary key,
+   minimum integer,
+   maximum integer,
+   commission integer not null
+);
+
 CREATE TABLE marque(
    id_marque VARCHAR(50) ,
    nom VARCHAR(50)  NOT NULL,
@@ -276,3 +284,5 @@ CREATE TABLE roles_user (
 );
 
 alter table coloriage add column date_application DATE;
+
+alter table vendu add column commission integer default 0;
