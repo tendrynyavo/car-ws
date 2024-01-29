@@ -13,4 +13,7 @@ public interface StatisticRepository extends JpaRepository<Statistique, String> 
 
 	@Query(value = "select * from get_statistique_vente_mois(:annee);", nativeQuery = true)
 	int[][] getStatistiqueVenteParAn(@Param("annee") int annee);
+
+	@Query(value = "select * from get_statistique_vente_mois();", nativeQuery = true)
+	int[][] getStatistiqueVente();
 }

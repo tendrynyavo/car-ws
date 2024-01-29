@@ -63,6 +63,7 @@ public class StatisticController{
 	public ResponseEntity<Response> getStatistiqueVenteParAn(@PathVariable("annee") String annee) {
 		Response response = new Response();
 		try{
+			System.out.println("annee = " + annee);
 			int[][] statsParAn = this.service.getStatistiqueVenteParAn(annee);
 			response.addData( "statistics" , statsParAn );
 
