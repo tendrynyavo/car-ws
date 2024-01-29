@@ -195,7 +195,7 @@ public class AnnonceService{
 		List<Commission> results = new ArrayList<>();
 		String sql = "SELECT c.* FROM commission c WHERE :prix >= c.minimum AND :prix < c.maximum";
 
-		Query query = entityManager.createNativeQuery(sql, Annonce.class);
+		Query query = entityManager.createNativeQuery(sql, Commission.class);
 		query.setParameter("prix", prix);
 		results = query.getResultList();
 
