@@ -250,7 +250,7 @@ public class AnnonceService{
 		System.out.println("id annonce: "+annonce.getId());
 
 		historique.setIdAnnonce(annonce.getId());
-		historique.setAncienValeur(optionalAnnonce.get().getAnnonce().getValeur());
+		// historique.setAncienValeur(optionalAnnonce.get().getAnnonce().getValeur());
 		historique.setDate(optionalAnnonce.get().getDatetime());
 		historique.setUser(user);
 

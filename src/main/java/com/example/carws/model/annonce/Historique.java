@@ -26,10 +26,9 @@ public class Historique{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
+    @Column( name = "id_annonce" )
+    String idAnnonce;
 
-    @OneToOne
-    @JoinColumn(name = "id_annonce")
-    Annonce annonce;
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
