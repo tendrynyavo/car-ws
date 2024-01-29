@@ -49,7 +49,7 @@ public class Annonce{
 	@Column( name = "valeur" )
 	Integer valeur;
 
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "id_voiture")
 	Voiture voiture;
 
