@@ -91,10 +91,10 @@ insert into type_carburant values   ('TPC02', 'CRB02', 'TPM01');
 insert into role values ('ADMIN', 'Administrateur'), ('USER', 'Client');
 
 -- UTILISATEUR
-insert into utilisateur values  ('', 'RANDRIANANDRASANA', 'Jean Martin', 'jean@gmail.com', '+261342156789', 'jean!!!', '1976-06-11');
+insert into utilisateur values  ('id-test', 'RANDRIANANDRASANA', 'Jean Martin', 'jean@gmail.com', '+261342156789', 'jean!!!', '1976-06-11');
 
 -- ROLE USER
-insert into roles_user values (default, '', 'ADMIN', 10);
+insert into roles_user values (default, 'id-test', 'ADMIN', 10);
 
 -- COMMISSION
 insert into commission values (default, 1, 1000000, 2);
