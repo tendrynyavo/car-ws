@@ -158,6 +158,7 @@ public class AnnonceController{
 			annonceService.saveAnnonceVendu(id, vendu);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, vendu!"));
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.addError("error", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}

@@ -97,5 +97,5 @@ insert into utilisateur values  ('', 'RANDRIANANDRASANA', 'Jean Martin', 'jean@g
 insert into roles_user values (default, '', 'ADMIN', 10);
 
 -- COMMISSION
-insert into commision values (default, 1, 1000000, 2);
+insert into commission values (default, 1, 1000000, 2);
 -->>> Id User 

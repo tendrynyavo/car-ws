@@ -37,6 +37,17 @@ public class AnnonceVendus{
     @Column( name = "date_vendu" )
 	Date date;
 
+    @Column( name = "commission" )
+    Integer commission;
+
+    public Integer getCommission(){
+        return this.commission;
+    }
+
+    public void setCommission(Integer commission){
+        this.commission = commission;
+    }
+
 	public void setId( String id ){
 		this.id = id;
 	}

@@ -163,7 +163,7 @@ public class UsersController {
     @PostMapping("authentificationAdmin")
     public ResponseEntity<Response> authentificationAdmin(@RequestBody Users users) throws Exception {
         try {
-            users = usersService.login(users.getId());
+            users = usersService.authentification(users);
             if(!users.isRole("ADMIN"))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response().addError("exception", "Acces non autorise."));
             String token = new Token().generateJwt(users);
