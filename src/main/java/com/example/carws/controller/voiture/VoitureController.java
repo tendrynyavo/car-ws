@@ -54,11 +54,10 @@ public class VoitureController{
 	}
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
+	@GetMapping("/user")
+	public ResponseEntity<?> getVoituresByUser() {
 		try{
-			Users user = userService.login(userId);
-			Voiture[] voitures =  voitureService.getVoituresByUser(user).toArray( new Voiture[0] );
+			Voiture[] voitures =  voitureService.getVoituresByUser().toArray( new Voiture[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( voitures );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -71,12 +70,7 @@ public class VoitureController{
 	public ResponseEntity<Response> addVoiture( @RequestBody CarRequest v ) throws Exception{
 		Response response = new Response();
 		try{
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        	String id = (String)authentication.getPrincipal();
-        	Users user = new Users();
-        	user.setId(id);
-            Voiture voiture = v.toVoiture();
-			voitureService.saveVoiture( user, voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
+			voitureService.saveVoiture(voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){

@@ -5,11 +5,14 @@ import com.example.carws.model.annonce.AnnoncePhoto;
 import com.example.carws.model.annonce.DetailsAnnonce;
 import java.util.List;
 import java.util.ArrayList;
+import com.example.carws.model.annonce.AnnoncePhoto;
+
 public class AnnonceRequest {
 
     PhotoRequest[] photos;
     Annonce annonce;
     DetailsAnnonce details;
+    // AnnoncePhoto[] photos;
 
     public void setAnnonce(Annonce annonce){
         System.out.println("Ato be fotsiny");
