@@ -16,6 +16,7 @@ import com.example.carws.model.annonce.AnnonceFavories;
 import com.example.carws.model.annonce.AnnonceVendus;
 import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.model.annonce.ValidateAnnonce;
+import com.example.carws.model.annonce.AnnoncePhoto;
 import com.example.carws.model.users.Users;
 import com.example.carws.request.AnnonceRequest;
 import com.example.carws.request.SearchedElements;
@@ -62,6 +63,11 @@ public class AnnonceController{
 
 			DetailsAnnonce details = request.getDetails();
 			Annonce annonce = request.getAnnonce();
+			AnnoncePhoto[] photos = request.getPhotos();
+
+			for(int i=0; i<photos.length; i++){
+				System.out.println(i+" >> "+photos[i]);
+			}
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
