@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -34,6 +35,12 @@ public class UsersService {
         if (user == null)
             throw new Exception("Utilisateur non trouvé.");
         return user;
+    }
+
+    public Users login(Users user) throws Exception{
+        Optional<Users> u = usersRepository.getUsersByEmailAndPassword( user.getMail(), user.getPassword() );
+        if( !u.isPresent() ) throw new Exception("Utilisateur non trouve");
+        return u.get();
     }
 
     public Users authentification(String email) throws Exception {

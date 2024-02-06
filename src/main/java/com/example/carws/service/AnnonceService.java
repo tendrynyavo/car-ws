@@ -2,6 +2,7 @@ package com.example.carws.service;
 import com.example.carws.repository.AnnonceFavoriesRepository;
 import com.example.carws.repository.AnnonceRepository;
 import com.example.carws.repository.AnnonceVenduRepository;
+import com.example.carws.repository.AnnoncePhotoRepository;
 import com.example.carws.repository.CaracteristiqueRepository;
 import com.example.carws.repository.DetailsAnnonceRepository;
 import com.example.carws.repository.HistoriqueRepository;
@@ -58,6 +59,9 @@ public class AnnonceService{
 	AnnonceVenduRepository venduRepository;
 
 	@Autowired
+	AnnoncePhotoRepository photoRepository;
+
+	@Autowired
 	AnnonceFavoriesRepository favorisRepository;
 
 	@Autowired
@@ -98,12 +102,17 @@ public class AnnonceService{
         Voiture voiture = voitureRepository.findById(annonce.getVoiture().getId());
         Users user = userRepository.findById(annonce.getUser().getId()).orElseThrow(() -> new Exception("User not found in annonceService"));
         Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
-        
+        List<AnnoncePhoto> pics = annonce.getPhotos();
         annonce.setLieu(lieu.get());
         annonce.setVoiture(voiture);
         annonce.setUser(user);
 
 		repository.save( annonce );
+
+		for( AnnoncePhoto photo : pics ){
+			photo.setAnnonce( annonce );
+			photoRepository.save(photo);
+		}
 
 		details.setAnnonce(annonce);
         details.setCaracteristique(caracteristique.get());

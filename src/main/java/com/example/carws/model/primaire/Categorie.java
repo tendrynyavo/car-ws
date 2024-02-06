@@ -15,9 +15,7 @@ import com.example.carws.model.primaire.relation.*;;
 
 @Entity
 @Table( name = "categorie" )
-@JsonIdentityInfo(
- generator = ObjectIdGenerators.PropertyGenerator.class, 
- property = "id")
+
 public class Categorie{
 	@Id
 	@Column( name = "id_categorie"  )
@@ -31,9 +29,9 @@ public class Categorie{
 	@Column( name = "deleted" )
 	boolean deleted;
 
-	@OneToMany(mappedBy = "categorie")
-	@JsonIgnore
-	List<Voiture> voiture;
+	// @OneToMany(mappedBy = "categorie")
+	// @JsonIgnoreProperties("categorie")
+	// List<Voiture> voiture;
     
 	public boolean getDeleted(){
 		return this.deleted;

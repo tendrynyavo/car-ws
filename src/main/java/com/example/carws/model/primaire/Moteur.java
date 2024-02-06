@@ -11,8 +11,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.*;
+   
+
 import jakarta.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
 import java.util.Set;
 
@@ -42,6 +45,7 @@ public class Moteur{
          @ManyToOne
           @JoinColumn( name = "id_marque" )
 //          @Column
+          @JsonBackReference
          Marque marque;
          
          @ManyToOne

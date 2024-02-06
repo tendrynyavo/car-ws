@@ -24,7 +24,7 @@ import com.example.carws.response.*;
 import com.example.carws.security.SecurityFilter;
 
 @RestController
-@RequestMapping("/api/annonce")
+@RequestMapping("/api/annonces")
 public class AnnonceController{
 
 	@Autowired AnnonceService annonceService;
@@ -55,20 +55,21 @@ public class AnnonceController{
 	}
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@PostMapping
+	@PostMapping("/")
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
 		try{
 
 			DetailsAnnonce details = request.getDetails();
+			// System.out.println("tafiditra soa amantsara enao man");
 			Annonce annonce = request.getAnnonce();
-
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
 			response.addMessage("save", "L'annonce a ete enregistrers");
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
+			e.printStackTrace();
 			response.addError("error" , e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}

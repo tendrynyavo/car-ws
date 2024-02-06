@@ -9,8 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
+import com.example.carws.request.CarRequest;
 import com.example.carws.service.UsersService;
 import com.example.carws.service.VoitureService;
+
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.carws.response.*;
 
@@ -63,10 +68,15 @@ public class VoitureController{
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
-	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
+	public ResponseEntity<Response> addVoiture( @RequestBody CarRequest v ) throws Exception{
 		Response response = new Response();
 		try{
-			voitureService.saveVoiture( voiture.getUser(), voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        	String id = (String)authentication.getPrincipal();
+        	Users user = new Users();
+        	user.setId(id);
+            Voiture voiture = v.toVoiture();
+			voitureService.saveVoiture( user, voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){

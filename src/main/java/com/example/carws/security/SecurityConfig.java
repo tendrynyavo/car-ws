@@ -83,6 +83,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/users/authentification").permitAll()
                     .requestMatchers("/api/users/token/**").permitAll()
                     .requestMatchers("/api/users/authentificationAdmin").permitAll()
+                    .requestMatchers("/api/users/offline-auth").permitAll()
                     .anyRequest().authenticated();
             });
 
