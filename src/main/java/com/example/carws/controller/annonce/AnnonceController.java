@@ -64,8 +64,9 @@ public class AnnonceController{
 			DetailsAnnonce details = request.getDetails();
 			// System.out.println("tafiditra soa amantsara enao man");
 			Annonce annonce = request.getAnnonce();
-
+			// AnnoncePhoto[] photos = annonce.getPhotos().toArray(new AnnoncePhoto[0]);
 			AnnoncePhoto[] photos = request.getPhotos();
+
 
 			for(int i=0; i<photos.length; i++){
 				System.out.println(i+" >> "+photos[i]);

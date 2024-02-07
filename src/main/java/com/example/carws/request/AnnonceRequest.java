@@ -9,41 +9,47 @@ import com.example.carws.model.annonce.AnnoncePhoto;
 
 public class AnnonceRequest {
 
-    PhotoRequest[] photos;
+    // PhotoRequest[] photos;
     Annonce annonce;
     DetailsAnnonce details;
-    // AnnoncePhoto[] photos;
+    AnnoncePhoto[] photos;
 
     public void setAnnonce(Annonce annonce){
         System.out.println("Ato be fotsiny");
         this.annonce = annonce;
     }
 
-    public void setPhotos( PhotoRequest[] photos ){
+    // public void setPhotos( PhotoRequest[] photos ){
+    //     this.photos = photos;
+    // }
+    // public PhotoRequest[] getPhotos(){
+    //     return this.photos;
+    // }
+    public void setPhotos( AnnoncePhoto[] photos ){
         this.photos = photos;
     }
-    public PhotoRequest[] getPhotos(){
+    public AnnoncePhoto[] getPhotos(){
         return this.photos;
     }
 
     public Annonce getAnnonce() throws Exception{
-        formatAnnonce();
+        // formatAnnonce();
         return this.annonce;
     }
 
-    public void formatAnnonce() throws Exception{
-        try{
-            List<AnnoncePhoto> pics = new ArrayList<>();
-            for( int i = 0; i < this.getPhotos().length ; i++ ){
-                pics.add(this.getPhotos()[i].toAnnoncePhoto());
-            }
-            this.annonce.setPhotos( pics );
+    // public void formatAnnonce() throws Exception{
+    //     try{
+    //         List<AnnoncePhoto> pics = new ArrayList<>();
+    //         for( int i = 0; i < this.getPhotos().length ; i++ ){
+    //             pics.add(this.getPhotos()[i].toAnnoncePhoto());
+    //         }
+    //         this.annonce.setPhotos( pics );
 
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
+    //     }catch(Exception e){
+    //         e.printStackTrace();
+    //         throw e;
+    //     }
+    // }
 
     public void setDetails(DetailsAnnonce details){
         this.details = details;

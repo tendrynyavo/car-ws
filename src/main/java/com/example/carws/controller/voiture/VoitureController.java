@@ -70,6 +70,8 @@ public class VoitureController{
 	public ResponseEntity<Response> addVoiture( @RequestBody CarRequest v ) throws Exception{
 		Response response = new Response();
 		try{
+			Voiture
+			 voiture = v.toVoiture();
 			voitureService.saveVoiture(voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
