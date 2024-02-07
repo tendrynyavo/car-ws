@@ -5,6 +5,7 @@ import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.model.annonce.AnnoncePhoto;
 
 public class AnnonceRequest {
+    
     Annonce annonce;
     DetailsAnnonce details;
     AnnoncePhoto[] photos;
