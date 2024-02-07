@@ -34,7 +34,7 @@ public class AnnonceController{
 	@GetMapping("/list")
 	public ResponseEntity<?> getAnnonces() throws Exception{
 		try{
-			Annonce[] annonces = annonceService.getAllAnnonces().toArray( new Annonce[0] );
+			Annonce[] annonces = annonceService.findAllValidatedAnnonces().toArray( new Annonce[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -182,7 +182,7 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/favoris/{id}")
 	public ResponseEntity<Response> favoriteAnnonce(@RequestBody AnnonceFavories favories, @PathVariable("id") String id) {
 		Response response = new Response();
