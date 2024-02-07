@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.example.carws.utility.IdGenerator;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -59,9 +60,9 @@ public class Annonce{
 	@OneToOne(mappedBy = "annonce")
 	ValidateAnnonce validate;
 
-	@OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	AnnonceFavories favorie;
+	@OneToMany(mappedBy = "annonce")
+    @JsonIgnore
+    List<AnnonceFavories> favories;
 
 	// @OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
@@ -79,12 +80,12 @@ public class Annonce{
 	// 	this.historique = historique;
 	// }
 
-	public AnnonceFavories getFavories(){
-		return this.favorie;
+	public List<AnnonceFavories> getFavories(){
+		return this.favories;
 	}
 
-	public void setFavories(AnnonceFavories fav){
-		this.favorie = fav;
+	public void setFavories(List<AnnonceFavories> fav){
+		this.favories = fav;
 	}
 
 	public ValidateAnnonce getValidate(){

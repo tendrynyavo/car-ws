@@ -1,10 +1,12 @@
 package com.example.carws.model.annonce;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.example.carws.model.users.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
@@ -25,9 +27,15 @@ public class AnnonceFavories{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
-    @OneToOne
+    // @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_annonce")
     Annonce annonce;
+
+    // @OneToMany(mappedBy = "favorie")
+    // // @JsonBackReference
+    // @JsonIgnore
+    // List<Annonce> annonces;
 
     @ManyToOne
 	@JoinColumn(name = "id_utilisateur")
@@ -51,6 +59,14 @@ public class AnnonceFavories{
     public Annonce getAnnonce(){
         return this.annonce;
     }
+
+    // public void setAnnonces(List<Annonce> annonce){
+    //     this.annonces = annonce;
+    // }
+
+    // public List<Annonce> getAnnonces(){
+    //     return this.annonces;
+    // }
 
     public void setUser(Users user){
         this.user = user;
