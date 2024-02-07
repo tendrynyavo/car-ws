@@ -3,21 +3,31 @@ package com.example.carws.request;
 import java.util.HashMap;
 
 public class SearchedElements {
-    Integer idCategorie;
-    Integer idCarburant;
-    Integer idTransmission;
-    Integer idMarque;
-    Integer idModele;
+    String idCategorie;
+    String idBoite;
+    String idMoteur;
+    String idModele;
 
     double minIntervalle;
     double maxIntervalle;
 
-    double kilometrage;
-    Integer annee;
+    double kilometrageMin;
+    double kilometrageMax;
 
-    // Ampiana couleur
+    Integer anneeMin;
+    Integer anneeMax;
+
+    String idCouleur;
 
     String description;
+
+    public String getIdCouleur(){
+        return this.idCouleur;
+    }
+
+    public void setIdCouleur(String idCouleur){
+        this.idCouleur = idCouleur;
+    }
 
     public String getDescription(){
         return this.description;
@@ -27,59 +37,67 @@ public class SearchedElements {
         this.description = description;
     }
 
-    public void setKilometrage(double kilometrage){
-        this.kilometrage = kilometrage;
+    public void setKilometrageMin(double kilometrage){
+        this.kilometrageMin = kilometrage;
     }
 
-    public double getKilometrage(){
-        return this.kilometrage;
+    public double getKilometrageMin(){
+        return this.kilometrageMin;
     }
 
-    public void setAnnee(Integer annee){
-        this.annee = annee;
+    public void setKilometrageMax(double kilometrage){
+        this.kilometrageMax = kilometrage;
     }
 
-    public Integer getAnnee(){
-        return this.annee;
+    public double getKilometrageMax(){
+        return this.kilometrageMax;
     }
 
-    public Integer getIdCategorie(){
+    public void setAnneeMin(Integer annee){
+        this.anneeMin = annee;
+    }
+
+    public Integer getAnneeMin(){
+        return this.anneeMin;
+    }
+
+    public void setAnneeMax(Integer annee){
+        this.anneeMax = annee;
+    }
+
+    public Integer getAnneeMax(){
+        return this.anneeMax;
+    }
+
+    public String getIdCategorie(){
         return this.idCategorie;
     }
 
-    public void setIdCategorie(Integer idcategorie){
+    public void setIdCategorie(String idcategorie){
         this.idCategorie = idcategorie;
     }
 
-    public Integer getIdCarburant(){
-        return this.idCarburant;
+    public String getIdBoite(){
+        return this.idBoite;
     }
 
-    public void setIdCarburant(Integer idcarburant){
-        this.idCarburant = idcarburant;
+    public void setIdBoite(String idBoite){
+        this.idBoite = idBoite;
     }
 
-    public Integer getIdTransmission(){
-        return this.idTransmission;
+    public String getIdMoteur(){
+        return this.idMoteur;
     }
 
-    public void setIdTransmission(Integer idTransmission){
-        this.idTransmission = idTransmission;
+    public void setIdMoteur(String idMoteur){
+        this.idMoteur = idMoteur;
     }
 
-    public Integer getIdMarque(){
-        return this.idMarque;
-    }
-
-    public void setIdMarque(Integer idMarque){
-        this.idMarque = idMarque;
-    }
-
-    public Integer getIdModele(){
+    public String getIdModele(){
         return this.idModele;
     }
 
-    public void setIdModele(Integer idModele){
+    public void setIdModele(String idModele){
         this.idModele = idModele;
     }
 
@@ -107,11 +125,10 @@ public class SearchedElements {
         HashMap<String, Object> conditions = new HashMap<>();
 
         conditions.put("idCategorie", this.getIdCategorie());
-        conditions.put("idCarburant", this.getIdCarburant());
-        conditions.put("idTransmission", this.getIdTransmission());
-        conditions.put("idMarque", this.getIdMarque());
+        conditions.put("idBoite", this.getIdBoite());
+        conditions.put("idMoteur", this.getIdMoteur());
         conditions.put("idModele", this.getIdModele());
-        conditions.put("annee", this.getAnnee());
+        // conditions.put("annee", this.getAnnee());
 
         return conditions;
     }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.service.UsersService;
@@ -21,6 +22,7 @@ public class VoitureController{
 
 	@Autowired UsersService userService;
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> getVoitures() throws Exception{
 		try{
@@ -32,6 +34,7 @@ public class VoitureController{
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getVoiture( @PathVariable("id") String id ) throws Exception{
 		try{
@@ -45,12 +48,11 @@ public class VoitureController{
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@GetMapping("/user")
+	public ResponseEntity<?> getVoituresByUser() {
 		try{
-			Users user = userService.login(userId);
-			Voiture[] voitures =  voitureService.getVoituresByUser(user).toArray( new Voiture[0] );
+			Voiture[] voitures =  voitureService.getVoituresByUser().toArray( new Voiture[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( voitures );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -58,12 +60,12 @@ public class VoitureController{
 		}
     }
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
 		Response response = new Response();
 		try{
-			voitureService.saveVoiture( voiture.getUser(), voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
+			voitureService.saveVoiture(voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
@@ -85,6 +87,21 @@ public class VoitureController{
 			e.printStackTrace();
 			response.addError("error" , e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
+		}
+	}
+
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@PostMapping("/couleur")
+	public ResponseEntity<Response> addColoriage( @RequestBody Coloriage coloriage ) throws Exception{
+		Response response = new Response();
+		try{
+			voitureService.saveCouleurVoiture( coloriage.getVoiture(), coloriage.getCouleur(), coloriage.getDate() );
+			response.addMessage("save", "La couleur de la voiture a ete enregistrer");
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+		}catch(Exception e){
+			e.printStackTrace();
+			response.addError("error" , e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
 

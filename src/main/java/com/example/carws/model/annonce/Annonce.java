@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.example.carws.utility.IdGenerator;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -49,27 +50,26 @@ public class Annonce{
 	@Column( name = "valeur" )
 	Integer valeur;
 
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "id_voiture")
 	Voiture voiture;
 
 	@OneToOne(mappedBy = "annonce")
 	DetailsAnnonce details;
 
-	// @OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	// ValidateAnnonce validate;
+	@OneToOne(mappedBy = "annonce")
+	ValidateAnnonce validate;
 
-	// @OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	// AnnonceFavories favorie;
+	@OneToMany(mappedBy = "annonce")
+    @JsonIgnore
+    List<AnnonceFavories> favories;
 
 	// @OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
 	// AnnonceVendus vendu;
 
 	// @OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
+	// // @JsonIgnore
 	// Historique historique;
 
 	// public Historique getHistorique(){
@@ -80,21 +80,21 @@ public class Annonce{
 	// 	this.historique = historique;
 	// }
 
-	// public AnnonceVendus getVendu(){
-	// 	return this.vendu;
-	// }
+	public List<AnnonceFavories> getFavories(){
+		return this.favories;
+	}
 
-	// public void setVendu(AnnonceVendus vendu){
-	// 	this.vendu = vendu;
-	// }
+	public void setFavories(List<AnnonceFavories> fav){
+		this.favories = fav;
+	}
 
-	// public ValidateAnnonce getValidate(){
-	// 	return this.validate;
-	// }
+	public ValidateAnnonce getValidate(){
+		return this.validate;
+	}
 
-	// public void setValidate(ValidateAnnonce validate){
-	// 	this.validate = validate;
-	// }
+	public void setValidate(ValidateAnnonce validate){
+		this.validate = validate;
+	}
 
 	public DetailsAnnonce getDetails(){
         return this.details;

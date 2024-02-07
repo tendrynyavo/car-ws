@@ -7,27 +7,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.carws.model.annonce.Annonce;
 import com.example.carws.model.annonce.AnnonceFavories;
 import com.example.carws.model.annonce.AnnonceVendus;
 import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.model.annonce.ValidateAnnonce;
+import com.example.carws.model.annonce.AnnoncePhoto;
 import com.example.carws.model.users.Users;
 import com.example.carws.request.AnnonceRequest;
+import com.example.carws.request.SearchedElements;
 import com.example.carws.service.AnnonceService;
 import com.example.carws.response.*;
+import com.example.carws.security.SecurityFilter;
 
 @RestController
 @RequestMapping("/api/annonce")
 public class AnnonceController{
 
 	@Autowired AnnonceService annonceService;
+	@Autowired SecurityFilter securityFilter;
 
-	@GetMapping
+	@GetMapping("/list")
 	public ResponseEntity<?> getAnnonces() throws Exception{
 		try{
-			Annonce[] annonces = annonceService.getAllAnnonces().toArray( new Annonce[0] );
+			Annonce[] annonces = annonceService.findAllValidatedAnnonces().toArray( new Annonce[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -48,6 +55,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
@@ -55,6 +63,11 @@ public class AnnonceController{
 
 			DetailsAnnonce details = request.getDetails();
 			Annonce annonce = request.getAnnonce();
+			AnnoncePhoto[] photos = request.getPhotos();
+
+			for(int i=0; i<photos.length; i++){
+				System.out.println(i+" >> "+photos[i]);
+			}
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
@@ -67,6 +80,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Response> updateAnnonce(@RequestBody Annonce annonce, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -81,19 +95,20 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Response> deleteAnnonce( @PathVariable("id") String id ){
+		Response response = new Response();
+		try{
+			annonceService.deleteAnnonce( id );
+			return ResponseEntity.status( HttpStatus.OK ).body( response.addMessage( "success" , "Annonce suppression" ) );
+		}catch (Exception e) {
+			response.addError("error" , e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
+		}
+	}
 
-// 	@DeleteMapping("/{id}")
-// 	public ResponseEntity<Response> deleteAnnonce( @PathVariable("id") Integer id ){
-// 		Response response = new Response();
-// 		try{
-// 			annonceService.deleteAnnonce( id );
-// 			return ResponseEntity.status( HttpStatus.OK ).body( response.addMessage( "success" , "Annonce suppression" ) );
-// 		}catch (Exception e) {
-// 			response.addError("error" , e.getMessage());
-// 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( response );
-// 		}
-// 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/nonValider")
 	public ResponseEntity<?> getAnnoncesNonValider() throws Exception{
 		try{
@@ -105,6 +120,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/validate/{id}")
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -118,17 +134,19 @@ public class AnnonceController{
 		}
 	}
 
-// 	@GetMapping("/validate")
-// 	public ResponseEntity<?> getValidateAnnonces() throws Exception{
-// 		try{
-// 			ValidateAnnonce[] annonces = annonceService.findAllValidatedAnnonces().toArray( new ValidateAnnonce[0] );
-// 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
-// 		}catch( Exception exception ){
-// 			exception.printStackTrace();
-// 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( exception.getMessage() );
-// 		}
-// 	}
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/validate")
+	public ResponseEntity<?> getValidateAnnonces() throws Exception{
+		try{
+			Annonce[] annonces = annonceService.findAllValidatedAnnonces().toArray( new Annonce[0] );
+			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
+		}catch( Exception exception ){
+			exception.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( exception.getMessage() );
+		}
+	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/vendu/{id}")
 	public ResponseEntity<Response> annonceVendu(@RequestBody AnnonceVendus vendu, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -152,12 +170,11 @@ public class AnnonceController{
 // 		}
 // 	}
 
-	@GetMapping("/favoris/{user}")
-	public ResponseEntity<?> getAnnoncesFavoris(@PathVariable("user") String user) throws Exception{
+	@PreAuthorize("hasRole('USER')")
+	@GetMapping("/favoris")
+	public ResponseEntity<?> getAnnoncesFavoris() throws Exception{
 		try{
-			Users userP = new Users();
-			userP.setId(user);
-			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories(userP).toArray( new AnnonceFavories[0] );
+			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories().toArray( new AnnonceFavories[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -165,6 +182,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PutMapping("/favoris/{id}")
 	public ResponseEntity<Response> favoriteAnnonce(@RequestBody AnnonceFavories favories, @PathVariable("id") String id) {
 		Response response = new Response();
@@ -177,6 +195,7 @@ public class AnnonceController{
 		}
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/defavoris/{id}")
 	public ResponseEntity<Response> defavorieAnnonce(@PathVariable("id") String id) {
 		Response response = new Response();
@@ -189,16 +208,17 @@ public class AnnonceController{
 		}
 	}
 
-// 	@PostMapping("/search")
-// 	public ResponseEntity<?> advancedSearch(@RequestBody SearchedElements elements) {
-// 		try{
-// 			Annonce[] annonces = annonceService.getAnnoncesMatch(elements).toArray( new Annonce[0] );
-// 			return ResponseEntity.status(HttpStatus.OK).body(annonces);
-// 		} catch(Exception exception) {
-// 			exception.printStackTrace();
-// 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
-// 		}
-// 	}
+	// @PreAuthorize("hasRole('USER')")
+	@PostMapping("/search")
+	public ResponseEntity<?> advancedSearch(@RequestBody SearchedElements elements) {
+		try{
+			Annonce[] annonces = annonceService.getAnnoncesMatch(elements).toArray( new Annonce[0] );
+			return ResponseEntity.status(HttpStatus.OK).body(annonces);
+		} catch(Exception exception) {
+			exception.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+		}
+	}
 
 
 }

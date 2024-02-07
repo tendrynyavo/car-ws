@@ -1,6 +1,7 @@
 package com.example.carws.service;
 import com.example.carws.repository.CategorieRepository;
 import com.example.carws.repository.ColoriageRepository;
+import com.example.carws.repository.CouleurRepository;
 import com.example.carws.repository.ModeleRepository;
 import com.example.carws.repository.MoteurRepository;
 import com.example.carws.repository.UsersRepository;
@@ -13,9 +14,14 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.*;
 
 import com.example.carws.model.primaire.Categorie;
+import com.example.carws.model.primaire.Coloriage;
+import com.example.carws.model.primaire.Couleur;
 import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
@@ -47,6 +53,9 @@ public class VoitureService{
 	@Autowired
 	ColoriageRepository coloriageRepository;
 
+	@Autowired
+	CouleurRepository couleurRepository;
+
 	@PersistenceContext
     private EntityManager entityManager;
 
@@ -58,7 +67,11 @@ public class VoitureService{
 		return voitures;
 	}
 
-	public List<Voiture> getVoituresByUser(Users user) {
+	public List<Voiture> getVoituresByUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+		Users user = new Users();
+		user.setId(idUser);
 		List<Voiture> voitures = repository.findByUser(user);
 		for (int i = 0; i < voitures.size(); i++) {
 			voitures.get(i).setCouleurActuelle(coloriageRepository.findLatestColor(voitures.get(i).getId()));
@@ -75,12 +88,16 @@ public class VoitureService{
 		return voiture;
 	}
 
-	public void saveVoiture( Users user, Categorie categorie, Vitesse vitesse, Moteur moteur, Modele modele, double kilometrage ) throws Exception{
+	public void saveVoiture(Categorie categorie, Vitesse vitesse, Moteur moteur, Modele modele, double kilometrage ) throws Exception{
 		Categorie categorieExistant = categorieRepository.findByIdAndDeletedFalse(categorie.getId());
 		Vitesse vitesseExistant = vitesseRepository.findByIdAndDeletedFalse(vitesse.getId());
 		Modele modeleExistant = modeleRepository.findByIdAndDeletedFalse(modele.getId());
 		Moteur moteurExistant = moteurRepository.findByIdAndDeletedFalse(moteur.getId());
-		Users userExistant = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found in voitureService"));;
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+
+		Users userExistant = userRepository.findById(idUser).orElseThrow(() -> new RuntimeException("User not found in voitureService"));;
 		
 		Voiture voiture = new Voiture();
         voiture.setUser(userExistant);
@@ -117,6 +134,17 @@ public class VoitureService{
 			throw e;
 		}
 		return voitureUpdate;
+	}
+
+	public void saveCouleurVoiture( Voiture voiture, Couleur couleur, Date dateApplication ) throws Exception{
+		Voiture voitureExistant = this.getVoiture(voiture.getId());
+		Optional<Couleur> couleurExistant = couleurRepository.findById(couleur.getId());
+		
+		Coloriage coloriage  = new Coloriage();
+        coloriage.setCouleur(couleurExistant.get());
+		coloriage.setVoiture(voitureExistant);
+		coloriage.setDate(dateApplication);
+		coloriageRepository.save( coloriage );
 	}
 
 	// public void deleteVoiture( String id ) throws Exception{

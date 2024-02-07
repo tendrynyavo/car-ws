@@ -78,6 +78,8 @@ public class SecurityConfig {
                     .requestMatchers("/api/users/inscription_valide/**").permitAll()
                     .requestMatchers("/api/users/inscription").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
+                    .requestMatchers("/api/annonce/list").permitAll()
+                    .requestMatchers("/api/annonce/search").permitAll()
                     .requestMatchers("/api/users/authentification").permitAll()
                     .requestMatchers("/api/users/token/**").permitAll()
                     .requestMatchers("/api/users/authentificationAdmin").permitAll()
