@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.carws.model.token.Token;
+import com.example.carws.model.users.Discussions;
 import com.example.carws.model.users.Messagerie;
 import com.example.carws.model.users.Users;
 import com.example.carws.request.InscriptionRequest;
@@ -206,6 +207,25 @@ public class UsersController {
             return ResponseEntity.ok().body(response);
         }catch(Exception e){
             return ResponseEntity.badRequest().body( e.getMessage() );
+        }
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("listesDiscussions")
+    public ResponseEntity<Response> getListesDiscussions(@RequestBody Messagerie messagerie) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String idEnvoyeur = (String)authentication.getPrincipal();
+            List<Discussions> discussions = messagerieService.getListeDiscussions(idEnvoyeur);
+            List<Users> users = usersService.getListeUsers(idEnvoyeur, discussions);
+            Response response = new Response();
+            response.addData("utilisateurs", users);
+            response.addData("discussions", discussions);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception) {
+            System.out.println("Erreur: " + exception.getMessage());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response().addError("exception", exception.getMessage()));
         }
     }
 
