@@ -115,7 +115,7 @@ public class UsersController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String idEnvoyeur = (String)authentication.getPrincipal();
             messagerie.setIdEnvoyeur(idEnvoyeur);
-            messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
+            // messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
             messagerieService.nouveauMessage(messagerie);
             Response response = new Response();
             response.addData("valide", "Message envoye");
