@@ -207,7 +207,7 @@ CREATE TABLE favori(
 
 CREATE TABLE photo(
    id_photo VARCHAR(50) ,
-   file VARCHAR(200)  NOT NULL,
+   file bytea  NOT NULL,
    id_annonce VARCHAR(50)  NOT NULL,
    PRIMARY KEY(id_photo),
    FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)

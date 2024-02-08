@@ -8,19 +8,21 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import com.example.carws.utility.IdGenerator;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+
+import com.example.carws.utility.IdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table( name = "annonce" )
-@JsonIdentityInfo(
- generator = ObjectIdGenerators.PropertyGenerator.class, 
- property = "id")
+// @JsonIdentityInfo(
+//  generator = ObjectIdGenerators.PropertyGenerator.class, 
+//  property = "id")
 public class Annonce{
 	@Id
 	@Column( name = "id_annonce" )
@@ -63,6 +65,10 @@ public class Annonce{
 	// @JsonIgnore
 	AnnonceFavories favorie;
 
+	@OneToMany
+	@JsonBackReference
+	List<AnnoncePhoto> photos;
+
 	// @OneToOne(mappedBy = "annonce")
 	// @JsonIgnore
 	// AnnonceVendus vendu;
@@ -78,6 +84,15 @@ public class Annonce{
 	// public void setHistorique(Historique historique){
 	// 	this.historique = historique;
 	// }
+	// 
+	
+	public void setPhotos(List<AnnoncePhoto> pics){
+		this.photos = pics;
+	}
+
+	public List<AnnoncePhoto> getPhotos(){
+		return this.photos;
+	}
 
 	public AnnonceFavories getFavories(){
 		return this.favorie;

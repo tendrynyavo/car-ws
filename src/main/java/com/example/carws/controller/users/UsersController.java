@@ -194,4 +194,19 @@ public class UsersController {
         }
     }
 
+    @PostMapping("/offline-auth")
+    public ResponseEntity<?> offlineLogin( @RequestBody InscriptionRequest request ){
+        try{
+            Users users = request.toLoginUser();
+            // System.out.println( users.getMail() + " ::: " + users.getPassword() );
+            users = usersService.login(users);
+            String token = new Token().generateJwt(users);
+            Response response = new Response();
+            response.addData("token", token);
+            return ResponseEntity.ok().body(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body( e.getMessage() );
+        }
+    }
+
 }

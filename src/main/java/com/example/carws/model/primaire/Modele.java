@@ -14,9 +14,9 @@ import com.example.carws.model.primaire.relation.*;
 
 @Entity
 @Table( name = "modele" )
-@JsonIdentityInfo(
- generator = ObjectIdGenerators.PropertyGenerator.class, 
- property = "id")
+// @JsonIdentityInfo(
+//  generator = ObjectIdGenerators.PropertyGenerator.class, 
+//  property = "id")
 
 public class Modele{
 	
@@ -28,8 +28,7 @@ public class Modele{
 
 	@ManyToOne
 	@JoinColumn( name = "id_marque", nullable = false )
-        // @JsonManagedReference
-        // @JsonIgnoreProperties("modele")
+  @JsonBackReference
 	Marque marque;
 
 	@Column( name = "nom" , nullable = false )
@@ -38,18 +37,17 @@ public class Modele{
 	@Column( name = "deleted" )
 	boolean deleted;
           
-    @Column( name = "annee" )
-    Date annee;
-    
-          @ManyToMany
-          @JoinTable(
-              name = "design",
-              joinColumns = @JoinColumn(name = "id_modele"),
-              inverseJoinColumns = @JoinColumn(name = "id_categorie")
-          )
-//              @JsonBackReference
-        @JsonIgnoreProperties("modele")
-          Set<Categorie> categories;
+  @Column( name = "annee" )
+  Date annee;
+  
+  @ManyToMany
+  @JoinTable(
+      name = "design",
+      joinColumns = @JoinColumn(name = "id_modele"),
+      inverseJoinColumns = @JoinColumn(name = "id_categorie")
+  )  
+  @JsonIgnoreProperties("modele")
+  Set<Categorie> categories;
 
   @ManyToMany
   @JoinTable(
@@ -57,6 +55,7 @@ public class Modele{
   	joinColumns = @JoinColumn(name = "id_modele"),
   	inverseJoinColumns = @JoinColumn(name = "id_moteur")
   )
+  @JsonIgnoreProperties("modele")
 	Set<Moteur> moteurs;
 
 	public Set<Categorie> getCategories() {

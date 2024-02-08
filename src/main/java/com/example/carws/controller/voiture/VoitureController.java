@@ -9,8 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.carws.model.primaire.Coloriage;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
+import com.example.carws.request.CarRequest;
 import com.example.carws.service.UsersService;
 import com.example.carws.service.VoitureService;
+
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.carws.response.*;
 
@@ -49,11 +54,10 @@ public class VoitureController{
 	}
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<?> getVoituresByUser(@PathVariable String userId) {
+	@GetMapping("/user")
+	public ResponseEntity<?> getVoituresByUser() {
 		try{
-			Users user = userService.login(userId);
-			Voiture[] voitures =  voitureService.getVoituresByUser(user).toArray( new Voiture[0] );
+			Voiture[] voitures =  voitureService.getVoituresByUser().toArray( new Voiture[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( voitures );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -63,10 +67,12 @@ public class VoitureController{
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping
-	public ResponseEntity<Response> addVoiture( @RequestBody Voiture voiture ) throws Exception{
+	public ResponseEntity<Response> addVoiture( @RequestBody CarRequest v ) throws Exception{
 		Response response = new Response();
 		try{
-			voitureService.saveVoiture( voiture.getUser(), voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
+			Voiture
+			 voiture = v.toVoiture();
+			voitureService.saveVoiture(voiture.getCategorie(), voiture.getVitesse(), voiture.getMoteur(), voiture.getModele(), voiture.getKilometrage() );
 			response.addMessage("save", "La voiture a ete enregistrer");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){

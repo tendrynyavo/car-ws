@@ -16,6 +16,7 @@ import com.example.carws.model.annonce.AnnonceFavories;
 import com.example.carws.model.annonce.AnnonceVendus;
 import com.example.carws.model.annonce.DetailsAnnonce;
 import com.example.carws.model.annonce.ValidateAnnonce;
+import com.example.carws.model.annonce.AnnoncePhoto;
 import com.example.carws.model.users.Users;
 import com.example.carws.request.AnnonceRequest;
 import com.example.carws.request.SearchedElements;
@@ -24,7 +25,7 @@ import com.example.carws.response.*;
 import com.example.carws.security.SecurityFilter;
 
 @RestController
-@RequestMapping("/api/annonce")
+@RequestMapping("/api/annonces")
 public class AnnonceController{
 
 	@Autowired AnnonceService annonceService;
@@ -55,13 +56,21 @@ public class AnnonceController{
 	}
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@PostMapping
+	@PostMapping("/")
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
 		try{
 
 			DetailsAnnonce details = request.getDetails();
+			// System.out.println("tafiditra soa amantsara enao man");
 			Annonce annonce = request.getAnnonce();
+			// AnnoncePhoto[] photos = annonce.getPhotos().toArray(new AnnoncePhoto[0]);
+			AnnoncePhoto[] photos = request.getPhotos();
+
+
+			for(int i=0; i<photos.length; i++){
+				System.out.println(i+" >> "+photos[i]);
+			}
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
@@ -69,6 +78,7 @@ public class AnnonceController{
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}catch(Exception e){
+			e.printStackTrace();
 			response.addError("error" , e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
@@ -119,11 +129,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> validateAnnonce(@RequestBody ValidateAnnonce validate, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			validate.setUser(user);
 			annonceService.saveValidateAnnonce(id, validate);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, validee!"));
 		} catch (Exception e) {
@@ -150,11 +155,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> annonceVendu(@RequestBody AnnonceVendus vendu, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			vendu.setUser(user);
 			annonceService.saveAnnonceVendu(id, vendu);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, vendu!"));
 		} catch (Exception e) {
@@ -179,11 +179,7 @@ public class AnnonceController{
 	@GetMapping("/favoris")
 	public ResponseEntity<?> getAnnoncesFavoris() throws Exception{
 		try{
-			Users userP = new Users();
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			userP.setId(idUser);
-			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories(userP).toArray( new AnnonceFavories[0] );
+			AnnonceFavories[] annonces = annonceService.findAllAnnoncesFavories().toArray( new AnnonceFavories[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -196,11 +192,6 @@ public class AnnonceController{
 	public ResponseEntity<Response> favoriteAnnonce(@RequestBody AnnonceFavories favories, @PathVariable("id") String id) {
 		Response response = new Response();
 		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String idUser = (String)authentication.getPrincipal();
-			Users user = new Users();
-			user.setId(idUser);
-			favories.setUser(user);;
 			annonceService.saveAnnonceFavories(id, favories);
 			return ResponseEntity.status(HttpStatus.OK).body(response.addMessage("success", "Annonce mis à jour, en favoris!"));
 		} catch (Exception e) {
