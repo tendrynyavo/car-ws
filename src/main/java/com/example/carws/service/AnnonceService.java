@@ -99,7 +99,7 @@ public class AnnonceService{
     }
 
     @Transactional
-	public void saveAnnonceWithDetails( Annonce annonce, DetailsAnnonce details) throws Exception{
+	public void saveAnnonceWithDetails( Annonce annonce, DetailsAnnonce[] details) throws Exception{
 
         Optional<Lieu> lieu = lieuRepository.findById(annonce.getLieu().getId());
         Voiture voiture = voitureRepository.findById(annonce.getVoiture().getId());
@@ -122,11 +122,13 @@ public class AnnonceService{
 		}
 
 		if(details != null){
-	        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
-			details.setAnnonce(annonce);
-	        details.setCaracteristique(caracteristique.get());
+			for( DetailsAnnonce detail : details ){
+		        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(detail.getCaracteristique().getId());
+				detail.setAnnonce(annonce);
+		        detail.setCaracteristique(caracteristique.get());
 
-			detailsRepository.save(details);
+				detailsRepository.save(detail);
+			}
 			
 		}
 	}

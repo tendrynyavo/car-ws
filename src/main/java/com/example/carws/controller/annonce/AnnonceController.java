@@ -61,7 +61,7 @@ public class AnnonceController{
 		Response response = new Response();
 		try{
 
-			DetailsAnnonce details = (request.getDetails() != null ) ? request.getDetails().toDetailAnnonce() : null;
+			DetailsAnnonce[] details = (request.getDetails() != null ) ? request.toDetailAnnonces() : null;
 			// System.out.println("tafiditra soa amantsara enao man");
 			Annonce annonce = request.getAnnonce().toAnnonce();
 			// AnnoncePhoto[] photos = annonce.getPhotos().toArray(new AnnoncePhoto[0]);

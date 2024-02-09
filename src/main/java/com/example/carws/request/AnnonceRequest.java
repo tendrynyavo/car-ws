@@ -14,7 +14,7 @@ public class AnnonceRequest {
     String[] photos;
 
     AnnonceOnlyRequest annonce;
-    DetailRequest details;
+    DetailRequest[] details;
     // AnnoncePhoto[] photos;
 
     public void setAnnonce(AnnonceOnlyRequest annonce){
@@ -64,11 +64,11 @@ public class AnnonceRequest {
     //     return pics;
     // }
 
-    public void setDetails(DetailRequest details){
+    public void setDetails(DetailRequest[] details){
         this.details = details;
     }
 
-    public DetailRequest getDetails(){
+    public DetailRequest[] getDetails(){
         return this.details;
     }
 
@@ -92,6 +92,14 @@ public class AnnonceRequest {
         }
         // return pics.toArray(new AnnoncePhoto[0]);
         return picss;
+    }
+
+    public DetailsAnnonce[] toDetailAnnonces() throws Exception{
+        List<DetailsAnnonce> detailss = new ArrayList<>();
+        for( DetailRequest d : this.getDetails() ){
+            detailss.add( d.toDetailAnnonce() );
+        }
+        return detailss.toArray(new DetailsAnnonce[0]);
     }
 
 }
