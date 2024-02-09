@@ -1,7 +1,10 @@
 package com.example.carws.model.users;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
+
 public class Discussions {
+    @Id
     private String id;
     private String idEnvoyeur;
     private LocalDateTime dateHeureEnvoie;

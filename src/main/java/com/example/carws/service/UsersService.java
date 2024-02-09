@@ -93,7 +93,8 @@ public class UsersService {
     public List<Users> getListeUsers(String idEnvoyeur, List<Discussions> discussions) throws Exception {
         List<Users> users = new ArrayList<Users>();
         for(int i=0; i<discussions.size(); i++) {
-            Users _user = this.login(discussions.get(i).getId());
+            System.out.println("Utilisateur1: " + discussions.get(i).getId());
+            Users _user = this.login(discussions.get(i).getId().toString());
             _user.setPassword("");
             if(discussions.get(i).getIdEnvoyeur().equals(idEnvoyeur)) {
                 discussions.get(i).setIdEnvoyeur("true");

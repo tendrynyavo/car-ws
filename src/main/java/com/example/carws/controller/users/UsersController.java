@@ -115,13 +115,17 @@ public class UsersController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String idEnvoyeur = (String)authentication.getPrincipal();
             messagerie.setIdEnvoyeur(idEnvoyeur);
-            // messagerieService.setStatus(messagerie.getIdReceveur(), idEnvoyeur, 20, 1);
-            messagerieService.nouveauMessage(messagerie);
+            // messagerieService.nouveauMessage(messagerie);
+            List<Discussions> discussions2 = messagerieService.getListeDiscussions(idEnvoyeur);
+            List<Users> users = usersService.getListeUsers(idEnvoyeur, discussions2);
             Response response = new Response();
             response.addData("valide", "Message envoye");
+            response.addData("discussions", discussions2);
+            response.addData("users", users);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
+            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", exception.getMessage()));
         }
@@ -211,19 +215,20 @@ public class UsersController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("listesDiscussions")
-    public ResponseEntity<Response> getListesDiscussions(@RequestBody Messagerie messagerie) {
+    @PostMapping("listeDiscussions")
+    public ResponseEntity<Response> getListeDiscussions() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String idEnvoyeur = (String)authentication.getPrincipal();
-            List<Discussions> discussions = messagerieService.getListeDiscussions(idEnvoyeur);
-            List<Users> users = usersService.getListeUsers(idEnvoyeur, discussions);
+            List<Discussions> discussions2 = messagerieService.getListeDiscussions(idEnvoyeur);
+            List<Users> users = usersService.getListeUsers(idEnvoyeur, discussions2);
             Response response = new Response();
-            response.addData("utilisateurs", users);
-            response.addData("discussions", discussions);
+            response.addData("discussions", discussions2);
+            response.addData("users", users);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             System.out.println("Erreur: " + exception.getMessage());
+            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response().addError("exception", exception.getMessage()));
         }
