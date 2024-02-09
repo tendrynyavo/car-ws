@@ -23,6 +23,7 @@ public class Token {
 
     private static Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static long expiryDuration = 60 * 60;
+    // private static
 
     public String generateJwt(Users user) throws Exception {
 
@@ -45,9 +46,11 @@ public class Token {
                 .compact();
     }
 
+
     public Claims verify(String token) throws Exception {
 
         try {
+
             return Jwts.parser()
                     .setSigningKey(secret)
                     .build()
@@ -61,11 +64,14 @@ public class Token {
 
     public Users getUser(String token) throws Exception {
         Users user = null;
+        System.out.println("ato pory eh");
         Claims claim = new Token().verify(token);
+
         if (claim.containsKey("user")) {
             System.out.println("ouiiii");
             LinkedHashMap<String, Object> userClaims = (LinkedHashMap<String, Object>) claim.get("user");
             user = new Users();
+            System.out.println("Propla no tetooo : " + (String) userClaims.get("prenom"));
             user.setId((String) userClaims.get("id"));
             user.setNom((String) userClaims.get("nom"));
             user.setPrenom((String) userClaims.get("prenom"));
@@ -83,9 +89,10 @@ public class Token {
             }
             user.setRoles(roles);
             System.out.println("yesss");
-
+            return user;
+        }else{
+            throw new Exception("L'utilisateur est nulle pory eh");
         }
-        return user;
     }
 
 }

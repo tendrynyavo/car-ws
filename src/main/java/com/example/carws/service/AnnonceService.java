@@ -108,11 +108,11 @@ public class AnnonceService{
 		String idUser = (String)authentication.getPrincipal();
 
 		Users user = userRepository.findById(idUser).orElseThrow(() -> new Exception("User not found in annonceService"));
-        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
         List<AnnoncePhoto> pics = annonce.getPhotos();
         annonce.setLieu(lieu.get());
         annonce.setVoiture(voiture);
         annonce.setUser(user);
+        annonce.setValeur(10); // annonce non validé par défaut
 
 		repository.save( annonce );
 
@@ -121,10 +121,14 @@ public class AnnonceService{
 			photoRepository.save(photo);
 		}
 
-		details.setAnnonce(annonce);
-        details.setCaracteristique(caracteristique.get());
+		if(details != null){
+	        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
+			details.setAnnonce(annonce);
+	        details.setCaracteristique(caracteristique.get());
 
-		detailsRepository.save(details);
+			detailsRepository.save(details);
+			
+		}
 	}
 
 	public Annonce updateAnnonce( Annonce annonce ) throws Exception{

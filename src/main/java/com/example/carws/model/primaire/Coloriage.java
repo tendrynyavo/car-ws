@@ -6,6 +6,8 @@ package com.example.carws.model.primaire;
 
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.utility.IdGenerator;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -38,11 +40,13 @@ public class Coloriage {
 
     @ManyToOne
     @JoinColumn(name = "id_voiture")
+    @JsonManagedReference("coloriages-voitures")
     @JsonIgnore
     Voiture voiture;
 
     @ManyToOne
     @JoinColumn(name = "id_couleur")
+    @JsonBackReference("couleur")
     Couleur couleur;
 
     @Column( name = "date_application" )

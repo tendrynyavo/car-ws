@@ -14,8 +14,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 /**
  *
@@ -33,15 +36,15 @@ public class Lieu {
           @Column
           String nom;
 
-          @OneToOne(mappedBy = "lieu")
+          @OneToMany(mappedBy = "lieu")
           @JsonIgnore
-          Annonce annonce;
+          List<Annonce> annonce;
 
-          public Annonce getAnnonce(){
+          public List<Annonce> getAnnonce(){
             return this.annonce;
           }
 
-          public void setAnnonce(Annonce annonce){
+          public void setAnnonce(List<Annonce> annonce){
             this.annonce = annonce;
           }
 

@@ -2,7 +2,7 @@ package com.example.carws.model.primaire;
 
 import com.example.carws.model.voiture.Voiture;
 import com.example.carws.utility.IdGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 
@@ -24,6 +24,7 @@ public class Vitesse{
 	boolean deleted;
 
 	@OneToMany(mappedBy = "vitesse")
+	@JsonManagedReference("voitures")
 	@JsonIgnore
 	List<Voiture> voiture;
 

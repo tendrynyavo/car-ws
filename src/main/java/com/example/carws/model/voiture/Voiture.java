@@ -7,9 +7,9 @@ import com.example.carws.model.primaire.Modele;
 import com.example.carws.model.primaire.Moteur;
 import com.example.carws.model.primaire.Vitesse;
 import com.example.carws.model.users.Users;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.example.carws.utility.IdGenerator;
 
@@ -44,6 +44,7 @@ public class Voiture{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_boite")
+    @JsonBackReference("voitures")
     Vitesse vitesse;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -55,23 +56,25 @@ public class Voiture{
     Modele modele;
 
     @OneToMany(mappedBy = "voiture")
-    // @JsonBackReference
+    @JsonManagedReference("annonce")
     @JsonIgnore
     List<Annonce> annonce;
 
     @OneToMany(mappedBy = "voiture")
+    @JsonBackReference("coloriages-voitures")
+
     List<Coloriage> coloriages;
 
-    @Transient
-    Coloriage couleurActuelle;
+    // @Transient
+    // Coloriage couleurActuelle;
 
-    public Coloriage getCouleurActuelle(){
-        return this.couleurActuelle;
-    }
+    // public Coloriage getCouleurActuelle(){
+    //     return this.couleurActuelle;
+    // }
 
-    public void setCouleurActuelle(Coloriage couleur){
-        this.couleurActuelle = couleur;
-    }
+    // public void setCouleurActuelle(Coloriage couleur){
+    //     this.couleurActuelle = couleur;
+    // }
 
     public void setId(String id){
         this.id = id;

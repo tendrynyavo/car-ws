@@ -8,6 +8,7 @@ import com.example.carws.utility.IdGenerator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +42,7 @@ public class Couleur {
           String nom;
 
           @OneToMany(mappedBy = "couleur")
+          @JsonManagedReference("couleur")
           @JsonIgnore
           List<Coloriage> coloriage;
           

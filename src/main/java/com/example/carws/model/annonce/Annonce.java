@@ -3,11 +3,7 @@ package com.example.carws.model.annonce;
 import com.example.carws.model.primaire.Lieu;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import com.fasterxml.jackson.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -53,6 +49,7 @@ public class Annonce{
 
 	@ManyToOne
     @JoinColumn(name = "id_voiture")
+    @JsonBackReference("voiture")
 	Voiture voiture;
 
 	@OneToOne(mappedBy = "annonce")
@@ -65,8 +62,8 @@ public class Annonce{
 	// @JsonIgnore
 	AnnonceFavories favorie;
 
-	@OneToMany
-	@JsonBackReference
+	@OneToMany(mappedBy="annonce")
+	@JsonManagedReference("annonce")
 	List<AnnoncePhoto> photos;
 
 	// @OneToOne(mappedBy = "annonce")

@@ -11,9 +11,8 @@ import jakarta.persistence.*;
 import com.example.carws.utility.IdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
+@Entity()
 @Table( name = "photo" )
-
 public class AnnoncePhoto{
 	@Id
     @Column(name="id_photo")
@@ -23,13 +22,14 @@ public class AnnoncePhoto{
 
     @ManyToOne
     @JoinColumn(name="id_annonce", nullable=false)
-    @JsonManagedReference("annonce")
+    @JsonBackReference("annonce")
     Annonce annonce;
 
     @Column( name = "file")
     byte[] bytes;
 
-    String photo;
+    // @Column(insertable = false, updatable = false)
+    transient String photo;
 
     public void setBytes(byte[] bytes){
     	this.bytes = bytes;

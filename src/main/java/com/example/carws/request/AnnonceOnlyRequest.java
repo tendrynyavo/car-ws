@@ -7,12 +7,11 @@ import com.example.carws.model.voiture.Voiture;
 import java.sql.Timestamp;
 
 public class AnnonceOnlyRequest{
+          
 	Timestamp date;
 	String description;
 	double prix;
 	String lieu;
-	String user;
-	int valeur;
 	String voiture;
 
 	public void setDate(Timestamp t){
@@ -43,20 +42,6 @@ public class AnnonceOnlyRequest{
 		return this.lieu;
 	}
 
-	public void setUser(String lieu){
-		this.user = lieu;
-	}
-	public String getUser(){
-		return this.user;
-	}
-
-	public int getValeur(){
-		return this.valeur;
-	}
-	public void setValeur(int v){
-		this.valeur = v;
-	}
-
 	public void setVoiture(String v){
 		this.voiture = v;
 	}
@@ -74,10 +59,7 @@ public class AnnonceOnlyRequest{
                     Lieu l = new Lieu();
                     l.setId(this.getLieu());
                     n.setLieu(l);
-                    n.setValeur(this.getValeur());
                     n.setPrix(this.getPrix());
-                    Users u = new Users(this.getUser());
-                    n.setUser(u);
                     return n;
           }
     

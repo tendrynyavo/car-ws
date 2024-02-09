@@ -55,22 +55,22 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@PostMapping("/")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')")
+	@PostMapping()
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
 		try{
 
-			DetailsAnnonce details = request.getDetails();
+			DetailsAnnonce details = (request.getDetails() != null ) ? request.getDetails().toDetailAnnonce() : null;
 			// System.out.println("tafiditra soa amantsara enao man");
-			Annonce annonce = request.getAnnonce();
+			Annonce annonce = request.getAnnonce().toAnnonce();
 			// AnnoncePhoto[] photos = annonce.getPhotos().toArray(new AnnoncePhoto[0]);
-			AnnoncePhoto[] photos = request.getPhotos();
+			List<AnnoncePhoto> photos = request.getAnnoncesPhotosFromString();
 
-
-			for(int i=0; i<photos.length; i++){
-				System.out.println(i+" >> "+photos[i]);
-			}
+			// for(int i=0; i<photos.length; i++){
+			// 	System.out.println(i+" >> "+photos[i]);
+			// }
+			annonce.setPhotos(photos);
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 
