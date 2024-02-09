@@ -56,7 +56,7 @@ public class Voiture{
     Modele modele;
 
     @OneToMany(mappedBy = "voiture")
-    @JsonManagedReference("annonce")
+    @JsonBackReference("annonce")
     @JsonIgnore
     List<Annonce> annonce;
 
