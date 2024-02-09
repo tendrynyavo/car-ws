@@ -131,6 +131,7 @@ public class SearchedElements {
 
         conditions.put("categorie", this.getIdCategorie());
         conditions.put("vitesse", this.getIdBoite());
+        conditions.put("moteur", this.getIdMoteur() );
 
         // Vitesse vitesse = new Vitesse();
         // vitesse.setId(this.getIdBoite());
