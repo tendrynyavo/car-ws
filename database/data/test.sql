@@ -208,8 +208,8 @@ db.discussions.aggregate([
     {
         $match: {
             $or: [
-                { idEnvoyeur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" },
-                { idReceveur: "aRU7yww5lgZ6eDev3iJ95SKgmAA3" }
+                { idEnvoyeur: "T1YpCelZGHSkrLLniqfYYwlip113" },
+                { idReceveur: "T1YpCelZGHSkrLLniqfYYwlip113" }
             ]
         }
     },
@@ -217,7 +217,7 @@ db.discussions.aggregate([
         $addFields: {
             newIdEnvoyeur: {
                 $cond: {
-                    if: { $eq: ["$idEnvoyeur", "aRU7yww5lgZ6eDev3iJ95SKgmAA3"] },
+                    if: { $eq: ["$idEnvoyeur", "T1YpCelZGHSkrLLniqfYYwlip113"] },
                     then: "$idReceveur",
                     else: "$idEnvoyeur"
                 }
@@ -268,3 +268,46 @@ BEGIN
 END;
 $$
 LANGUAGE PLPGSQL;
+
+-- liste des discussions d'un utilisateur
+db.discussions.aggregate([
+    {
+        $match: {
+            $or: [
+                { idEnvoyeur: "USER2" },
+                { idReceveur: "USER2" }
+            ]
+        }
+    },
+    { $sort: { dateHeureEnvoie: -1 } },
+    {
+        $group: {
+            _id: {
+                $cond: [
+                    { $eq: ["$idEnvoyeur", "USER2"] },
+                    "$idReceveur",
+                    "$idEnvoyeur"
+                ]
+            },
+            idEnvoyeur: { $first: "$idEnvoyeur" },
+            dateHeureEnvoie: { $first: "$dateHeureEnvoie" },
+            dernierMessage: { $first: "$message" },
+            dernierStatus: { $first: "$status" },
+            nombreMessagesNonLu: {
+                $sum: {
+                    $cond: [{ $eq: ["$status", 1] }, 1, 0]
+                }
+            }
+        }
+    },
+    {
+        $project: {
+            _id: 1,
+            idEnvoyeur: 1,
+            dateHeureEnvoie: 1,
+            dernierMessage: 1,
+            dernierStatus: 1,
+            nombreMessagesNonLu: 1,
+        }
+    }
+]);
