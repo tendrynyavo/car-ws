@@ -25,7 +25,7 @@ public class AnnonceFavories{
     @GeneratedValue(generator = "custom-id" , strategy = GenerationType.IDENTITY)
 	String id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_annonce")
     Annonce annonce;
 

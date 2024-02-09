@@ -34,7 +34,8 @@ public class AnnonceController{
 	@GetMapping("/list")
 	public ResponseEntity<?> getAnnonces() throws Exception{
 		try{
-			Annonce[] annonces = annonceService.getAllAnnonces().toArray( new Annonce[0] );
+			Annonce[] annonces = annonceService.findAllValidatedAnnonces().toArray( new Annonce[0] );
+			// Annonce[] annonces = annonceService.getAllAnnonces().toArray( new Annonce[0] );
 			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
 		}catch( Exception exception ){
 			exception.printStackTrace();
@@ -55,22 +56,35 @@ public class AnnonceController{
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@PostMapping("/")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')")
+	@GetMapping("/byUser")
+	public ResponseEntity<?> getAnnoncesUser() throws Exception{
+		try{
+			Annonce[] annonces = annonceService.getAnnoncesByUser().toArray( new Annonce[0] );
+			// Annonce[] annonces = annonceService.getAllAnnonces().toArray( new Annonce[0] );
+			return ResponseEntity.status( HttpStatus.OK ).body( annonces );
+		}catch( Exception exception ){
+			exception.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( exception.getMessage() );
+		}
+	}
+
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ROLE_ADMIN', 'ROLE_ANONYMOUS')")
+	@PostMapping()
 	public ResponseEntity<Response> addAnnonce( @RequestBody AnnonceRequest request ) throws Exception{
 		Response response = new Response();
 		try{
 
-			DetailsAnnonce details = request.getDetails();
+			DetailsAnnonce[] details = (request.getDetails() != null ) ? request.toDetailAnnonces() : null;
 			// System.out.println("tafiditra soa amantsara enao man");
-			Annonce annonce = request.getAnnonce();
+			Annonce annonce = request.getAnnonce().toAnnonce();
 			// AnnoncePhoto[] photos = annonce.getPhotos().toArray(new AnnoncePhoto[0]);
-			AnnoncePhoto[] photos = request.getPhotos();
+			List<AnnoncePhoto> photos = request.getAnnoncesPhotosFromString();
 
-
-			for(int i=0; i<photos.length; i++){
-				System.out.println(i+" >> "+photos[i]);
-			}
+			// for(int i=0; i<photos.length; i++){
+			// 	System.out.println(i+" >> "+photos[i]);
+			// }
+			annonce.setPhotos(photos);
 
 			annonceService.saveAnnonceWithDetails(annonce, details);
 

@@ -22,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.boot.web.servlet.DispatcherType;
 
 @Configuration
 @EnableMethodSecurity
@@ -74,21 +75,28 @@ public class SecurityConfig {
             .cors().configurationSource(this.corsConfigurationSource()).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
-            .authorizeHttpRequests(request -> {
+            .authorizeRequests(request -> {
                 request
                     .requestMatchers("/api/users/inscription_valide/**").permitAll()
                     .requestMatchers("/api/users/inscription").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
                     .requestMatchers("/api/annonces/list").permitAll()
+                    .requestMatchers("/api/annonces/{id}").permitAll()
                     .requestMatchers("/api/annonces/search").permitAll()
+                    .requestMatchers("/api/moteurs").permitAll()
+                    .requestMatchers("/api/marques").permitAll()
+                    .requestMatchers("/api/modeles").permitAll()
+                    .requestMatchers("/api/vitesses").permitAll()
+                    .requestMatchers("/api/categories").permitAll()
+                    .requestMatchers("/api/couleurs").permitAll()
                     .requestMatchers("/api/users/authentification").permitAll()
                     .requestMatchers("/api/users/token/**").permitAll()
                     .requestMatchers("/api/users/authentificationAdmin").permitAll()
                     .requestMatchers("/api/users/offline-auth").permitAll()
                     .anyRequest().authenticated();
             });
-
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

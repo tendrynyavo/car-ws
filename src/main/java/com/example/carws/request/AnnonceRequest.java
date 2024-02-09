@@ -10,11 +10,14 @@ import com.example.carws.model.annonce.AnnoncePhoto;
 public class AnnonceRequest {
 
     // PhotoRequest[] photos;
-    Annonce annonce;
-    DetailsAnnonce details;
-    AnnoncePhoto[] photos;
 
-    public void setAnnonce(Annonce annonce){
+    String[] photos;
+
+    AnnonceOnlyRequest annonce;
+    DetailRequest[] details;
+    // AnnoncePhoto[] photos;
+
+    public void setAnnonce(AnnonceOnlyRequest annonce){
         System.out.println("Ato be fotsiny");
         this.annonce = annonce;
     }
@@ -22,17 +25,18 @@ public class AnnonceRequest {
     // public void setPhotos( PhotoRequest[] photos ){
     //     this.photos = photos;
     // }
+    
     // public PhotoRequest[] getPhotos(){
     //     return this.photos;
     // }
-    public void setPhotos( AnnoncePhoto[] photos ){
-        this.photos = photos;
-    }
-    public AnnoncePhoto[] getPhotos(){
-        return this.photos;
-    }
+    // public void setPhotos( AnnoncePhoto[] photos ){
+    //     this.photos = photos;
+    // }
+    // public AnnoncePhoto[] getPhotos(){
+    //     return this.photos;
+    // }
 
-    public Annonce getAnnonce() throws Exception{
+    public AnnonceOnlyRequest getAnnonce() throws Exception{
         // formatAnnonce();
         return this.annonce;
     }
@@ -50,16 +54,52 @@ public class AnnonceRequest {
     //         throw e;
     //     }
     // }
+    // 
+    // public List<AnnoncePhoto> getAnnoncesPhotos() throws Exception{
+    //     List<AnnoncePhoto> pics = new ArrayList<>();
+    //     for( PhotoRequest photo : this.getPhotos() ){
+    //         pics.add( photo.toAnnoncePhoto() );
+    //     }
+    //     // return pics.toArray(new AnnoncePhoto[0]);
+    //     return pics;
+    // }
 
-    public void setDetails(DetailsAnnonce details){
+    public void setDetails(DetailRequest[] details){
         this.details = details;
     }
 
-    public DetailsAnnonce getDetails(){
+    public DetailRequest[] getDetails(){
         return this.details;
     }
 
     public AnnonceRequest(){
+    }
+
+    public void setPhotos(String[] pics){
+        this.photos = pics;
+    }
+
+    public String[] getPhotos(){
+        return this.photos;
+    }
+
+    public List<AnnoncePhoto> getAnnoncesPhotosFromString() throws Exception{
+        List<AnnoncePhoto> picss = new ArrayList<>();
+        for( String photo : this.getPhotos() ){
+            AnnoncePhoto an = new AnnoncePhoto();
+            an.setPhoto( photo );
+            picss.add( an );
+        }
+        // return pics.toArray(new AnnoncePhoto[0]);
+        return picss;
+    }
+
+    public DetailsAnnonce[] toDetailAnnonces() throws Exception{
+        List<DetailsAnnonce> detailss = new ArrayList<>();
+        for( DetailRequest d : this.getDetails() ){
+            detailss.add( d.toDetailAnnonce() );
+        }
+        return detailss.toArray(new DetailsAnnonce[0]);
     }
 
 }

@@ -43,6 +43,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private void verifyToken(HttpServletRequest request)  {
         String token = this.getBearerToken(request);
+        // System.out.println("The big token is ==> " + token);
         try {
             Users user = new Token().getUser(token);
             if(user != null) {
@@ -58,6 +59,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getId(), null, userDetails.getAuthorities()); 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                System.out.println("Efa ato ve enaooo???");
             }
         } catch (Exception e) {
             System.out.println("Filter Error: " + e.getMessage());

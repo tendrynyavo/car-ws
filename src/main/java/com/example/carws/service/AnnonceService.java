@@ -94,12 +94,16 @@ public class AnnonceService{
 		return annonce;
 	}
 
-	public List<Annonce> getAnnoncesByUser(Users user) {
+	public List<Annonce> getAnnoncesByUser() throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String idUser = (String)authentication.getPrincipal();
+
+		Users user = userRepository.findById(idUser).orElseThrow(() -> new Exception("User not found in annonceService"));
         return repository.findByUser(user);
     }
 
     @Transactional
-	public void saveAnnonceWithDetails( Annonce annonce, DetailsAnnonce details) throws Exception{
+	public void saveAnnonceWithDetails( Annonce annonce, DetailsAnnonce[] details) throws Exception{
 
         Optional<Lieu> lieu = lieuRepository.findById(annonce.getLieu().getId());
         Voiture voiture = voitureRepository.findById(annonce.getVoiture().getId());
@@ -108,11 +112,11 @@ public class AnnonceService{
 		String idUser = (String)authentication.getPrincipal();
 
 		Users user = userRepository.findById(idUser).orElseThrow(() -> new Exception("User not found in annonceService"));
-        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(details.getCaracteristique().getId());
         List<AnnoncePhoto> pics = annonce.getPhotos();
         annonce.setLieu(lieu.get());
         annonce.setVoiture(voiture);
         annonce.setUser(user);
+        annonce.setValeur(10); // annonce non validé par défaut
 
 		repository.save( annonce );
 
@@ -121,10 +125,16 @@ public class AnnonceService{
 			photoRepository.save(photo);
 		}
 
-		details.setAnnonce(annonce);
-        details.setCaracteristique(caracteristique.get());
+		if(details != null){
+			for( DetailsAnnonce detail : details ){
+		        Optional<Caracteristique> caracteristique = caracteristiqueRepository.findById(detail.getCaracteristique().getId());
+				detail.setAnnonce(annonce);
+		        detail.setCaracteristique(caracteristique.get());
 
-		detailsRepository.save(details);
+				detailsRepository.save(detail);
+			}
+			
+		}
 	}
 
 	public Annonce updateAnnonce( Annonce annonce ) throws Exception{
@@ -345,7 +355,7 @@ public class AnnonceService{
 	
 		for (Map.Entry<String, Object> condition : conditions.entrySet()) {
 			if(condition.getValue() != null){
-				predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(condition.getKey()), condition.getValue()));
+				predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(voitureJoin.get(condition.getKey()).get("id"), condition.getValue()));
 			}
 		}
 	
@@ -367,6 +377,7 @@ public class AnnonceService{
 		}			
 	
 		criteriaQuery.where(predicate);
+		System.out.println(criteriaQuery.toString());
 		TypedQuery<Annonce> typedQuery = entityManager.createQuery(criteriaQuery);
 		List<Annonce> tempResults = typedQuery.getResultList();
 	

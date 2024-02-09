@@ -3,11 +3,7 @@ package com.example.carws.model.annonce;
 import com.example.carws.model.primaire.Lieu;
 import com.example.carws.model.users.Users;
 import com.example.carws.model.voiture.Voiture;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import com.fasterxml.jackson.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -53,20 +49,22 @@ public class Annonce{
 
 	@ManyToOne
     @JoinColumn(name = "id_voiture")
+    // @JsonBackReference("voiture-annonce")
 	Voiture voiture;
 
 	@OneToOne(mappedBy = "annonce")
 	DetailsAnnonce details;
 
 	@OneToOne(mappedBy = "annonce")
+	@JsonBackReference("validate-annonce")
 	ValidateAnnonce validate;
 
-	@OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	AnnonceFavories favorie;
+	@OneToMany(mappedBy = "annonce")
+    @JsonIgnore
+    List<AnnonceFavories> favories;
 
-	@OneToMany
-	@JsonBackReference
+	@OneToMany(mappedBy="annonce")
+	@JsonManagedReference("annonce")
 	List<AnnoncePhoto> photos;
 
 	// @OneToOne(mappedBy = "annonce")
@@ -94,12 +92,12 @@ public class Annonce{
 		return this.photos;
 	}
 
-	public AnnonceFavories getFavories(){
-		return this.favorie;
+	public List<AnnonceFavories> getFavories(){
+		return this.favories;
 	}
 
-	public void setFavories(AnnonceFavories fav){
-		this.favorie = fav;
+	public void setFavories(List<AnnonceFavories> fav){
+		this.favories = fav;
 	}
 
 	public ValidateAnnonce getValidate(){
