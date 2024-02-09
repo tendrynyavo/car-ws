@@ -58,9 +58,9 @@ public class Annonce{
 	@OneToOne(mappedBy = "annonce")
 	ValidateAnnonce validate;
 
-	@OneToOne(mappedBy = "annonce")
-	// @JsonIgnore
-	AnnonceFavories favorie;
+	@OneToMany(mappedBy = "annonce")
+    @JsonIgnore
+    List<AnnonceFavories> favories;
 
 	@OneToMany(mappedBy="annonce")
 	@JsonManagedReference("annonce")
@@ -91,12 +91,12 @@ public class Annonce{
 		return this.photos;
 	}
 
-	public AnnonceFavories getFavories(){
-		return this.favorie;
+	public List<AnnonceFavories> getFavories(){
+		return this.favories;
 	}
 
-	public void setFavories(AnnonceFavories fav){
-		this.favorie = fav;
+	public void setFavories(List<AnnonceFavories> fav){
+		this.favories = fav;
 	}
 
 	public ValidateAnnonce getValidate(){
